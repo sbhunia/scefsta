@@ -1,0 +1,38 @@
+.backgroundOverlay {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    width: 30vw;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.connectButton {
+    width: 70%;
+    background-color: #235AAD;
+    color: #fff;
+    border: 0px;
+    padding: 15px;
+    border-radius: 10px;
+    margin: auto;
+}
+
+.connectButton:active {
+    background-color: #FFF155;
+    color: #235AAD;
+    font-weight: bold;
+    transform: scale(1.2);
+}
+
+.attribution {
+    text-align: center;
+    font-style: italic;
+}

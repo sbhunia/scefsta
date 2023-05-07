@@ -1,0 +1,91 @@
+.hospitalSearchContainer {
+  height : 100px;
+  margin-bottom: 10px;
+}
+
+.hospitalSearchInput {
+  width: 100%;
+  height: 40px;
+  display: block;
+  margin: auto;
+  margin-top: 0px;
+  border: 0px;
+  border-bottom: 1px solid #3F88C5;
+  border-radius: 2px;
+}
+
+.hospitalSearchInput:active {
+  border: 0px;
+  border-bottom: 1px solid #3F88C5;
+}
+
+.hospitalTableContainer {
+  width: 100%;
+  margin: auto;
+  margin-top: -3%;
+  margin-bottom: 50px;
+}
+
+.hospitalTableHeader {
+  background-color: #1596ff;
+}
+
+.hospitalTableHeaderElement {
+  color: white;
+  font-size: 0.9rem;
+}
+
+.tableRow:hover {
+background-color: rgb(240,240,255);
+}
+
+.tableRow th, .tableRow td {
+  font-size: 0.9rem;
+}
+
+.pagination {
+  float: left;
+  min-width: 200px;
+}
+
+.denseSwitch {
+  float: left;
+  margin-left: 10px;
+}
+
+.addDiv {
+  margin: auto;
+  float: right;
+}
+
+.addIcon {
+  font-size: 36px;
+  color: green;
+}
+
+.removeIcon {
+  font-size: 36px;
+  color: red;
+}
+
+@media only screen and (max-width: 769px) {
+  .hospitalSearchInput {
+      width: 73vw;
+      margin: 0px 0px 0px 0px;
+  }
+  .hospitalTableContainer {
+      width: 100%;
+      margin-top: -15%;
+      overflow-x: scroll;
+  }
+  .tableRow th, .tableRow td {
+    font-size: 0.6rem;
+  }
+  .hospitalTableHeaderElement {
+    font-size: 0.6rem;
+  }
+}
+
+.container {
+  flex: 4;
+}

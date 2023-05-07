@@ -1,0 +1,101 @@
+.popup {
+    position: fixed;
+    padding-top: 4%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.popupInner {
+    position: relative;
+    padding: 32px;
+    width: 100%;
+    max-height: 728px;
+    max-width: 678px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.centerContents {
+    width: 80%;
+    justify-content: center;
+    margin: auto;
+}
+
+.floatRightElement {
+    float: right;
+}
+
+.editHospital {
+    color: #3F88C5;
+    font-size: 1.5rem;
+    padding: 2% 0;
+    width: 100%;
+    padding-left: 2%;
+    font-weight: bold;
+}
+
+.deleteEntry {
+    color: #3F88C5;
+    font-size: 1.5rem;
+    width: 100%;
+    padding-left: 2%;
+    font-weight: bold;
+}
+
+.formPadding {
+    margin: 0 10%;
+}
+
+.closeBtn {
+    font-size: 24px;
+}
+
+.formInput {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.submitButtonDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.submitButton {
+    margin-top: 50px;
+    width: 50%;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #3F88C5;
+    font-size: 1.0rem;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+}
+
+.submitButton:hover {
+    background-color: rgb(240,240,255);
+    color: #000;
+}
+
+.removeButtonDiv {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.popupInner .closeBtn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+}

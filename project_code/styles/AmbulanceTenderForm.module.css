@@ -1,0 +1,74 @@
+.cardContainer {
+    width: 100%;
+    border: 3px solid rgb(183, 183, 255);
+}
+
+/* .leftForm {
+    position: relative;
+    z-index: 1;
+} */
+
+/* .mapBackground {
+    position: relative;
+    z-index: -100;
+    top: 0;
+    width: 100vw;
+} */
+
+.patientDropDown {
+    margin: auto;
+    width: 100%;
+    padding-bottom: 20px;
+}
+
+.urgencyCard {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.urgencyCardContent{
+}
+
+.urgencyCardTitle{
+    width: 100%;
+}
+
+.urgentCardColorBar{
+    right: 0;
+    width: 78px;
+    height: 72px;
+    display: inline-block;
+    border-radius: 50%;
+    background-color: yellow;
+    border: 3px solid #dadada;
+}
+
+.tenderRewardInput {
+    width: 50%;
+}
+
+.tenderRewardDiv {
+    display: flex;
+    padding-top: 20px;
+}
+
+.givenRewardDiv {
+    width: 50%;
+    padding-right: 10px;
+}
+
+.submitButton {
+    margin-top: 20px;
+}
+
+.submitButton:active {
+    display: hidden;
+}
+
+.loadingSymbol1 {
+    display: none;
+}
+
+.loadingSymbol2 {
+    display: block;
+}

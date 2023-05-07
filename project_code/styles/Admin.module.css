@@ -1,0 +1,62 @@
+.collector {
+    display: flex;
+}
+
+.overflow {
+    overflow-y: scroll;
+}
+
+.pageTitle {
+    width: 100%;
+    background-color: #84B6E0;
+    color: #fff;
+}
+
+.pageTitle h2 {
+    font-size: 1.4rem;
+    padding: 1% 0 1% 1%;
+    margin: 0;
+}
+
+.tablesTotalContainer {
+    flex: 4;
+    max-height: 93vh;
+    overflow-y: scroll;
+}
+
+@media only screen and (max-width: 769px) {
+    .pageTitle h2 {
+        font-size: 1.2rem;
+        padding: 3% 0 3% 3%;
+    }
+    .tabText {
+        font-size: 0.7rem;
+    }
+}
+
+/* Refactor the CSS file (this is being used by ambulance.js when it should
+have its own ...*/
+
+.containerLocked {
+    flex: 4;
+    text-align: center;
+    margin-top: 9.5%;
+  }
+  .headingLocked {
+    width: 30%;
+    margin: auto;
+    color: #1A588C;
+    font-size: 1.8rem;
+    padding: 1.5% 0 3% 0;
+  }
+  @media only screen and (max-width: 769px) {
+    .containerLocked {
+      margin-top: 25%;
+    }
+    .headingLocked {
+      width: 90%;
+      font-size: 1.4rem;
+    }
+  }
+  /**/
+  

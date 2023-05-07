@@ -1,0 +1,71 @@
+.container {
+    width: 100%;
+}
+
+.heading {
+    margin-top: 1%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.4rem;
+    color: #3F88C5;
+}
+
+.iconDiv {
+    width: 35%;
+    margin: 1% 0%;
+    text-align: center;
+    transform: scale(1.6);
+}
+
+.tenderForm {
+    width: 100%;
+    margin: auto;
+}
+
+.formText {
+    width: 30%;
+}
+
+.addressText {
+    width: 65%;
+}
+
+#injuryType, #severity, #mechanism {
+    width: 20vw;
+    min-width: 400px;
+}
+
+.injuryDiv {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    text-align: center;
+}
+
+.expiration {
+    margin-top: 4%;
+    text-align: center;
+}
+
+.paymentAmt, .penaltyAmt {
+    margin-top: 2%;
+    margin-bottom: 2%;
+    width: 40%;
+    text-align: center;
+}
+
+.buttonGroup {
+    text-align: center;
+}
+
+.divider {
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+.winners {
+    width: 75%;
+    margin: auto;
+    margin-top: 2%;
+    margin-bottom: 5%;
+}
+  

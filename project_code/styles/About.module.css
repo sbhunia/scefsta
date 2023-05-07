@@ -1,0 +1,29 @@
+.collector {
+    display: flex;
+}
+
+.container {
+    flex: 4;
+    text-align: center;
+    color: #3F88C5;
+    padding-top: 2%;
+    max-height: 92vh;
+    overflow-y: scroll;
+}
+
+.colorCard {
+    width: 30%;
+    min-width: 350px;
+    margin: auto;
+    margin-top: 1%;
+}
+
+
+@media only screen and (max-width: 769px) {
+    .colorCard {
+        width: 80%;
+    }
+    .mobileFull {
+        width: 100%;
+    }
+}

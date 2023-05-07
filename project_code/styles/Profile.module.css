@@ -1,0 +1,60 @@
+.collector {
+    display: flex;
+}
+
+.pageTitle {
+    width: 100%;
+    background-color: #84B6E0;
+    color: #fff;
+}
+
+.pageTitle h2 {
+    font-size: 1.4rem;
+    padding: 1% 0 1% 1%;
+    margin: 0;
+}
+
+.totalContainer {
+    flex: 4;
+    max-height: 93vh;
+    overflow-y: scroll;
+    background-color: rgba(235, 232, 223, 0.5);
+}
+
+.profile {
+    display: block;
+    margin: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.account {
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.balance {
+    margin-top: 12px;
+}
+
+.loading {
+    text-align: center;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .column {
+    margin-right: 20px;
+  }
+
+  .h3 {
+    margin-right: 20px;
+  }
+
+  .logout-btn {
+    margin-top: 20px;
+}

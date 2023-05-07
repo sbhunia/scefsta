@@ -1,0 +1,126 @@
+.patientSearchContainer {
+    height : 100px;
+    margin-bottom: 10px;
+}
+  
+.patientSearchInput {
+    width: 100%;
+    height: 40px;
+    display: block;
+    margin: auto;
+    margin-top: 0px;
+    border: 0px;
+    border-bottom: 1px solid #3F88C5;
+    border-radius: 2px;
+}
+  
+.patientSearchInput:active {
+    border: 0px;
+    border-bottom: 1px solid #3F88C5;
+}
+  
+.patientTableContainer {
+    width: 100%;
+    margin: auto;
+    margin-top: -3% ;
+    margin-bottom: 50px;
+}
+
+.activePatientTableContainer {
+    width: 100%;
+    margin: auto;
+    margin-top:  50px;
+    margin-bottom: 50px;
+}
+  
+.patientTableHeader {
+    background-color: #3F88C5;
+}
+  
+.patientTableHeaderElement {
+    color: white;
+    font-size: 0.9rem;
+}
+
+.tableRow:hover {
+    background-color: rgb(240,240,255);
+}
+  
+.pagination {
+    float: left;
+    min-width: 200px;
+}
+  
+.denseSwitch {
+    float: left;
+    margin-left: 10px;
+}
+  
+.addDiv {
+    margin: auto;
+    float: right;
+}
+
+.patientOverflow {
+    flex: 4;
+    max-height: 93vh;
+    overflow-y: scroll;
+}
+
+.pageTitle {
+    width: 100%;
+    background-color: #84B6E0;
+    color: #fff;
+}
+
+.pageTitle h2 {
+    font-size: 1.4rem;
+    padding: 1% 0 1% 1%;
+    margin: 0;
+}
+  
+@media only screen and (max-width: 769px) {
+    .patientSearchInput {
+        width: 73vw;
+        margin: 30px 20px 20px 20px;
+    }
+    .patientTableContainer {
+        width: 73vw;
+        overflow-x: scroll;
+    }
+}
+
+.container {
+    flex: 4;
+}
+
+.collector {
+    display: flex;
+    height: 92vh;
+    overflow-y: scroll;
+}
+
+/**/
+.containerLocked {
+    flex: 4;
+    text-align: center;
+    margin-top: 9.5%;
+  }
+  .headingLocked {
+    width: 30%;
+    margin: auto;
+    color: #1A588C;
+    font-size: 1.8rem;
+    padding: 1.5% 0 3% 0;
+  }
+  @media only screen and (max-width: 769px) {
+    .containerLocked {
+      margin-top: 25%;
+    }
+    .headingLocked {
+      width: 90%;
+      font-size: 1.4rem;
+    }
+  }
+  /**/
+  

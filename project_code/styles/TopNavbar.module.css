@@ -1,0 +1,162 @@
+.topNavbar {
+    width: 100%;
+    height: 64px;
+    background-color: #1A588C;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
+}
+
+.topbarWrapper {
+    height: 100%;
+    padding: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.topbarLeft {
+    display: flex;
+    margin-left: 10px;
+}
+  
+.topbarLogo {
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    padding-left: 1vw;
+    margin-top: 10px;
+    height: 40px;
+}
+
+.topbarUser {
+    margin-left: 30px;
+    color: white;
+}
+
+.topbarLogo:hover {
+    font-size: 21px;
+}
+
+.topbarRight {
+    display: flex;
+    align-items: center;
+    padding-top: 5px;
+    padding-right: 10vw;
+}
+
+.topbarIconContainer {
+    position: relative;
+    margin-right: 30px;
+    cursor: pointer;
+    color: white;
+}
+
+.topIconBadge {
+    height: 15px;
+    width: 15px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    position: absolute;
+    top: -5px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    font-size: 10px;
+    animation: pulse 1.5s linear 5;
+}
+
+/* Only for Landing Page */
+.topbarRightButton {
+    display: block;
+    width: 130px;
+    margin-right: 14px;
+    margin-left: 25px;
+    padding: 14px 15px;
+    float: right;
+    align-self: flex-start;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 50px;
+    background-color: white;
+    align-items: center;
+    transition: background-color 200ms ease;
+    font-family: 'Neue Haas Text Medium', sans-serif;
+    font-size: 15px;
+    line-height: 1;
+    text-align: center;
+    color: #1A588C;
+    border: 0;
+    cursor: pointer;
+}
+
+.settings:hover {
+    -webkit-animation: spin 3s linear 2;
+    -moz-animation: spin 3s linear 2;
+    animation: spin 3s linear 2;
+}
+
+.topbarRightIcon {
+    font-size: 20px;
+}
+
+.connectButton {
+    width: 100%;
+    background-color: #fff;
+    color: #235AAD;
+    font-size: 0.9rem;
+    font-family: 'Neue Haas Text Medium', sans-serif;
+    border: 0px;
+    padding: 15px;
+    border-radius: 10px;
+    margin: auto;
+}
+
+.connectButton:active {
+    background-color: #FFF155;
+    font-family: 'Neue Haas Text Medium', sans-serif;
+    color: #235AAD;
+    font-weight: bold;
+    transform: scale(1.1);
+}
+
+.walletBalance {
+    color: #fff;
+}
+
+@-moz-keyframes spin { 
+    100% { -moz-transform: rotate(360deg); } 
+}
+
+@-webkit-keyframes spin { 
+    100% { -webkit-transform: rotate(360deg); } 
+}
+  
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        height: 15px;
+        width: 15px;
+        font-size: 10px;
+    }
+    50% {
+        height: 16px;
+        width: 16px;
+        font-size: 11px;
+    }
+    100% {
+        height: 15px;
+        width: 15px;
+        font-size: 10px;
+    }
+}
