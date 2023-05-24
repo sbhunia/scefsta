@@ -3,34 +3,70 @@ pragma solidity ^0.8.0;
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 
-import "../src/AmbulanceBounties.sol";
+import "../src/Accounts.sol";
 
 // SPDX-License-Identifier: UNLICENSED
 
 contract AccountsTest is Test {
+    Accounts public a;
+    address superAdmin;
+
+    // accounts to be used
+    address admin;
+    address ambulance;
+    address initiator;
+    address hospital;
+    
+    // results
+    bool res;
 
     function setUp() public {
          // set this address as the admin address and create instance of the AmbulanceBounties contract
-        admin = 0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80;
-        vm.startPrank(admin);
-        ab = new AmbulanceBounties();
+        superAdmin = vm.addr(1);
+        vm.startPrank(superAdmin);
+        a = new Accounts();
+        vm.stopPrank();
+
+        // addresses to be used for testing
+        admin = vm.addr(1);
+        ambulance = vm.addr(1);
+        initiator = vm.addr(1);
+        hospital = vm.addr(1);
+    }
+
+    function testAddIsRemoveAdmin() public {
+        // set sender as super admin
+        vm.startPrank(superAdmin);
+            // verify isAdmin works
+            res = a.isAdmin(admin);
+            assertEq(res, false);
+
+            // verify adding admin
+            a.addAdmin(admin);
+            res = a.isAdmin(admin);
+            assertEq(res, true);
+
+            // verify removing admin
+            a.removeAdmin(admin);
+            res = a.isAdmin(admin);
+            assertEq(res, false);
         vm.stopPrank();
     }
 
     function testAddIsRemoveAmbulance() public {
         vm.startPrank(admin);
-        bool res = ab.isAmbulance(ambulance);
+        bool res = a.isAmbulance(ambulance);
         assertEq(res, false);
 
-        ab.addAmbulance(ambulance);
-        res = ab.isAmbulance(ambulance);
+        a.addAmbulance(ambulance);
+        res = a.isAmbulance(ambulance);
         assertEq(res, true);
 
-        ab.removeAmbulance(ambulance);
-        res = ab.isAmbulance(ambulance);
+        a.removeAmbulance(ambulance);
+        res = a.isAmbulance(ambulance);
         assertEq(res, false);
 
-        res = ab.isAmbulance(police);
+        res = a.isAmbulance(initiator);
         assertEq(res, false);
         vm.stopPrank();
     }

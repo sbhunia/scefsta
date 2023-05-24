@@ -1,0 +1,108 @@
+{
+  "abi": [],
+  "bytecode": {
+    "object": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea264697066735822122076edca589a6b547decee6d8314596e160efa0ba58813de0aeab7329af8826ad264736f6c634300080f0033",
+    "sourceMap": "68:24:7:-:0;;;;;;;;;;;;;;;;;;;",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x6080604052600080fdfea264697066735822122076edca589a6b547decee6d8314596e160efa0ba58813de0aeab7329af8826ad264736f6c634300080f0033",
+    "sourceMap": "68:24:7:-:0;;;;;",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {},
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.15+commit.e14f2714\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"src/Auctions.sol\":\"Auctions\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":forge-std/=lib/forge-std/src/\"]},\"sources\":{\"src/Auctions.sol\":{\"keccak256\":\"0x1899f0d7957c5580895a95c1d9749a608566f238113c0539b4029a59ac51db3f\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://bcb2698ee40dd68ce24f8138411c308f3c92261d98edea622c7ae3427860f4a0\",\"dweb:/ipfs/QmS1wEmFaH8s9XkHbdGM6EH22g34K5ZXCoPfTvX7AByJKP\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.15+commit.e14f2714"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":forge-std/=lib/forge-std/src/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "src/Auctions.sol": "Auctions"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "src/Auctions.sol": {
+        "keccak256": "0x1899f0d7957c5580895a95c1d9749a608566f238113c0539b4029a59ac51db3f",
+        "urls": [
+          "bzz-raw://bcb2698ee40dd68ce24f8138411c308f3c92261d98edea622c7ae3427860f4a0",
+          "dweb:/ipfs/QmS1wEmFaH8s9XkHbdGM6EH22g34K5ZXCoPfTvX7AByJKP"
+        ],
+        "license": "UNLICENSED"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "src/Auctions.sol",
+    "id": 22388,
+    "exportedSymbols": {
+      "Auctions": [
+        22387
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "41:51:7",
+    "nodes": [
+      {
+        "id": 22386,
+        "nodeType": "PragmaDirective",
+        "src": "41:23:7",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 22387,
+        "nodeType": "ContractDefinition",
+        "src": "68:24:7",
+        "nodes": [],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "Auctions",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          22387
+        ],
+        "name": "Auctions",
+        "nameLocation": "77:8:7",
+        "scope": 22388,
+        "usedErrors": []
+      }
+    ],
+    "license": "UNLICENSED"
+  },
+  "id": 7
+}
