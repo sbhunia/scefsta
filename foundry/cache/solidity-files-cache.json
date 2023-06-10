@@ -265,49 +265,9 @@
         }
       }
     },
-    "src/AmbulanceBounties.sol": {
-      "lastModificationDate": 1683492190845,
-      "contentHash": "646cac3d35a56dec65deff08ebc78b2a",
-      "sourceName": "src/AmbulanceBounties.sol",
-      "solcConfig": {
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "metadata": {
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
-          },
-          "outputSelection": {
-            "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
-            }
-          },
-          "evmVersion": "paris",
-          "libraries": {}
-        }
-      },
-      "imports": [],
-      "versionRequirement": "^0.8.0",
-      "artifacts": {
-        "AmbulanceBounties": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "AmbulanceBounties.sol\\AmbulanceBounties.json"
-        }
-      }
-    },
     "src/Auctions.sol": {
-      "lastModificationDate": 1684970044017,
-      "contentHash": "44d2c7ff339a39875a8cc9f43f49c182",
+      "lastModificationDate": 1686263970090,
+      "contentHash": "be45197a48f4eb9b2ca54b1089eeaea2",
       "sourceName": "src/Auctions.sol",
       "solcConfig": {
         "settings": {
@@ -337,7 +297,9 @@
           "libraries": {}
         }
       },
-      "imports": [],
+      "imports": [
+        "src\\Accounts.sol"
+      ],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "Auctions": {
@@ -386,8 +348,8 @@
       }
     },
     "test/Accounts.t.sol": {
-      "lastModificationDate": 1684971924922,
-      "contentHash": "ef7fd8839317a678ac6234136ecf04c3",
+      "lastModificationDate": 1685054158509,
+      "contentHash": "92ebdae550079c4ccfb2d472ec44ac5e",
       "sourceName": "test/Accounts.t.sol",
       "solcConfig": {
         "settings": {
@@ -432,10 +394,10 @@
         }
       }
     },
-    "test/AmbulanceBounties.t.sol": {
-      "lastModificationDate": 1683492190847,
-      "contentHash": "d8eed29b7456ad5f639f1e22a09c0126",
-      "sourceName": "test/AmbulanceBounties.t.sol",
+    "test/Auctions.t.sol": {
+      "lastModificationDate": 1686264212341,
+      "contentHash": "d3b1ed02655c7d2c75e3afb36e75bb82",
+      "sourceName": "test/Auctions.t.sol",
       "solcConfig": {
         "settings": {
           "optimizer": {
@@ -470,12 +432,13 @@
         "lib/forge-std/src\\Vm.sol",
         "lib/forge-std/src/console.sol",
         "lib/forge-std/src/console2.sol",
-        "src\\AmbulanceBounties.sol"
+        "src\\Accounts.sol",
+        "src\\Auctions.sol"
       ],
       "versionRequirement": "^0.8.0",
       "artifacts": {
-        "AmbulanceBountiesTest": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "AmbulanceBounties.t.sol\\AmbulanceBountiesTest.json"
+        "AuctionsTest": {
+          "0.8.15+commit.e14f2714.Windows.msvc": "Auctions.t.sol\\AuctionsTest.json"
         }
       }
     }

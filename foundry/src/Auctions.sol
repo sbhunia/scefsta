@@ -7,18 +7,12 @@ import "./Accounts.sol";
 /* Figure out fix to hashVal in JavaScript */
 /* Re-evaluate legacy auction system */
 contract Auctions {
-    // Use Accounts contract
-    Accounts ac;
+    // initialize accounts contract
+    Accounts accountsContract;
 
     // constants
     uint256 constant MAX_INT = 2**256 - 1;
-
-    // data members for contract
-    int256[] public tenderIds; // list of all tenders
-    mapping(int256 => Tender) public tenderMapping; // mapping for faster tender lookup
-    Tender[] public tenders;
-    int256 tenderIdCounter = 0;
-
+    uint256 constant REVEAL_PERIOD = 5000;
 
     // enum for various possible tender status's, closed is default
     enum TenderStatus {
@@ -29,14 +23,14 @@ contract Auctions {
         Reclaimed
     }
 
-    // struct to hold tender information
-    struct Tender {
+    // helper struct for tender details
+     struct TenderDetails {
         address payable tenderPoster;
         address payable tenderAccepter;
-        TenderStatus status;
         uint256 postDate;
+        uint256 auctionDate;
+        uint256 revealDate;
         uint256 dueDate;
-        // Should be a string that represents the coordinates of the patient, compliant with ISO 6709
         string addr;
         string city;
         string state;
@@ -50,10 +44,25 @@ contract Auctions {
         address[] bidders;
         uint[] bidHashArray;
         uint256 finalBid;
-
-        // tender data for frontend
         string severity;
-        uint tenderId;
+    }
+
+    // struct to hold tender information
+    struct Tender {
+        TenderDetails details;
+        TenderStatus status;
+        uint256 tenderId;
+    }
+
+    // data members for tenders
+    uint256[] public tenderIds; // list of all tenders
+    mapping(uint256 => Tender) public tenderMapping; // mapping for faster tender lookup
+    Tender[] public tenders;
+    uint256 tenderIdCounter = 0;
+
+    // constructor 
+    constructor(address contractAddress) {
+        accountsContract = Accounts(contractAddress);
     }
 
     /*
@@ -66,6 +75,7 @@ contract Auctions {
     */
     function postTender(
         uint256 timeLimit,
+        uint256 deliveryTime,
         string memory addr,
         string memory city,
         string memory state,
@@ -73,32 +83,34 @@ contract Auctions {
         string memory severity,
         address[] memory allowedHospitals
     ) public payable returns (uint256) {
-        // require statements for function
-        require(ac.isAdmin(msg.sender), "sender must be an admin");
+        //require statements for function
+        require(accountsContract.isInitiator(msg.sender), "sender must be tender initiator");
         require(msg.value > 0, "maxval must be greater than 0");
 
         // validate allowed hospitals are valid hospitals
         for (uint256 i = 0; i < allowedHospitals.length; i++) {
-            require(ac.isHospital(allowedHospitals[i]));
+            require(accountsContract.isHospital(allowedHospitals[i]), "given hospital list invalid");
         }
 
         // initalize new tender information
         Tender memory newTender;
-        newTender.tenderId = uint(tenderIdCounter);
-        newTender.tenderPoster = payable(msg.sender);
+        newTender.tenderId = tenderIdCounter;
+        newTender.details.tenderPoster = payable(msg.sender);
         newTender.status = TenderStatus.Open; // open tender
         
-        newTender.postDate = block.timestamp; // set post date to current time
-        newTender.dueDate = block.timestamp + timeLimit; // set due date for auction
+        newTender.details.postDate = block.timestamp; // set post date to current time
+        newTender.details.auctionDate = block.timestamp + timeLimit;
+        newTender.details.revealDate = block.timestamp + timeLimit + REVEAL_PERIOD;
+        newTender.details.dueDate = block.timestamp + timeLimit + REVEAL_PERIOD + deliveryTime; // set due date for auction
 
-        newTender.finalBid = MAX_INT; // set to max possible integer
-        newTender.maxBid = msg.value;
-        newTender.penalty = penalty;
+        newTender.details.finalBid = MAX_INT; // set to max possible integer
+        newTender.details.maxBid = msg.value;
+        newTender.details.penalty = penalty;
 
-        newTender.addr = addr;
-        newTender.city = city;
-        newTender.state = state;
-        newTender.severity = severity;
+        newTender.details.addr = addr;
+        newTender.details.city = city;
+        newTender.details.state = state;
+        newTender.details.severity = severity;
         
         // push new tender and adjust mappings
         tenders.push(newTender); 
@@ -107,51 +119,174 @@ contract Auctions {
         return newTender.tenderId;
     }
 
-    function secretBid(int256 tenderId, uint bidHashedAmount) public payable returns(uint256 index) {
+    function secretBid(uint256 tenderId, uint bidHashedAmount) public payable returns(uint256 index) {
         Tender memory tender = tenderMapping[tenderId];
-        require(ac.isAmbulance(msg.sender), "sender must be an ambulance");
+        require(accountsContract.isAmbulance(msg.sender), "sender must be an ambulance");
         require(tender.status == TenderStatus.Open, "tender must be open");
     
-        require (block.timestamp < tender.dueDate, "auction period has passed");
-        require(msg.value == tender.penalty, "sent penalty amount does not match tender");
-        require(!contains(tender.bidders, msg.sender), "can only bid once");
+        require (block.timestamp < tender.details.dueDate, "auction period has passed");
+        require(msg.value == tender.details.penalty, "sent penalty amount does not match tender");
+        require(!contains(tender.details.bidders, msg.sender), "can only bid once");
 
         // add bid to array
-        tenderMapping[tenderId].bidders.push(msg.sender);
-        tenderMapping[tenderId].bidHashArray.push(bidHashedAmount);
-        return tender.bidders.length - 1;
+        tenderMapping[tenderId].details.bidders.push(msg.sender);
+        tenderMapping[tenderId].details.bidHashArray.push(bidHashedAmount);
+        return tender.details.bidders.length - 1;
     }
 
     function revealBid(
-        int256 tenderId,
+        uint256 tenderId,
         uint256 bidVal,
         uint256 salt,
         uint256 index
     ) public payable {
         Tender storage tender = tenderMapping[tenderId];
-        require(ac.isAmbulance(msg.sender), "sender must be ambulance");
-        require(block.timestamp > tender.dueDate, "tender still under auction");
+        require(accountsContract.isAmbulance(msg.sender), "sender must be ambulance");
+        require(block.timestamp > tender.details.dueDate, "tender still under auction");
         require(tender.status == TenderStatus.Open, "tender is not open");
-        require(bidVal < tender.finalBid, "bid was not the lowest");
-        require(bidVal < tender.maxBid, "bid was not the lowest");
-        require(msg.sender == tender.bidders[index], "wrong bid ID");
-        require(tender.penalty == msg.value, "did not send correct penalty amount");
-        require(tender.bidHashArray[index] == hashVal(bidVal, salt), "bid value does not match hashed value");
+        require(bidVal < tender.details.finalBid, "bid was not the lowest");
+        require(bidVal < tender.details.maxBid, "bid was not the lowest");
+        require(msg.sender == tender.details.bidders[index], "wrong bid ID");
+        require(tender.details.penalty == msg.value, "did not send correct penalty amount");
+        require(tender.details.bidHashArray[index] == hashVal(bidVal, salt), "bid value does not match hashed value");
 
         // if job was already assigned, refund 
-        if (tender.tenderAccepter != address(0)) {
-            tender.tenderAccepter.transfer(
-                tender.penalty
+        if (tender.details.tenderAccepter != address(0)) {
+            tender.details.tenderAccepter.transfer(
+                tender.details.penalty
             );
         }
         
         // update tender information
         tender.status = TenderStatus.InProgress;
-        tender.tenderAccepter = payable(msg.sender);
-        tender.finalBid = bidVal;
+        tender.details.tenderAccepter = payable(msg.sender);
+        tender.details.finalBid = bidVal;
 
         // set new info to tender mapping
         tenderMapping[tenderId] = tender;
+    }
+
+    // this function is called upon delivery of a patient where the ambulance is then paid for delivery
+    function verifyDelivery(uint256 tenderId) public {
+        require(accountsContract.isHospital(msg.sender), "Sender must be a hospital");
+        require(
+            tenderMapping[tenderId].status == TenderStatus.InProgress,
+            "Tender not in progress"
+        );
+        require(
+            block.timestamp <
+                tenderMapping[tenderId].details.dueDate,
+            "Tender is not ready to be claimed yet"
+        );
+        /* change due dates */
+        require(
+            block.timestamp < tenderMapping[tenderId].details.dueDate,
+            "Tender has expired"
+        );
+        require(contains(tenderMapping[tenderId].details.allowedHospitals, msg.sender));
+
+        tenderMapping[tenderId].details.tenderAccepter.transfer(
+            tenderMapping[tenderId].details.finalBid + tenderMapping[tenderId].details.penalty
+        );
+
+        if (tenderMapping[tenderId].details.maxBid - tenderMapping[tenderId].details.finalBid > 0) {
+            tenderMapping[tenderId].details.tenderPoster.transfer(
+                tenderMapping[tenderId].details.maxBid -
+                    tenderMapping[tenderId].details.finalBid
+            );
+        }
+
+        Tender storage referencedTender = tenderMapping[tenderId];
+
+        referencedTender.status = TenderStatus.Closed;
+
+        tenderMapping[tenderId] = referencedTender;
+
+        removeTender(tenderId);
+    }
+
+    //get all tenders
+    function getAllTenders() public view returns (Tender[] memory) {
+        return tenders;
+    }
+
+    // get the winner of an auction
+    function getAuctionWinner(uint256 tenderId) public view returns (address tenderWinner) {
+        require(
+            tenderMapping[tenderId].status != TenderStatus.Open,
+            "no winner for open tender"
+        );
+        require(
+            block.timestamp <
+                tenderMapping[tenderId].details.revealDate,
+                "tender must be past reveal period"
+        );
+
+        return tenderMapping[tenderId].details.tenderAccepter;
+    } 
+
+    // Allows police stations to reclaim their funds + the penalty for failed jobs
+    function reclaimTender(uint256 tenderId) public {
+        require(
+            tenderMapping[tenderId].details.tenderPoster == msg.sender,
+            "sender is not the tender poster"
+        );
+        require(
+            tenderMapping[tenderId].status == TenderStatus.InProgress,
+            "tender is not in progress"
+        );
+        require(
+            tenderMapping[tenderId].details.tenderAccepter != address(0),
+            "tender accepter is not the address set"
+        );
+        require(tenderMapping[tenderId].details.dueDate > block.timestamp, "auction period is over");
+
+        tenderMapping[tenderId].details.tenderPoster.transfer(
+            tenderMapping[tenderId].details.maxBid + tenderMapping[tenderId].details.penalty
+        );
+
+        removeTender(tenderId);
+    }
+
+    function retractTender(uint256 tenderId) public {
+        require(
+            msg.sender == tenderMapping[tenderId].details.tenderPoster,
+            "sender is not the tender poster"
+        );
+        require(
+            tenderMapping[tenderId].status == TenderStatus.Open,
+            "tender is not open"
+        );
+
+        // can only retract a tender if bid period is over (need to add)
+        tenderMapping[tenderId].details.tenderPoster.transfer(
+            tenderMapping[tenderId].details.maxBid
+        );
+
+        removeTender(tenderId);
+    }
+
+    function removeTender(uint256 tenderId) private {
+        // Delete doesn't preserve order, but we can at the cost of more processing
+        Tender memory tender;
+        for (uint256 i = 0; i < tenders.length; i++) {
+            // Comparing the strings
+            if (tenderIds[i] == tenderId) {
+                tender = tenderMapping[tenderId];
+                tenders[i] = tenders[tenders.length - 1];
+                tenders.pop();
+            }
+        }
+        for (uint256 i = 0; i < tenders.length; i++) {
+            if (
+                tenders[i].details.tenderPoster == tender.details.tenderPoster &&
+                tenders[i].details.tenderAccepter == tender.details.tenderAccepter &&
+                tenders[i].details.postDate == tender.details.postDate
+            ) {
+                tenders[i] = tenders[tenders.length - 1];
+                tenders.pop();
+            }
+        }
     }
 
     // This sucks, but it's one of the consequences of storing everything on the blockchain
