@@ -108,6 +108,11 @@ contract Accounts {
 
     // add a new admin
     function addAdmin(address addr) public {
+        require(ambulances[addr] == false, "already an ambulance");
+        require(hospitals[addr] == false, "already a hospital");
+        require(initiators[addr] == false, "already a police");
+        require(admins[addr] == false, "already an admin");
+        require(addr != superAdmin, "superAdmin is already an admin");
         require(msg.sender == superAdmin, "must be a superAdmin");
         admins[addr] = true;
     }
@@ -116,6 +121,7 @@ contract Accounts {
     function removeAdmin(address addr) public {
         require(msg.sender == superAdmin, "must be a superAdmin");
         require(admins[addr] == true, "must already be an admin");
+        require(addr != msg.sender, "cannot remove yourself as admin");
         admins[addr] = false;
     }
 }

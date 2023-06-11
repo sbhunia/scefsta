@@ -266,7 +266,7 @@
       }
     },
     "src/Auctions.sol": {
-      "lastModificationDate": 1686263970090,
+      "lastModificationDate": 1686518298272,
       "contentHash": "be45197a48f4eb9b2ca54b1089eeaea2",
       "sourceName": "src/Auctions.sol",
       "solcConfig": {
@@ -395,8 +395,8 @@
       }
     },
     "test/Auctions.t.sol": {
-      "lastModificationDate": 1686264212341,
-      "contentHash": "d3b1ed02655c7d2c75e3afb36e75bb82",
+      "lastModificationDate": 1686518762329,
+      "contentHash": "09477bac6914d6e80b5b467bd11de9ca",
       "sourceName": "test/Auctions.t.sol",
       "solcConfig": {
         "settings": {

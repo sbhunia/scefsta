@@ -9,8 +9,8 @@ import "../src/Accounts.sol";
 // SPDX-License-Identifier: UNLICENSED
 
 contract AuctionsTest is Test {
-    Auctions public auc;
     Accounts public acc;
+    Auctions public auc;
     address superAdmin;
 
     // accounts to be used
@@ -20,11 +20,17 @@ contract AuctionsTest is Test {
     address hospital;
     address[] allowedHospitals;
     
-    // variables
+    // tender post variables
     uint256 tender;
     uint256 timeLimit;
     uint256 deliveryTime;
     uint256 penalty;
+
+    // bid variables
+    uint256 bidVal;
+    uint256 saltVal;
+    uint256 hashVal;
+
     // results
     bool res;
 
@@ -33,7 +39,7 @@ contract AuctionsTest is Test {
         superAdmin = vm.addr(1);
         vm.startPrank(superAdmin);
         acc = new Accounts();
-        auc = new Auctions(vm.addr(6));
+        auc = new Auctions(address(acc));
         vm.stopPrank();
 
         // addresses to be used for testing
@@ -46,6 +52,10 @@ contract AuctionsTest is Test {
         timeLimit = 1000;
         deliveryTime = 10000;
         penalty = 20;
+
+        // set bid variables
+        bidVal = 100;
+        saltVal = 10;
 
         // add new admin
         vm.startPrank(superAdmin);
@@ -62,13 +72,29 @@ contract AuctionsTest is Test {
     }
 
     function testPostTender() public {
+        // validate accounts is working
+        bool init = acc.isInitiator(initiator);
+        assertEq(true, init);
+
         hoax(initiator, 10000 ether);
         tender = auc.postTender{value: 100}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", penalty, "High", allowedHospitals);
-        //assertEq(tender, 0);
+        assertEq(tender, 0);
+
+        hoax(initiator, 10000 ether);
+        tender = auc.postTender{value: 100}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", penalty, "High", allowedHospitals);
+        assertEq(tender, 1);
     }
 
-    function testSecretBid() public {
+    function cannotPostTender() public {}
 
+    function testSecretBid() public {
+        hoax(initiator, 10000 ether);
+        tender = auc.postTender{value: 100}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", penalty, "High", allowedHospitals);
+        assertEq(tender, 0);
+
+        uint hashVal = auc.hashVal(bidVal, saltVal);
+        hoax(ambulance, 10000 ether);
+        auc.secretBid{value: penalty}(tender, hashVal);
     }
 
     function testRevealBid() public {

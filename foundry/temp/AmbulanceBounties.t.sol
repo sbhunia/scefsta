@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 
-import "../src/AmbulanceBounties.sol";
+import "../temp/AmbulanceBounties.sol";
 
 // SPDX-License-Identifier: UNLICENSED
 
