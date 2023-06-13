@@ -119,7 +119,7 @@ contract Auctions {
         return newTender.tenderId;
     }
 
-    function secretBid(uint256 tenderId, uint bidHashedAmount) public payable returns(uint256 index) {
+    function secretBid(uint256 tenderId, uint256 bidHashedAmount) public payable returns(uint256 index) {
         Tender memory tender = tenderMapping[tenderId];
         require(accountsContract.isAmbulance(msg.sender), "sender must be an ambulance");
         require(tender.status == TenderStatus.Open, "tender must be open");
@@ -131,7 +131,7 @@ contract Auctions {
         // add bid to array
         tenderMapping[tenderId].details.bidders.push(msg.sender);
         tenderMapping[tenderId].details.bidHashArray.push(bidHashedAmount);
-        return tender.details.bidders.length - 1;
+        return tenderMapping[tenderId].details.bidders.length - 1;
     }
 
     function revealBid(
@@ -300,8 +300,7 @@ contract Auctions {
     }
 
     // bad fix to hash values in javascript
-    function hashVal(uint bidValue, uint salt) public pure returns (uint) {
-        
-        return uint(keccak256(abi.encodePacked(bidValue + salt)));
+    function hashVal(uint256 bidValue, uint256 salt) public pure returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(bidValue + salt)));
     }
 }

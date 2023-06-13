@@ -16,6 +16,7 @@ contract AuctionsTest is Test {
     // accounts to be used
     address admin;
     address ambulance;
+    address ambulance2;
     address initiator;
     address hospital;
     address[] allowedHospitals;
@@ -48,8 +49,11 @@ contract AuctionsTest is Test {
         initiator = vm.addr(4);
         hospital = vm.addr(5);
 
+        // extra accounts
+        ambulance2 = vm.addr(6);
+
         // set variables
-        timeLimit = 1000;
+        timeLimit = 30;
         deliveryTime = 10000;
         penalty = 20;
 
@@ -68,6 +72,8 @@ contract AuctionsTest is Test {
             acc.addInitiator(initiator);
             acc.addHospital(hospital);
             allowedHospitals.push(hospital);
+
+            acc.addAmbulance(ambulance2);
         vm.stopPrank();
     }
 
@@ -89,16 +95,33 @@ contract AuctionsTest is Test {
 
     function testSecretBid() public {
         hoax(initiator, 10000 ether);
-        tender = auc.postTender{value: 100}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", penalty, "High", allowedHospitals);
+        tender = auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", 0, "High", allowedHospitals);
         assertEq(tender, 0);
 
-        uint hashVal = auc.hashVal(bidVal, saltVal);
+        hashVal = auc.hashVal(bidVal, saltVal);
         hoax(ambulance, 10000 ether);
-        auc.secretBid{value: penalty}(tender, hashVal);
+        uint bidID1 = auc.secretBid{value: 0}(tender, hashVal);
+        assertEq(0, bidID1);
+
+        hoax(ambulance2, 10000 ether);
+        uint bidID2 = auc.secretBid{value: 0}(tender, hashVal);
+        assertEq(1, bidID2);
     }
 
-    function testRevealBid() public {
+    function testRevealBid() public {  
+        hoax(initiator, 10000 ether);
+        tender = auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", 0, "High", allowedHospitals);
+        assertEq(tender, 0);
+        
+        hashVal = auc.hashVal(bidVal, saltVal);
+        hoax(ambulance, 10000 ether);
+        uint bidID = auc.secretBid{value: 0}(tender, hashVal);
+        assertEq(0, bidID);
 
+        sleep(5);
+
+        hoax(ambulance, 1000 ether);
+        auc.revealBid{value: 1000}(tender, bidVal, saltVal, bidID);
     }
 
     function testVerifyDelivery() public {
@@ -119,5 +142,12 @@ contract AuctionsTest is Test {
 
     function testGetWinner() public {
 
+    }
+
+    function sleep(uint256 duration) public view {
+        uint256 endTime = block.timestamp + duration;
+        while (block.timestamp < endTime) {
+            // Do nothing and loop until the desired duration has passed
+        }
     }
 }
