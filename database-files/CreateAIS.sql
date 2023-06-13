@@ -32,6 +32,7 @@ CREATE TABLE Patients (
     status              VARCHAR(50),
     injuries            VARCHAR(100),
     mechanismOfInjury   VARCHAR(50),
+    severity VARCHAR(50),
     PRIMARY KEY (patientId)
 );
 
