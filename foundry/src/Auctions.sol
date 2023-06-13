@@ -3,9 +3,6 @@ pragma solidity ^0.8.0;
 
 import "./Accounts.sol";
 
-/* Add in both auction due date and delivery due date */
-/* Figure out fix to hashVal in JavaScript */
-/* Re-evaluate legacy auction system */
 contract Auctions {
     // initialize accounts contract
     Accounts accountsContract;
@@ -60,17 +57,23 @@ contract Auctions {
     Tender[] public tenders;
     uint256 tenderIdCounter = 0;
 
-    // constructor 
+    // constructor, references the Accounts contract address
     constructor(address contractAddress) {
         accountsContract = Accounts(contractAddress);
     }
 
     /*
-    * Function creates new tender
+    * Function posts new tender from initiator and begins the auction for the tender
     *
-    * Takes auction time limit, location of incident (address, city, and state)
-    * penalty amount, severity, etc. as parameters
-    *
+    * @param timeLimit - length of the auction period
+    * @param deliveryTime - how long the ambulance has to transport the patient after auction and reveal
+    * @param addr - address of the tender location
+    * @param city - city of the tender location
+    * @param state - state of the tender location
+    * @param penalty - penalty amount charged for lack of delivery for accepted tender
+    * @param severity - severity of the tender patient
+    * @param allowedHospitals - list of valid hospitals to be transported to
+    * @returns - returns the id of the new tender posted
     * Note: msg.value is the max bid
     */
     function postTender(
@@ -83,11 +86,10 @@ contract Auctions {
         string memory severity,
         address[] memory allowedHospitals
     ) public payable returns (uint256) {
-        //require statements for function
         require(accountsContract.isInitiator(msg.sender), "sender must be tender initiator");
         require(msg.value > 0, "maxval must be greater than 0");
 
-        // validate allowed hospitals are valid hospitals
+        // validate allowed hospitals given are valid hospitals
         for (uint256 i = 0; i < allowedHospitals.length; i++) {
             require(accountsContract.isHospital(allowedHospitals[i]), "given hospital list invalid");
         }
@@ -98,28 +100,38 @@ contract Auctions {
         newTender.details.tenderPoster = payable(msg.sender);
         newTender.status = TenderStatus.Open; // open tender
         
+        // set important dates for tender
         newTender.details.postDate = block.timestamp; // set post date to current time
-        newTender.details.auctionDate = block.timestamp + timeLimit;
-        newTender.details.revealDate = block.timestamp + timeLimit + REVEAL_PERIOD;
-        newTender.details.dueDate = block.timestamp + timeLimit + REVEAL_PERIOD + deliveryTime; // set due date for auction
+        newTender.details.auctionDate = block.timestamp + timeLimit; // sets auction end date w/ time limit given
+        newTender.details.revealDate = block.timestamp + timeLimit + REVEAL_PERIOD; // sets reveal peiod end date
+        newTender.details.dueDate = block.timestamp + timeLimit + REVEAL_PERIOD + deliveryTime; // set due date for tender
 
-        newTender.details.finalBid = MAX_INT; // set to max possible integer
-        newTender.details.maxBid = msg.value;
+        // set tender information
+        newTender.details.finalBid = MAX_INT; // set current bid to max possible integer
+        newTender.details.maxBid = msg.value; // set maximum bid to msg.value
         newTender.details.penalty = penalty;
         newTender.details.allowedHospitals = allowedHospitals;
 
+        // patient location and details
         newTender.details.addr = addr;
         newTender.details.city = city;
         newTender.details.state = state;
         newTender.details.severity = severity;
         
-        // push new tender and adjust mappings
+        // push new tender and adjust mappings accordingly
         tenders.push(newTender); 
         tenderMapping[tenderIdCounter] = newTender;
         tenderIdCounter++;
         return newTender.tenderId;
     }
 
+    /*
+    * Function places a secret bid by an ambulance. Each ambulance receives only 1 bid
+    *
+    * @param tenderId - the ID of the tender being bid on
+    * @param bidHashedAmount - the hash value of the bid being places (bid + random salt value)
+    * @returns the ID of the ambulances bid, used for revealing
+    */
     function secretBid(uint256 tenderId, uint256 bidHashedAmount) public payable returns(uint256 index) {
         Tender memory tender = tenderMapping[tenderId];
         require(accountsContract.isAmbulance(msg.sender), "sender must be an ambulance");
@@ -135,6 +147,14 @@ contract Auctions {
         return tenderMapping[tenderId].details.bidders.length - 1;
     }
 
+    /*
+    * Function is used to reveal winning bids after the auction period ends
+    * 
+    * @param tenderId - ID of tender being revealed
+    * @param bidVal - amount bid by the ambulance
+    * @param saltVal - the random salt integer used in secretBid
+    * @param index - index of placed secret bid
+    */
     function revealBid(
         uint256 tenderId,
         uint256 bidVal,
@@ -169,7 +189,11 @@ contract Auctions {
         tenderMapping[tenderId] = tender;
     }
 
-    // this function is called upon delivery of a patient where the ambulance is then paid for delivery
+    /*
+    * this function is called upon delivery of a patient where the ambulance is then paid for delivery
+    *
+    * @param tenderId - id of the tender where delivery is being verified 
+    */
     function verifyDelivery(uint256 tenderId) public {
         require(accountsContract.isHospital(msg.sender), "Sender must be a hospital");
         require(
@@ -177,42 +201,50 @@ contract Auctions {
             "Tender not in progress"
         );
         require(
-            block.timestamp <
-                tenderMapping[tenderId].details.dueDate,
+            block.timestamp >
+                tenderMapping[tenderId].details.revealDate,
             "Tender is not ready to be claimed yet"
         );
-        /* change due dates */
+
+        /* remove after implementing late charge */
         require(
             block.timestamp < tenderMapping[tenderId].details.dueDate,
             "Tender has expired"
         );
         require(contains(tenderMapping[tenderId].details.allowedHospitals, msg.sender), "sender not an allowed hospitals");
 
+        /* potentially add paying without penalty amount if late */ 
+        // transfer agreed upon funds to the tender accepter
         tenderMapping[tenderId].details.tenderAccepter.transfer(
             tenderMapping[tenderId].details.finalBid + tenderMapping[tenderId].details.penalty
         );
 
+        // transfer funds back to the tender poster
         if (tenderMapping[tenderId].details.maxBid - tenderMapping[tenderId].details.finalBid > 0) {
             tenderMapping[tenderId].details.tenderPoster.transfer(
                 tenderMapping[tenderId].details.maxBid -
                     tenderMapping[tenderId].details.finalBid
             );
         }
-
+        
+        // close the tender
         Tender storage referencedTender = tenderMapping[tenderId];
         referencedTender.status = TenderStatus.Closed;
         tenderMapping[tenderId] = referencedTender;
-        
-        /* Need to figure out if I want to remove the tenders on delivery */
-        removeTender(tenderId);
     }
 
-    //get all tenders
+    /*
+     * get all the tenders present in tenders array
+     */
     function getAllTenders() public view returns (Tender[] memory) {
         return tenders;
     }
 
-    // get the winner of an auction
+    /*
+     * get the winner of an auction
+     *
+     * @param tenderId - given tender ID
+     */
     function getAuctionWinner(uint256 tenderId) public view returns (address tenderWinner) {
         require(
             tenderMapping[tenderId].status != TenderStatus.Open,
@@ -227,7 +259,11 @@ contract Auctions {
         return tenderMapping[tenderId].details.tenderAccepter;
     } 
 
-    // Allows police stations to reclaim their funds + the penalty for failed jobs
+    /*
+     * allows police stations to reclaim their funds + the penalty for failed jobs
+     *
+     * @param tenderId - ID of tender being retracted
+     */
     function reclaimTender(uint256 tenderId) public {
         require(
             tenderMapping[tenderId].details.tenderPoster == msg.sender,
@@ -247,9 +283,15 @@ contract Auctions {
             tenderMapping[tenderId].details.maxBid + tenderMapping[tenderId].details.penalty
         );
 
-        removeTender(tenderId);
+        // update status of the tender
+        tenderMapping[tenderId].status = TenderStatus.Reclaimed;
     }
 
+    /*
+     * remove a tender with auction in progress from auction period 
+     *
+     * @param tenderId - ID of tender being retracted
+     */
     function retractTender(uint256 tenderId) public {
         require(
             msg.sender == tenderMapping[tenderId].details.tenderPoster,
@@ -265,30 +307,8 @@ contract Auctions {
             tenderMapping[tenderId].details.maxBid
         );
 
-        removeTender(tenderId);
-    }
-
-    function removeTender(uint256 tenderId) private {
-        // Delete doesn't preserve order, but we can at the cost of more processing
-        Tender memory tender;
-        for (uint256 i = 0; i < tenders.length; i++) {
-            // Comparing the strings
-            if (tenderIds[i] == tenderId) {
-                tender = tenderMapping[tenderId];
-                tenders[i] = tenders[tenders.length - 1];
-                tenders.pop();
-            }
-        }
-        for (uint256 i = 0; i < tenders.length; i++) {
-            if (
-                tenders[i].details.tenderPoster == tender.details.tenderPoster &&
-                tenders[i].details.tenderAccepter == tender.details.tenderAccepter &&
-                tenders[i].details.postDate == tender.details.postDate
-            ) {
-                tenders[i] = tenders[tenders.length - 1];
-                tenders.pop();
-            }
-        }
+        // update status of the tender
+        tenderMapping[tenderId].status = TenderStatus.Retracted;
     }
 
     // This sucks, but it's one of the consequences of storing everything on the blockchain
