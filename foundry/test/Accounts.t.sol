@@ -28,10 +28,10 @@ contract AccountsTest is Test {
         a = new Accounts();
 
         // addresses to be used for testing
-        admin = vm.addr(1);
-        ambulance = vm.addr(2);
-        initiator = vm.addr(3);
-        hospital = vm.addr(4);
+        admin = vm.addr(2);
+        ambulance = vm.addr(3);
+        initiator = vm.addr(4);
+        hospital = vm.addr(5);
     }
 
     // test adding, removing, and isAccount functionality for admins
@@ -61,7 +61,7 @@ contract AccountsTest is Test {
         a.addAdmin(admin);
      
         // test ambulance functions
-        vm.startPrank(superAdmin);
+        vm.startPrank(admin);
             // test is function
             res = a.isAmbulance(ambulance);
             assertEq(res, false);
@@ -85,7 +85,7 @@ contract AccountsTest is Test {
         a.addAdmin(admin);
      
         // test initiator functions
-        vm.startPrank(superAdmin);
+        vm.startPrank(admin);
             // test is function
             res = a.isInitiator(initiator);
             assertEq(res, false);
@@ -109,7 +109,7 @@ contract AccountsTest is Test {
         a.addAdmin(admin);
      
         // test hospital functions
-        vm.startPrank(superAdmin);
+        vm.startPrank(admin);
             // test is function
             res = a.isHospital(hospital);
             assertEq(res, false);

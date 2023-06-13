@@ -106,6 +106,7 @@ contract Auctions {
         newTender.details.finalBid = MAX_INT; // set to max possible integer
         newTender.details.maxBid = msg.value;
         newTender.details.penalty = penalty;
+        newTender.details.allowedHospitals = allowedHospitals;
 
         newTender.details.addr = addr;
         newTender.details.city = city;
@@ -142,7 +143,9 @@ contract Auctions {
     ) public payable {
         Tender storage tender = tenderMapping[tenderId];
         require(accountsContract.isAmbulance(msg.sender), "sender must be ambulance");
-        require(block.timestamp > tender.details.dueDate, "tender still under auction");
+        /* ignored for test contract */
+        //require(block.timestamp > tender.details.dueDate, "tender still under auction");
+        require(block.timestamp < tender.details.revealDate, "tender is past reveal period");
         require(tender.status == TenderStatus.Open, "tender is not open");
         require(bidVal < tender.details.finalBid, "bid was not the lowest");
         require(bidVal < tender.details.maxBid, "bid was not the lowest");
@@ -183,7 +186,7 @@ contract Auctions {
             block.timestamp < tenderMapping[tenderId].details.dueDate,
             "Tender has expired"
         );
-        require(contains(tenderMapping[tenderId].details.allowedHospitals, msg.sender));
+        require(contains(tenderMapping[tenderId].details.allowedHospitals, msg.sender), "sender not an allowed hospitals");
 
         tenderMapping[tenderId].details.tenderAccepter.transfer(
             tenderMapping[tenderId].details.finalBid + tenderMapping[tenderId].details.penalty
@@ -197,11 +200,10 @@ contract Auctions {
         }
 
         Tender storage referencedTender = tenderMapping[tenderId];
-
         referencedTender.status = TenderStatus.Closed;
-
         tenderMapping[tenderId] = referencedTender;
-
+        
+        /* Need to figure out if I want to remove the tenders on delivery */
         removeTender(tenderId);
     }
 
