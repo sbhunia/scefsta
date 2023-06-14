@@ -42,6 +42,7 @@ module.exports = {
       network_id: "*",
       accounts: 30,
       defaultEtherBalance: 500,
+      provider: () => new HDWalletProvider(mnemonic, INFURA_SEPOLIA_KEY)
     },
     fuji: {
       // set the provider to the infura API key
