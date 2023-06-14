@@ -2,7 +2,14 @@
 //export const contractAddress = '0x082e7A9a334D700acac0da58427Cc96492D88c43'
 
 /* Sepolia */
-export const contractAddress = '0x97A6646C4DF420149463194Ad970E9De98D6d986'
+export const contractAddress = '0x97A6646C4DF420149463194Ad970E9De98D6d986';
+
+// contract addresses for both contracts
+export const accountsAddress = '';
+export const auctionsAddress = '';
+
+export const accounts_abi = [];
+export const auctions_abi = [];
 
 export const ambulance_abi = [
   {

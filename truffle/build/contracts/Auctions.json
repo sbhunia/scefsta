@@ -29,7 +29,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -140,7 +141,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -251,7 +253,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -305,7 +308,8 @@
         }
       ],
       "stateMutability": "payable",
-      "type": "function"
+      "type": "function",
+      "payable": true
     },
     {
       "inputs": [
@@ -329,7 +333,8 @@
         }
       ],
       "stateMutability": "payable",
-      "type": "function"
+      "type": "function",
+      "payable": true
     },
     {
       "inputs": [
@@ -357,7 +362,8 @@
       "name": "revealBid",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function"
+      "type": "function",
+      "payable": true
     },
     {
       "inputs": [
@@ -482,7 +488,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -501,7 +508,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -551,7 +559,8 @@
         }
       ],
       "stateMutability": "pure",
-      "type": "function"
+      "type": "function",
+      "constant": true
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"contractAddress\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"getAllTenders\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"address payable\",\"name\":\"tenderPoster\",\"type\":\"address\"},{\"internalType\":\"address payable\",\"name\":\"tenderAccepter\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"postDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auctionDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"revealDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"dueDate\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"addr\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"city\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"state\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"allowedHospitals\",\"type\":\"address[]\"},{\"internalType\":\"uint256\",\"name\":\"maxBid\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"penalty\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"bidders\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"bidHashArray\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"finalBid\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"severity\",\"type\":\"string\"}],\"internalType\":\"struct Auctions.TenderDetails\",\"name\":\"details\",\"type\":\"tuple\"},{\"internalType\":\"enum Auctions.TenderStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"tenderId\",\"type\":\"uint256\"}],\"internalType\":\"struct Auctions.Tender[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tenderId\",\"type\":\"uint256\"}],\"name\":\"getAuctionWinner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"tenderWinner\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"bidValue\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"salt\",\"type\":\"uint256\"}],\"name\":\"hashVal\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"timeLimit\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deliveryTime\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"addr\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"city\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"state\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"penalty\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"severity\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"allowedHospitals\",\"type\":\"address[]\"}],\"name\":\"postTender\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tenderId\",\"type\":\"uint256\"}],\"name\":\"reclaimTender\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tenderId\",\"type\":\"uint256\"}],\"name\":\"retractTender\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tenderId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"bidVal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"salt\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"name\":\"revealBid\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tenderId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"bidHashedAmount\",\"type\":\"uint256\"}],\"name\":\"secretBid\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"index\",\"type\":\"uint256\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"tenderIds\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"tenderMapping\",\"outputs\":[{\"components\":[{\"internalType\":\"address payable\",\"name\":\"tenderPoster\",\"type\":\"address\"},{\"internalType\":\"address payable\",\"name\":\"tenderAccepter\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"postDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auctionDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"revealDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"dueDate\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"addr\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"city\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"state\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"allowedHospitals\",\"type\":\"address[]\"},{\"internalType\":\"uint256\",\"name\":\"maxBid\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"penalty\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"bidders\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"bidHashArray\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"finalBid\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"severity\",\"type\":\"string\"}],\"internalType\":\"struct Auctions.TenderDetails\",\"name\":\"details\",\"type\":\"tuple\"},{\"internalType\":\"enum Auctions.TenderStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"tenderId\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"tenders\",\"outputs\":[{\"components\":[{\"internalType\":\"address payable\",\"name\":\"tenderPoster\",\"type\":\"address\"},{\"internalType\":\"address payable\",\"name\":\"tenderAccepter\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"postDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"auctionDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"revealDate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"dueDate\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"addr\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"city\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"state\",\"type\":\"string\"},{\"internalType\":\"address[]\",\"name\":\"allowedHospitals\",\"type\":\"address[]\"},{\"internalType\":\"uint256\",\"name\":\"maxBid\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"penalty\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"bidders\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"bidHashArray\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256\",\"name\":\"finalBid\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"severity\",\"type\":\"string\"}],\"internalType\":\"struct Auctions.TenderDetails\",\"name\":\"details\",\"type\":\"tuple\"},{\"internalType\":\"enum Auctions.TenderStatus\",\"name\":\"status\",\"type\":\"uint8\"},{\"internalType\":\"uint256\",\"name\":\"tenderId\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tenderId\",\"type\":\"uint256\"}],\"name\":\"verifyDelivery\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Auctions.sol\":\"Auctions\"},\"evmVersion\":\"shanghai\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Accounts.sol\":{\"keccak256\":\"0xf4075b388d0446c54f0cec6e0e4cf3e3c20ac246ead305aad95fac72399d53cc\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://e90484175fc837363b509397812a4a92949f396158c0d691fc6f26bf880e4ffd\",\"dweb:/ipfs/QmUnEWLwPpPPhi4dVKasjttNHDW1vUWq4LsUAPSUgea6eS\"]},\"project:/contracts/Auctions.sol\":{\"keccak256\":\"0x1005d14a611076098fa79677c2cac298ce7cbc9ba4015c7f88cf4883115261a6\",\"license\":\"UNLICENSED\",\"urls\":[\"bzz-raw://4381c2a9179692122a9935fe6472bb74e4012886eaa65ed30098187dc81b30ae\",\"dweb:/ipfs/QmXuxTqSGg8FMteSZZosS1UHoa1eSqrzByVpSeWAxqu52V\"]}},\"version\":1}",
@@ -40497,9 +40506,17 @@
     "name": "solc",
     "version": "0.8.20+commit.a1b79de6.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "1686779352006": {
+      "events": {},
+      "links": {},
+      "address": "0x98b01Be02E1C5c05605A56d04A9D7482c372358c",
+      "transactionHash": "0x74ac860bc311029de051c2d7d47a3deeb29410f592c284d01538a7bed6a8570c"
+    }
+  },
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-06-14T01:42:16.242Z",
+  "updatedAt": "2023-06-14T22:03:42.574Z",
+  "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
     "methods": {},

@@ -21,7 +21,7 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const INFURA_FUJI_KEY = "https://avalanche-fuji.infura.io/v3/567889545a974330976808f6c98b8eea";
 const INFURA_GORLI_KEY = `https://goerli.infura.io/v3/567889545a974330976808f6c98b8eea`;
-const INFURA_SEPOLIA_KEY = `https://eth-sepolia.g.alchemy.com/v2/Ov_IT5t3BmwRPEoueIy-3kT_AeMaJCMw`;
+const INFURA_SEPOLIA_KEY = `https://sepolia.infura.io/v3/567889545a974330976808f6c98b8eea`;
 const mnemonic = "kitten announce faith render labor silver fuel horn cave column hood water";
 
 module.exports = {
@@ -42,7 +42,6 @@ module.exports = {
       network_id: "*",
       accounts: 30,
       defaultEtherBalance: 500,
-      provider: () => new HDWalletProvider(mnemonic, INFURA_SEPOLIA_KEY)
     },
     fuji: {
       // set the provider to the infura API key
@@ -52,16 +51,16 @@ module.exports = {
       // networkCheckTimeoutnetworkCheckTimeout: 10000,
       // timeoutBlocks: 200
     },
-    goerli: {
-      provider: () => new HDWalletProvider(mnemonic, INFURA_GORLI_KEY),
-      network_id: '5', // eslint-disable-line camelcase
-      gas: 8000000,
-    },
+    // goerli: {
+    //   provider: () => new HDWalletProvider(mnemonic, INFURA_GORLI_KEY),
+    //   network_id: '5', // eslint-disable-line camelcase
+    //   gas: 8000000,
+    // },
     sepolia:{
       provider: () => new HDWalletProvider(mnemonic, INFURA_SEPOLIA_KEY),
       network_id: '11155111', // eslint-disable-line camelcase
       gas: 8000000,
-    }
+    },
 
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.

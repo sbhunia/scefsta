@@ -1,10 +1,13 @@
 const Accounts = artifacts.require("Accounts");
 const Auctions = artifacts.require("Auctions");
 
-module.exports = function (deployer) {
-    deployer.deploy(Accounts);
-    deployer.deploy(Auctions, Accounts.address);
-
-    console.log("Accounts contract address:", Accounts.address);
-    console.log("Auctions contract address:", Auctions.address);
-}
+module.exports = async function (deployer) {
+    await deployer.deploy(Accounts);
+    const accountsContract = await Accounts.deployed();
+  
+    await deployer.deploy(Auctions, accountsContract.address);
+    const auctionsContract = await Auctions.deployed();
+  
+    console.log("Accounts contract address:", accountsContract.address);
+    console.log("Auctions contract address:", auctionsContract.address);
+  };
