@@ -8,15 +8,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 // metamask connection imports
 import Web3 from 'web3';
-import { Web3ReactProvider } from '@web3-react/core';
-import { ambulance_abi, contractAddress } from '../config';
 
 function getLibrary(provider, connector) {
     return new Web3(provider);
 }
-
-export const AbiInterface = new utils.Interface(ambulance_abi)
-export const ContractInstance = new Contract(contractAddress, AbiInterface);
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {

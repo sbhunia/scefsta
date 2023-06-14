@@ -1,7 +1,7 @@
 import React from 'react'
 import { useContractFunction, transactionErrored} from '@usedapp/core';
 import { Contract } from '@ethersproject/contracts';
-import { ambulance_abi, contractAddress } from '../../config';
+import { auctions_abi, auctionsAddress } from '../../config';
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
@@ -102,7 +102,7 @@ export default function TenderForm() {
     const [allowedHospitals, setAllowedHospital] = useState(["0x37b17D21569C2cA6c7A078f2283D06BC222F554C"]);
 
     // Creating ambulanceBounties contract
-    const ambulanceBounties = new Contract(contractAddress, ambulance_abi);
+    const ambulanceBounties = new Contract(auctionsAddress, auctions_abi);
     // Obtaining React Hooks from postTender smart contract function
     const {state , send: send1, events} = useContractFunction(ambulanceBounties, 'postTender');
 

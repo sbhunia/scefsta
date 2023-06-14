@@ -12,7 +12,7 @@ import Select from '@mui/material/Select';
 import FilledInput from '@mui/material/FilledInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import Map from '../mapSmall';
-import { contractAddress, ambulance_abi } from '../../config';
+import { auctionsAddress, auctions_abi } from '../../config';
 import { useCall, useContractFunction, transactionErrored, useEthers } from '@usedapp/core';
 import { CircularProgress } from '@mui/material';
 import Alert from '@mui/material/Alert';
@@ -52,14 +52,14 @@ async function addBid(walletID, tenderID, bidID) {
 export default function BiddingForm(data) {
 
   const { account } = useEthers();
-  const AbiInterface = new utils.Interface(ambulance_abi);
-  const ContractInstance = new Contract(contractAddress, AbiInterface);
+  const AbiInterface = new utils.Interface(auctions_abi);
+  const ContractInstance = new Contract(auctionsAddress, AbiInterface);
 
   let patientData = data.data.patients;
   // make smart contract calls
   const tenderData = getAllTenders();
   //console.log(tenderData);
-  const { value, error } = useCall(contractAddress && {
+  const { value, error } = useCall(auctionsAddress && {
     contract: ContractInstance,
     method: 'hashVal',
     args: [100, 10],
@@ -119,7 +119,7 @@ export default function BiddingForm(data) {
   }
 
   // Creating ambulanceBounties contract
-  const ambulanceBounties = new Contract(contractAddress, ambulance_abi);
+  const ambulanceBounties = new Contract(auctionsAddress, auctions_abi);
   // Obtaining React Hook from bid smart contract function
 
   // useDapp hook to place a bid

@@ -1,20 +1,24 @@
 import { useCall, useContractFunction } from '@usedapp/core';
 import { Contract } from '@ethersproject/contracts';
-import { ambulance_abi, contractAddress } from './config';
+import { accountsAddress, accounts_abi, auctionsAddress, auctions_abi } from './config';
 import { utils } from 'ethers';
 
 
-const AbiInterface = new utils.Interface(ambulance_abi);
-const ContractInstance = new Contract(contractAddress, AbiInterface);
+// accounts info
+const accountsAbiInterface = new utils.Interface(accounts_abi);
+const accountsContractInstance = new Contract(accountsAddress, accountsAbiInterface);
 
+// auctions info
+const auctionsAbiInterface = new utils.Interface(auctions_abi);
+const auctionsContractInstance = new Contract(auctionsAbiInterface, auctions_abi);
 /**
  * Checks if a user is a verified contract administrator
  * @param {*} account Wallet ID 
  * @returns 
  */
 export const checkAdmin = (account) => {
-    const { value, error } = useCall(contractAddress && {
-        contract: ContractInstance,
+    const { value, error } = useCall(accountsAddress && {
+        contract: accountsContractInstance,
         method: 'isAdmin',
         args: [account],
     }) ?? {};
@@ -33,8 +37,8 @@ export const checkAdmin = (account) => {
  * @returns 
  */
 export const checkHospital = (account) => {
-    const { value, error } = useCall(contractAddress && {
-        contract: ContractInstance,
+    const { value, error } = useCall(accountsAddress && {
+        contract: accountsContractInstance,
         method: 'isHospital',
         args: [account],
     }) ?? {};
@@ -52,8 +56,8 @@ export const checkHospital = (account) => {
  * @param {*} account Wallet ID
  */
 export const checkPolice = (account) => {
-    const { value, error } = useCall(contractAddress && {
-        contract: ContractInstance,
+    const { value, error } = useCall(accountsAddress && {
+        contract: accountsContractInstance,
         method: 'isPolice',
         args: [account],
     }) ?? {};
@@ -72,8 +76,8 @@ export const checkPolice = (account) => {
  * @returns
  */
 export const checkAmbulance = (account) => {
-    const { value, error } = useCall(contractAddress && { 
-        contract: ContractInstance,
+    const { value, error } = useCall(accountsAddress && { 
+        contract: accountsContractInstance,
         method: 'isAmbulance',
         args: [account],
         }) ?? {};
@@ -91,8 +95,8 @@ export const checkAmbulance = (account) => {
  * @returns array of tenders
  */
 export const getAllTenders = () => {
-    const { value, error } = useCall(contractAddress && { 
-        contract: ContractInstance,
+    const { value, error } = useCall(auctionsAddress && { 
+        contract: auctionsContractInstance,
         method: 'getAllTenders',
         args: [],
         }) ?? {};
@@ -105,8 +109,8 @@ export const getAllTenders = () => {
 }
 
 export const getWinner = (tenderId) => {
-    const { value, error } = useCall(contractAddress && {
-        contract: ContractInstance,
+    const { value, error } = useCall(auctionsAddress && {
+        contract: auctionsContractInstance,
         method: 'getWinner',
         args: [tenderId],
     }) ?? {};

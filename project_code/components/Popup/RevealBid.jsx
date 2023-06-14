@@ -2,7 +2,7 @@ import styles from '../../styles/Tender.module.css';
 import React from 'react';
 import Button from '@mui/material/Button';
 import { useContractFunction, transactionErrored } from '@usedapp/core';
-import { ambulance_abi, contractAddress } from '../../config';
+import { auctions_abi, auctionsAddress } from '../../config';
 import { Contract } from '@ethersproject/contracts';
 import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
@@ -28,7 +28,7 @@ export default function RevealBid( { tenderID, penaltyAmt } ) {
     const [bidValue, setBidValue] = React.useState(0);
     const [bidID, setBidID] = React.useState(0);
     // Creating ambaulanceBounties contract
-    const ambulanceBounties = new Contract(contractAddress, ambulance_abi);
+    const ambulanceBounties = new Contract(auctionsAddress, auctions_abi);
     // Salt for transactions
     const salt = "1234567890";
     // Obtaining React Hooks from reclaimTender smart contract function

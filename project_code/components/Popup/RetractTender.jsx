@@ -2,7 +2,7 @@ import styles from '../../styles/Popup.module.css';
 import React from 'react';
 import Button from '@mui/material/Button';
 import { useContractFunction, transactionErrored } from '@usedapp/core';
-import { ambulance_abi, contractAddress } from '../../config';
+import { auctions_abi, auctionsAddress } from '../../config';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Contract } from '@ethersproject/contracts';
 import Alert from '@mui/material/Alert';
@@ -27,7 +27,7 @@ async function deleteTenderPatient(tenderID) {
 export default function RetractTender( { tenderID } ) {
 
     // Creating ambaulanceBounties contract
-    const ambulanceBounties = new Contract(contractAddress, ambulance_abi);
+    const ambulanceBounties = new Contract(auctionsAddress, auctions_abi);
     // Obtaining React Hooks from reclaimTender smart contract function
     const {send, state} = useContractFunction(ambulanceBounties, 'retractTender');
 

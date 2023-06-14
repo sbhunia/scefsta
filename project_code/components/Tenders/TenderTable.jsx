@@ -14,11 +14,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import PropTypes from 'prop-types';
 import TenderForm from '../TenderForm/TenderForm';
-import { ContractInstance } from '../../pages/_app';
-import { ambulance_abi, contractAddress } from '../../config';
-import { useCall, useEthers } from '@usedapp/core';
-import { Contract } from '@ethersproject/contracts';
-import { utils } from 'ethers';
+import { useEthers } from '@usedapp/core';
 import { formatEther } from '@ethersproject/units';
 import { checkAmbulance, checkHospital, checkPolice, getAllTenders } from '../../solidityCalls';
 

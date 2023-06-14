@@ -9,12 +9,12 @@ import stylesP from '../../styles/Popup.module.css'
 import * as Constants from '../../pages/constants';
 import { useContractFunction } from '@usedapp/core';
 import { Contract } from '@ethersproject/contracts';
-import { ambulance_abi, contractAddress } from "../../config"
+import { accounts_abi, accountsAddress } from "../../config"
 import { utils } from 'ethers';
 
 
-const AbiInterface = new utils.Interface(ambulance_abi);
-const ContractInstance = new Contract(contractAddress, AbiInterface);
+const AbiInterface = new utils.Interface(accounts_abi);
+const ContractInstance = new Contract(accountsAddress, AbiInterface);
 
 
 const columns = [
