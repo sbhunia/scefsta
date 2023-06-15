@@ -1,17 +1,8 @@
 import '../styles/index.css';
 //import { ChainId, DAppProvider, AvlancheTesnet, useEthers, Config } from '@usedapp/core';
 import { ChainId, Mainnet, DAppProvider, useEtherBalance, useEthers, Config, Goerli, AvalancheTestnet, Sepolia } from '@usedapp/core'
-import { Contract, getDefaultProvider, utils } from 'ethers';
-import { formatEther } from '@ethersproject/units';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-// metamask connection imports
-import Web3 from 'web3';
-
-function getLibrary(provider, connector) {
-    return new Web3(provider);
-}
 
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {
@@ -29,11 +20,7 @@ export default function MyApp({ Component, pageProps }) {
         },
     }
 
-    return (
-        // <DAppProvider>
-        //     <Component {...pageProps} />
-        // </DAppProvider>
-        
+    return (  
         // DAppProvider uses useDapp framework, Web3ReactProvider and MetaMaskProvider
         // support connecting to metamask
         <DAppProvider config={config}>

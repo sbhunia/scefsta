@@ -10,10 +10,9 @@ import { useEthers } from '@usedapp/core'
 import Router from 'next/router';
 import { Button, CircularProgress } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import * as Constants from '../pages/constants';
 import { getAllTenders } from '../solidityCalls';
-import { useState } from 'react';
 const BigNumber = require('bignumber.js');
 
 
