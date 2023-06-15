@@ -61,7 +61,7 @@ contract Accounts {
         require(admins[addr] == false, "user is already admin");
 
         // verify sender is an admin
-        require(admins[msg.sender] == true);
+        require(admins[msg.sender] == true, "sender must be an admin");
 
         // if passes all requires add the address as police
         initiators[addr] = true;
