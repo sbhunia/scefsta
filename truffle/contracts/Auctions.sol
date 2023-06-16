@@ -136,7 +136,6 @@ contract Auctions {
         Tender memory tender = tenderMapping[tenderId];
         require(accountsContract.isAmbulance(msg.sender), "sender must be an ambulance");
         require(tender.status == TenderStatus.Open, "tender must be open");
-    
         require (block.timestamp < tender.details.dueDate, "auction period has passed");
         require(msg.value == tender.details.penalty, "sent penalty amount does not match tender");
         require(!contains(tender.details.bidders, msg.sender), "can only bid once");
@@ -163,12 +162,11 @@ contract Auctions {
     ) public payable {
         Tender storage tender = tenderMapping[tenderId];
         require(accountsContract.isAmbulance(msg.sender), "sender must be ambulance");
-        /* ignored for test contract */
-        //require(block.timestamp > tender.details.dueDate, "tender still under auction");
+        require(block.timestamp > tender.details.auctionDate, "tender still under auction");
         require(block.timestamp < tender.details.revealDate, "tender is past reveal period");
         require(tender.status == TenderStatus.Open, "tender is not open");
-        require(bidVal < tender.details.finalBid, "bid was not the lowest");
-        require(bidVal < tender.details.maxBid, "bid was not the lowest");
+        //require(bidVal < tender.details.finalBid, "bid was not below winning bid");
+        require(bidVal < tender.details.maxBid, "bid was not below max bid amount");
         require(msg.sender == tender.details.bidders[index], "wrong bid ID");
         require(tender.details.penalty == msg.value, "did not send correct penalty amount");
         require(tender.details.bidHashArray[index] == hashVal(bidVal, salt), "bid value does not match hashed value");
