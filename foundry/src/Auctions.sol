@@ -200,11 +200,11 @@ contract Auctions {
             tenderMapping[tenderId].status == TenderStatus.InProgress,
             "Tender not in progress"
         );
-        require(
-            block.timestamp >
-                tenderMapping[tenderId].details.revealDate,
-            "Tender is not ready to be claimed yet"
-        );
+        // require(
+        //     block.timestamp >
+        //         tenderMapping[tenderId].details.revealDate,
+        //     "Tender is not ready to be claimed yet"
+        // );
 
         /* remove after implementing late charge */
         require(
