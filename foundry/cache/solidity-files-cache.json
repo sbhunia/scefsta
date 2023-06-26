@@ -331,6 +331,52 @@
         }
       }
     },
+    "test/AccountGas.t.sol": {
+      "lastModificationDate": 1687785674256,
+      "contentHash": "1b4877195f9c0f224c350f46ac3094ce",
+      "sourceName": "test/AccountGas.t.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs"
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
+        "lib/forge-std/src/console.sol",
+        "lib/forge-std/src/console2.sol",
+        "src/Accounts.sol",
+        "src/Auctions.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "AuctionGasTest": {
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "AccountGas.t.sol/AuctionGasTest.json"
+        }
+      }
+    },
     "test/Accounts.t.sol": {
       "lastModificationDate": 1686691202312,
       "contentHash": "ae6aad70f0e081d2596b524c035ed9ac",
@@ -373,6 +419,52 @@
       "artifacts": {
         "AccountsTest": {
           "0.8.15+commit.e14f2714.Darwin.appleclang": "Accounts.t.sol/AccountsTest.json"
+        }
+      }
+    },
+    "test/AuctionGas.t.sol": {
+      "lastModificationDate": 1687785216471,
+      "contentHash": "e980cb97b7005249f669b2d44da8dab1",
+      "sourceName": "test/AuctionGas.t.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs"
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
+        "lib/forge-std/src/console.sol",
+        "lib/forge-std/src/console2.sol",
+        "src/Accounts.sol",
+        "src/Auctions.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "AuctionGasTest": {
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "AuctionGas.t.sol/AuctionGasTest.json"
         }
       }
     },
@@ -419,52 +511,6 @@
       "artifacts": {
         "AuctionsTest": {
           "0.8.15+commit.e14f2714.Darwin.appleclang": "Auctions.t.sol/AuctionsTest.json"
-        }
-      }
-    },
-    "test/Gas.t.sol": {
-      "lastModificationDate": 1687730949260,
-      "contentHash": "c52a09f4e32526f4b649e4860ad3714e",
-      "sourceName": "test/Gas.t.sol",
-      "solcConfig": {
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "metadata": {
-            "bytecodeHash": "ipfs"
-          },
-          "outputSelection": {
-            "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers"
-              ]
-            }
-          },
-          "evmVersion": "london",
-          "libraries": {}
-        }
-      },
-      "imports": [
-        "lib/forge-std/lib/ds-test/src/test.sol",
-        "lib/forge-std/src/Test.sol",
-        "lib/forge-std/src/Vm.sol",
-        "lib/forge-std/src/console.sol",
-        "lib/forge-std/src/console2.sol",
-        "src/Accounts.sol",
-        "src/Auctions.sol"
-      ],
-      "versionRequirement": "^0.8.0",
-      "artifacts": {
-        "GasTest": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "Gas.t.sol/GasTest.json"
         }
       }
     }

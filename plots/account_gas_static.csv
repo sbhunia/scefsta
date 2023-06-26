@@ -1,0 +1,13 @@
+FunctionName,min,avg,median,max,#calls
+addAdmin,21655,22655,21655,31655,10
+addAmbulance,21647,22447,21647,29647,10
+addHospital,21581,22381,21581,29581,10
+addInitiator,21603,22403,21603,29603,10
+isAdmin,570,570,570,570,10
+isAmbulance,504,504,504,504,10
+isHospital,525,525,525,525,10
+isInitiator,569,569,569,569,10
+removeAdmin,800,800,800,800,10
+removeAmbulance,836,836,836,836,10
+removeHospital,836,836,836,836,10
+removeInitiator,871,871,871,871,10

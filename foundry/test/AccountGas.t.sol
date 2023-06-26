@@ -8,7 +8,7 @@ import "../src/Accounts.sol";
 
 // SPDX-License-Identifier: UNLICENSED
 
-contract GasTest is Test {
+contract AuctionGasTest is Test {
     Accounts public acc;
     Auctions public auc;
     address superAdmin;
@@ -96,7 +96,7 @@ contract GasTest is Test {
         saltVal = 10;
     }
 
-    function testGasTimes() public {
+    function testAccountGasTimes() public {
         for (uint256 i = 0; i < 10; i++) {
             // add new admin
             vm.startPrank(superAdmin);
@@ -113,44 +113,11 @@ contract GasTest is Test {
 
             // isAccount functions
             vm.startPrank(admin);
+                acc.isAdmin(admin);
                 acc.isAmbulance(ambulance);
                 acc.isInitiator(initiator);
                 acc.isHospital(hospital);
             vm.stopPrank();
-
-            // auction functions
-            hoax(initiator, 100000 ether);
-            tender = auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", penalty, "High", allowedHospitals);
-
-            
-            /* Do this independenlty of all auction functions below */
-            // { 
-            //     hoax(initiator, 1000 ether);
-            //     auc.retractTender(tender);
-            // }
-
-            //auction functions
-            auc.getAllTenders();
-            
-            hashVal = auc.hashVal(bidVal, saltVal);
-            hoax(ambulance, 10000 ether);
-            uint bidID = auc.secretBid{value: penalty}(tender, hashVal);
-
-            hoax(ambulance, 1000 ether);
-            auc.revealBid{value: penalty}(tender, bidVal, saltVal, bidID);
-            auc.getAuctionWinner(tender);
-
-            /* Do this independently from reclaim tender */
-            // {
-            //     hoax(hospital, 1000 ether);
-            //     auc.verifyDelivery(tender);
-            // }
-
-            /* Do this indepently of verify delivery */
-            {
-                hoax(initiator, 1000 ether);
-                auc.reclaimTender(tender);
-            }
 
             // remove the three main accounts
             vm.startPrank(admin);
