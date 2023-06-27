@@ -109,7 +109,7 @@ contract AuctionGasTest is Test {
     }
 
     function testAuctionGasTimes() public {
-        for (uint256 i = 0; i < 10; i++) {
+        for (uint256 i = 0; i < 100; i++) {
             // auction functions
             hoax(initiator, 100000 ether);
             tender = auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", penalty, "High", allowedHospitals);

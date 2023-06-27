@@ -23,22 +23,16 @@ def plot_all(filename):
     fig, ax = plt.subplots()
     fig.set_figwidth(15)
     fig.set_figheight(6)
+    plt.yscale('log')
+    rec1 = ax.bar(x-width, min_gas, width, color='thistle', edgecolor='black', hatch='/')
+    rec2 = ax.bar(x, max_gas, width, color='springgreen', edgecolor='black', hatch='o')
+    rec3 = ax.bar(x+width, med_gas, width, color='salmon', edgecolor='black', hatch='-')
+    rec4 = ax.bar(x+2*width, avg_gas, width, color='lightseagreen', edgecolor='black', hatch='\\')
 
-    rec1 = ax.bar(x-width, np.log(min_gas), width, color='thistle', edgecolor='black', hatch='/')
-    rec2 = ax.bar(x, np.log(max_gas), width, color='springgreen', edgecolor='black', hatch='o')
-    rec3 = ax.bar(x+width, np.log(med_gas), width, color='salmon', edgecolor='black', hatch='-')
-    rec4 = ax.bar(x+2*width, np.log(avg_gas), width, color='lightseagreen', edgecolor='black', hatch='\\')
-
-    # rec1 = ax.bar(x-width, np.log(max), width, color='b')
-    # rec2 = ax.bar(x, np.log(avg), width, color='r')
-    # rec3 = ax.bar(x+width, np.log(min), width, color='g')
-    # rec4 = ax.bar(x+2*width, np.log(med), width, color='y')
-
-    ax.legend(['minimum', 'maximum', 'median', 'average'], loc='upper left')
-
-    ax.set_title("Gas report for Smart Contract (100 calls each)")
-    ax.set_ylabel("Gas consumed (log-scale)")
-    ax.set_xlabel("API Called")
+    ax.legend(['minimum', 'maximum', 'median', 'average'], bbox_to_anchor=(1.0, 1.0), loc='upper left')
+    # ax.set_title("Gas report for Smart Contract (500 calls each)")
+    ax.set_ylabel("Gas consumed in GWEI (log-scale)")
+    ax.set_xlabel("Smart Contract Methods")
 
     ax.set_xticks(x, function_name, rotation=45, ha='right')
     fig.tight_layout()
@@ -47,8 +41,8 @@ def plot_all(filename):
     plt.savefig(picFilename, format="eps", dpi=1200)
 
 
-def plot_load():
-    data = pd.read_csv('gas_price_load.csv')
+def plot_load(filename):
+    data = pd.read_csv(filename)
 
     df = pd.DataFrame(data)
     print(df)
@@ -65,26 +59,22 @@ def plot_load():
     fig, ax = plt.subplots()
     #fig.set_figheight(8)
 
-    rec1 = ax.bar(x - width, np.log(one_gas), width, color='thistle', edgecolor='black', hatch='/')
-    rec2 = ax.bar(x, np.log(twenty_gas), width, color='springgreen', edgecolor='black', hatch='o')
-    rec3 = ax.bar(x + width, np.log(hund_gas), width, color='salmon', edgecolor='black', hatch='-')
-    rec4 = ax.bar(x + 2 * width, np.log(fivehund_gas), width, color='lightseagreen', edgecolor='black', hatch='\\')
-
-    # rec1 = ax.bar(x-width, np.log(max), width, color='b')
-    # rec2 = ax.bar(x, np.log(avg), width, color='r')
-    # rec3 = ax.bar(x+width, np.log(min), width, color='g')
-    # rec4 = ax.bar(x+2*width, np.log(med), width, color='y')
+    plt.scale("log")
+    rec1 = ax.bar(x - width, one_gas, width, color='thistle', edgecolor='black', hatch='/')
+    rec2 = ax.bar(x, twenty_gas, width, color='springgreen', edgecolor='black', hatch='o')
+    rec3 = ax.bar(x + width, hund_gas, width, color='salmon', edgecolor='black', hatch='-')
+    rec4 = ax.bar(x + 2 * width, fivehund_gas, width, color='lightseagreen', edgecolor='black', hatch='\\')
 
     ax.legend(['1', '20', '100', '500'], loc='upper right')
 
-    ax.set_title("Load Factor Gas Report for Auction API Calls")
-    ax.set_ylabel("Gas consumed (log-scale)")
-    ax.set_xlabel("API Called")
+    #ax.set_title("Load Factor Gas Report for Auction API Calls")
+    ax.set_ylabel("Gas consumed in GWEI (log-scale)")
+    ax.set_xlabel("Smart Contract Method")
 
     ax.set_xticks(x, function_name, rotation=45, ha='right')
     fig.tight_layout()
-
-    plt.savefig("api_load.eps", format="eps", dpi=1200)
+    pltFilename = filename[:-4:] + ".eps"
+    plt.savefig(pltFilename, format="eps", dpi=1200)
 
 
 plot_all(sys.argv[1])
