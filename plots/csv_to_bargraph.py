@@ -51,7 +51,7 @@ def plot_load(filename):
     one_gas = list(df.iloc[:, 1])
     twenty_gas = list(df.iloc[:, 2])
     hund_gas = list(df.iloc[:, 3])
-    fivehund_gas = list(df.iloc[:, 4])
+    #fivehund_gas = list(df.iloc[:, 4])
 
     x = np.arange(len(function_name))
     width = 0.2
@@ -59,13 +59,13 @@ def plot_load(filename):
     fig, ax = plt.subplots()
     #fig.set_figheight(8)
 
-    plt.scale("log")
+    plt.yscale("log")
     rec1 = ax.bar(x - width, one_gas, width, color='thistle', edgecolor='black', hatch='/')
     rec2 = ax.bar(x, twenty_gas, width, color='springgreen', edgecolor='black', hatch='o')
     rec3 = ax.bar(x + width, hund_gas, width, color='salmon', edgecolor='black', hatch='-')
-    rec4 = ax.bar(x + 2 * width, fivehund_gas, width, color='lightseagreen', edgecolor='black', hatch='\\')
+    #rec4 = ax.bar(x + 2 * width, fivehund_gas, width, color='lightseagreen', edgecolor='black', hatch='\\')
 
-    ax.legend(['1', '20', '100', '500'], loc='upper right')
+    ax.legend(['1', '20', '100'], loc='upper right')
 
     #ax.set_title("Load Factor Gas Report for Auction API Calls")
     ax.set_ylabel("Gas consumed in GWEI (log-scale)")
@@ -77,5 +77,8 @@ def plot_load(filename):
     plt.savefig(pltFilename, format="eps", dpi=1200)
 
 
-plot_all(sys.argv[1])
-#plot_load()
+# if it is the load text run load function else run standard gas function
+if sys.argv[1] == "--load":
+    plot_load(sys.argv[2])
+else:
+    plot_all(sys.argv[1])
