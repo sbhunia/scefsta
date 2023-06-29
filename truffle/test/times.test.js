@@ -10,7 +10,7 @@ contract('Accounts', (accounts) => {
         const fs = require('fs');
         let accountsStr = "addAdmin, addAmbulance, addInitiator, addHospital, isAdmin, isAmbulance, isInitiator, isHosptial, removeAmbulance, removeInitiator, removeHospital, removeAdmin\n";
 
-        for (let i = 1; i < 2; i += 4) {
+        for (let i = 0; i < 20; i ++) {
             // get times for admin functions
             let addAdminStart = Date.now().toString();
             await accountsInstance.addAdmin(accounts[4]);
@@ -83,8 +83,7 @@ contract('Accounts', (accounts) => {
             await accountsInstance.removeAdmin(accounts[4], {from: accounts[0]});
             let removeAdminEnd = Date.now().toString();
             let removeAdminTime = (removeAdminEnd - removeAdminStart).toString();
-            accountsStr += removeAdminTime + ",";
-            accountsStr += "\n";
+            accountsStr += removeAdminTime + "\n";
         }
         fs.writeFile('accountsTimes.csv', accountsStr, (err) => {if (err) throw err});
     });
@@ -96,7 +95,7 @@ contract('Auctions', (accounts) => {
         const auctionsInstance = await Auctions.deployed();
         const fs = require('fs');
 
-        let auctionStr = "";
+        let auctionStr = "postTender, secretBid, getAllTenders\n";
 
         // add accounts to be used
         await accountsInstance.addAdmin(accounts[1], {from: accounts[0]});
@@ -106,7 +105,7 @@ contract('Auctions', (accounts) => {
         await accountsInstance.addAmbulance(accounts[5], {from: accounts[1]});
 
         // test auction functions
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < 10; i++) {
             let postStart = Date.now();
             let tenderId = await auctionsInstance.postTender(0, 60, "6729 old stagecoach road", "frazeysburg", "ohio", 20, "critical", [accounts[3]], {from: accounts[2], value: 10000});
             tenderId = Number(tenderId);
@@ -142,7 +141,7 @@ contract('Auctions', (accounts) => {
             let getAllStart = Date.now();
             let tenders = await auctionsInstance.getAllTenders();
             let getAllTime = (Date.now() - getAllStart).toString();
-            auctionStr += getAllTime;
+            auctionStr += getAllTime + "\n";
         }
 
         fs.writeFile('auctionTimes.csv', auctionStr, (err) => {if (err) throw err});
@@ -152,4 +151,4 @@ contract('Auctions', (accounts) => {
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
+}
