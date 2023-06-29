@@ -85,7 +85,7 @@ contract('Accounts', (accounts) => {
             let removeAdminTime = (removeAdminEnd - removeAdminStart).toString();
             accountsStr += removeAdminTime + "\n";
         }
-        fs.writeFile('accountsTimes.csv', accountsStr, (err) => {if (err) throw err});
+        fs.writeFile('../plots/box/account_times.csv', accountsStr, (err) => {if (err) throw err});
     });
 });
 
@@ -144,7 +144,7 @@ contract('Auctions', (accounts) => {
             auctionStr += getAllTime + "\n";
         }
 
-        fs.writeFile('auctionTimes.csv', auctionStr, (err) => {if (err) throw err});
+        fs.writeFile('../plots/box/auction_times.csv', auctionStr, (err) => {if (err) throw err});
 
     });
 });
