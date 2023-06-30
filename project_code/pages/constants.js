@@ -35,17 +35,20 @@ export const injuries = "injuries";
 export const mech = "mechanismOfInjury";
 
 // API URLs
+export const getAdmins = 'http://localhost:3000/api/admin';        
 export const getPatients = 'http://localhost:3000/api/patients';        
 export const getPolice = 'http://localhost:3000/api/police';            
 export const getAmbulances ='http://localhost:3000/api/ambulances';     
 export const getHospitals = 'http://localhost:3000/api/hospitals';      
-export const getTenders = 'http://localhost:3000/api/tenders';          
+export const getTenders = 'http://localhost:3000/api/tenders';
+export const addAdmin = 'api/admins';        
 export const addAmbulance = 'api/ambulances';                           
 export const addHospital = 'api/hospitals';                            
-export const addPolice = 'api/police';      
-export const deleteAmbulance = 'api/ambulances'       
-export const deletePolice = 'api/police'   
-export const deleteHospital = 'api/police'   
+export const addPolice = 'api/police';     
+export const deleteAdmins = 'api/admins'; 
+export const deleteAmbulance = 'api/ambulances';       
+export const deletePolice = 'api/police';   
+export const deleteHospital = 'api/police';   
 
 // Page titles
 export const DASHBOARD = 'Dashboard';

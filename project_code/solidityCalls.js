@@ -60,7 +60,7 @@ export const checkHospital = (account) => {
 export const checkPolice = (account) => {
     const { value, error } = useCall(accountsAddress && {
         contract: ACCOUNT_INSTANCE,
-        method: 'isPolice',
+        method: 'isInitiator',
         args: [account],
     }) ?? {};
 

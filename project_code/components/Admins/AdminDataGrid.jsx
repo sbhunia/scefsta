@@ -10,14 +10,12 @@ import * as Constants from '../../pages/constants';
 import { useContractFunction } from '@usedapp/core';
 import { Contract } from '@ethersproject/contracts';
 import { accounts_abi, accountsAddress } from '../../config';
+import { ACCOUNT_INSTANCE } from '../../pages/_app';
 import { utils } from 'ethers';
 
-const AbiInterface = new utils.Interface(accounts_abi);
-const ContractInstance = new Contract(accountsAddress, AbiInterface);
-
 const columns = [
-  { field: 'policeDept', headerName: 'Police Department', width: 270, sortable: true},
-  { field: 'station', headerName: 'Station', width: 80,  sortable: false},
+  { field: 'username', headerName: 'Admin System', width: 175, sortable: true},
+  { field: 'licensePlate', headerName: 'License Plate', width: 150,  sortable: false},
   { field: 'address', headerName: 'Address', width: 175, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
   { field: 'state', headerName: 'State', width: 100, sortable: true},
@@ -25,14 +23,14 @@ const columns = [
 ];
 
 /**
- * Creates the table containing the police information and populates it with the data.
+ * Creates the table containing the admin information and populates it with the data.
  * @param {*} data JSON containing the data.
- * @param {*} popUpChecked Boolean -if true, allows for adding/deleting police; false otherwise.
+ * @param {*} popUpChecked Boolean -if true, allows for adding/deleting admins; false otherwise.
  */
-export default function PoliceDataGird({data, popUpChecked}) {
-    // smart contract API calls for add and remove police
-    const { state: state1, send: send1 } = useContractFunction(ContractInstance, 'addInitiator');
-    const { state: state2, send: send2 } = useContractFunction(ContractInstance, 'removeInitiator');
+export default function AdminDataGrid({data, popUpChecked}) {
+    // smart contract API connection for add and remove admin users
+    const { state: state1, send: send1 } = useContractFunction(ACCOUNT_INSTANCE, 'addAdmin');
+    const { state: state2, send: send2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeAdmin');
 
     // allows for the data in the table to be updated (Add/Remove)
     const [dataContacts, setDataContacts] = useState(data);
@@ -49,12 +47,13 @@ export default function PoliceDataGird({data, popUpChecked}) {
     // Used for add button popup
     const [addPopup, setAddPopup] = useState(false);
     const [addFormData, setAddFormData] = useState({
-        policeDept: '',
-        station: '',
-        walletId: '',
+        firstName: '',
+        lastName: '',
+        email: '',
         address: '',
         city: '',
         state: '',
+        walletId: '',
     });
 
     // Used for delete button popup
@@ -82,15 +81,16 @@ export default function PoliceDataGird({data, popUpChecked}) {
         event.preventDefault();
         
         const newContact = {
-            policeDept: addFormData.policeDept,
-            station: addFormData.station,
+            firstName: addFormData.firstName,
+            lastName: addFormData.lastName,
+            email: addFormData.email,
             address: addFormData.address,
             city: addFormData.city,
             state: addFormData.state,
             walletId: addFormData.walletId,
         };
 
-        let response = await fetch(Constants.addPolice, {
+        let response = await fetch(Constants.addAdmin, {
             method: 'POST',
             body: JSON.stringify(newContact)
         });
@@ -112,7 +112,7 @@ export default function PoliceDataGird({data, popUpChecked}) {
 
         //console.log(selectedRows[0]);
 
-        let response = await fetch(Constants.deletePolice, {
+        let response = await fetch(Constants.deleteAdmin, {
             method: 'DELETE',
             body: JSON.stringify(selectedRows)
         });
@@ -121,12 +121,13 @@ export default function PoliceDataGird({data, popUpChecked}) {
 
         setDataContacts(dataContacts.filter(checkSelected))
 
-        // Removes each police from the blockchain
+        // Removes each admin from the blockchain
         selectedRows.forEach( removeId => {
             send2(removeId);
-        });     
+        });
 
         if(status.success){
+            
             setDeletePopup(false);
         } else {
             alert("Error deleting rows");
@@ -142,13 +143,13 @@ export default function PoliceDataGird({data, popUpChecked}) {
         }
     }
 
-    // useDapp function to confirm addAmbulance transaction - payable
-    const submitPolice = () => {
+    // useDapp function to confirm addAdmin transaction - payable
+    const submitAdmin = () => {
         send1(addFormData.walletId);
     }
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
+        <div style={{ height: 400, width: '100%'}}>
             <DataGrid
                 sx = {{
                     '.MuiTablePagination-displayedRows': {
@@ -162,7 +163,7 @@ export default function PoliceDataGird({data, popUpChecked}) {
                 
                 boxShadow: 2,
                 border: 2,
-                borderColor: '#b388ff',
+                borderColor: '#82b1ff',
                 }}
                 onRowSelectionModelChange={(newRowSelectionModel) => {
                     setSelectedRows(newRowSelectionModel);
@@ -176,7 +177,7 @@ export default function PoliceDataGird({data, popUpChecked}) {
                 columns={columns}
                 initialState={{
                     sorting: {
-                      sortModel: [{ field: 'policeDept', sort: 'asc' }],
+                      sortModel: [{ field: 'firstName', sort: 'asc' }],
                     },
                     pagination: { paginationModel: { pageSize: 10 } },
                 }}
@@ -239,77 +240,88 @@ export default function PoliceDataGird({data, popUpChecked}) {
                             
                             <Popup trigger={addPopup} setTrigger={setAddPopup}>
                                 <div className={stylesP.editHospital}>
-                                    <h1>Add an Police Station</h1>
+                                    <h1>Add an Admin</h1>
                                 </div>
                                 <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
-                                    <TextField 
-                                        type="text" 
-                                        name="policeDept" 
-                                        label="Police Department" 
-                                        variant="standard" 
-                                        placeholder="Police Department"
+                                    <TextField
+                                        type="text"
+                                        name="firstName"
+                                        label="First Name"
+                                        variant="standard"
+                                        placeholder="first name"
+                                        className={stylesP.formInput}
+                                        required
+                                        onChange={handleAddFormData}
+                                    />
+                                    <br/>
+                                    <TextField
+                                        type="text"
+                                        name="lastName"
+                                        label="Last Name"
+                                        variant="standard"
+                                        placeholder="last name"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
                                     />
                                     <br />
-                                    <TextField 
-                                        type="text" 
-                                        name="station" 
-                                        label="Police Station" 
-                                        variant="standard" 
-                                        placeholder="Police Station"
+                                    <TextField
+                                        type="text"
+                                        name="email"
+                                        label="Email"
+                                        variant="standard"
+                                        placeholder="email"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
                                     />
                                     <br />
-                                    <TextField 
-                                        type="text" 
-                                        name="walletId" 
-                                        label="Wallet ID" 
-                                        variant="standard" 
-                                        placeholder="Wallet ID"
+                                    <TextField
+                                        type="text"
+                                        name="walletId"
+                                        label="Wallet ID"
+                                        variant="standard"
+                                        placeholder="wallet ID"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
                                     />
                                     <br />
-                                    <TextField 
-                                        type="text" 
-                                        name="address" 
-                                        label="Street Address" 
-                                        variant="standard" 
-                                        placeholder="Street Address"
+                                    <TextField
+                                        type="text"
+                                        name="address"
+                                        label="Street Address"
+                                        variant="standard"
+                                        placeholder="street address"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
                                     />
                                     <br />
-                                    <TextField 
-                                        type="text" 
-                                        name="city" 
-                                        label="City" 
-                                        variant="standard" 
-                                        placeholder="City"
+                                    <TextField
+                                        type="text"
+                                        name="city"
+                                        label="City"
+                                        variant="standard"
+                                        placeholder="city"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
                                     />
                                     <br />
-                                    <TextField 
-                                        type="text" 
-                                        name="state" 
-                                        label="State" 
-                                        variant="standard" 
-                                        placeholder="Ohio"
+                                    <TextField
+                                        type="text"
+                                        name="state"
+                                        label="State"
+                                        variant="standard"
+                                        placeholder="state"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
                                     />
                                     <br />
                                     <div className={stylesP.submitButtonDiv}>
-                                        <button type="submit" className={stylesP.submitButton} onClick={submitPolice}>
+                                        <button type="submit" className={stylesP.submitButton} onClick={submitAdmin}>
                                             Submit
                                         </button>
                                     </div>
@@ -319,6 +331,7 @@ export default function PoliceDataGird({data, popUpChecked}) {
                     );
                 } 
             })()}
-        </div>    
+        </div>
+        
   );
 }
