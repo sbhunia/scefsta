@@ -6,18 +6,18 @@ contract Accounts {
     address public superAdmin;
 
     // four user accounts
-    mapping(address=> bool) admins;
-    mapping(address => bool) initiators;
-    mapping(address => bool) ambulances;
-    mapping(address => bool) hospitals;
+    mapping(address=> bool) private admins;
+    mapping(address => bool) private initiators;
+    mapping(address => bool) private ambulances;
+    mapping(address => bool) private hospitals;
 
     // set the superAdmin and initalize a few accounts
     constructor() {
         superAdmin = msg.sender;
-        admins[superAdmin] == true;
-        initiators[superAdmin] == true;
-        ambulances[superAdmin] == true;
-        hospitals[superAdmin] == true;
+        admins[superAdmin] = true;
+        initiators[superAdmin] = true;
+        ambulances[superAdmin] = true;
+        hospitals[superAdmin] = true;
     }
 
      // returns true if address is an ambulance, false if not

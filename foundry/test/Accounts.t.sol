@@ -36,6 +36,10 @@ contract AccountsTest is Test {
 
     // test adding, removing, and isAccount functionality for admins
     function testAddIsRemoveAdmin() public {
+        // see if the superAdmin is an admin by default
+        res = a.isAdmin(superAdmin);
+        assertEq(res, true);
+
         // set sender as super admin
         vm.startPrank(superAdmin);
             // verify isAdmin works
@@ -56,6 +60,9 @@ contract AccountsTest is Test {
 
     // test adding, removing, and isAccount functionality for ambulances
     function testAddIsRemoveAmbulance() public {
+        // see if the superAdmin is an ambulance by default
+        res = a.isAmbulance(superAdmin);
+        assertEq(res, true);
         // add new admin
         vm.prank(superAdmin);
         a.addAdmin(admin);
@@ -80,6 +87,10 @@ contract AccountsTest is Test {
 
     // test adding, removing, and isAccount functionality for initiators
     function testAddIsRemoveInitiator() public {
+        // see if the superAdmin is an initiator by default
+        res = a.isInitiator(superAdmin);
+        assertEq(res, true);
+
         // add new admin
         vm.prank(superAdmin);
         a.addAdmin(admin);
@@ -104,6 +115,10 @@ contract AccountsTest is Test {
 
     // test adding, removing, and isAccount functionality for hospitals
     function testAddIsRemoveHospital() public {
+        // see if the superAdmin is a hospital by default
+        res = a.isHospital(superAdmin);
+        assertEq(res, true);
+
         // add new admin
         vm.prank(superAdmin);
         a.addAdmin(admin);
