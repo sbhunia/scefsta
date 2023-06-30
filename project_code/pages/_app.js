@@ -1,12 +1,18 @@
 import '../styles/index.css';
-//import { ChainId, DAppProvider, AvlancheTesnet, useEthers, Config } from '@usedapp/core';
 import { ChainId, Mainnet, DAppProvider, useEtherBalance, useEthers, Config, Goerli, AvalancheTestnet, Sepolia } from '@usedapp/core'
+import { accounts_abi, auctions_abi, accountsAddress, auctionsAddress } from '../config';
+import { Contract, getDefaultProvider, utils } from 'ethers';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+// setup contract instances
+export const ACCOUNT_ABI = new utils.Interface(accounts_abi);   
+export const AUCTION_ABI = new utils.Interface(auctions_abi);
+export const ACCOUNT_INSTANCE = new Contract(accountsAddress, ACCOUNT_ABI);
+export const AUCTION_INSTANCE = new Contract(auctionsAddress, AUCTION_ABI);
+
 // This default export is required in a new `pages/_app.js` file.
 export default function MyApp({ Component, pageProps }) {
-
     // change this to switch between Fuji and other networks
     const config = {
         readOnlyChainId: Sepolia.chainId,
@@ -16,7 +22,7 @@ export default function MyApp({ Component, pageProps }) {
         readOnlyUrls: {
             //[Goerli.chainId]: `https://goerli.infura.io/v3/567889545a974330976808f6c98b8eea`,
             //[AvalancheTestnet.chainId]: `https://avalanche-fuji.infura.io/v3/567889545a974330976808f6c98b8eea`,
-            [Sepolia.chainId]: `https://eth-sepolia.g.alchemy.com/v2/Ov_IT5t3BmwRPEoueIy-3kT_AeMaJCMw`,
+            [Sepolia.chainId]: `https://sepolia.infura.io/v3/567889545a974330976808f6c98b8eea`,
         },
     }
 
