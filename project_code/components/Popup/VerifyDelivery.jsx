@@ -1,13 +1,12 @@
 import styles from '../../styles/Patients.module.css';
 import React from 'react';
 import { useContractFunction, transactionErrored } from '@usedapp/core';
-import { auctions_abi, auctionsAddress } from '../../config';
-import { Contract } from '@ethersproject/contracts';
 import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import stylesP from '../../styles/Popup.module.css'
 import { Input, Typography } from '@mui/material';
+import { ACCOUNT_INSTANCE } from '../../pages/_app';
 
 /**
  * 
@@ -16,11 +15,8 @@ import { Input, Typography } from '@mui/material';
  * @returns 
  */
 export default function VerifyDelivery( { tenderID, row } ) {
-    // Creating ambaulanceBounties contract
-    const ambulanceBounties = new Contract(auctionsAddress, auctions_abi);
-;
     // Obtaining React Hooks from reclaimTender smart contract function
-    const {send, state} = useContractFunction(ambulanceBounties, 'verifyDelivery');
+    const {send, state} = useContractFunction(ACCOUNT_INSTANCE, 'verifyDelivery');
 
     const handleVerifyDelivery = () => {
         send(tenderID);

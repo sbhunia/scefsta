@@ -22,7 +22,7 @@ contract AccountsTest is Test {
 
     // initialize some variables
     function setUp() public {
-        // set this address as the admin address and create instance of the AmbulanceBounties contract
+        // set this address as the admin address and create instance of the Accounts contract
         superAdmin = vm.addr(1);
         vm.prank(superAdmin);
         a = new Accounts();

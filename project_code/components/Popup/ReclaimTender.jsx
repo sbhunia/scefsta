@@ -3,11 +3,10 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import AssistantDirectionIcon from '@mui/icons-material/AssistantDirection';
 import { useContractFunction, transactionErrored } from '@usedapp/core';
-import { auctions_abi, auctionsAddress } from '../../config';
-import { Contract } from '@ethersproject/contracts';
 import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
+import { AUCTION_INSTANCE } from '../../pages/_app';
 
 async function deleteTenderPatient(tenderID) {
     try {
@@ -25,11 +24,8 @@ async function deleteTenderPatient(tenderID) {
 }
 
 export default function ReclaimTender( { tenderID } ) {
-
-    // Creating ambulanceBounties contract
-    const ambulanceBounties = new Contract(auctionsAddress, auctions_abi);
     // Obtaining React Hooks from reclaimTender smart contract function
-    const {send, state, events} = useContractFunction(ambulanceBounties, 'reclaimTender');
+    const {send, state, events} = useContractFunction(AUCTION_INSTANCE, 'reclaimTender');
 
     // When button is clicked, the tender is reclaimed
     const handleReclaimTender = () => {

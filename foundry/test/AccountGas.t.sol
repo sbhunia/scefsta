@@ -73,7 +73,7 @@ contract AuctionGasTest is Test {
     }
 
     function setUp() public {
-       // set this address as the admin address and create instance of the AmbulanceBounties contract
+       // set this address as the admin address and create instance of the Accounts contract
         superAdmin = vm.addr(1);
         vm.startPrank(superAdmin);
         acc = new Accounts();

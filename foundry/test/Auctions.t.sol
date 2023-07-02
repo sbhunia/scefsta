@@ -35,49 +35,8 @@ contract AuctionsTest is Test {
     // results
     bool res;
 
-    // struct info for tenders
-    // enum for various possible tender status's, closed is default
-    // enum TenderStatus {
-    //     Closed,
-    //     InProgress,
-    //     Open,
-    //     Retracted,
-    //     Reclaimed
-    // }
-
-    // // helper struct for tender details
-    //  struct TenderDetails {
-    //     address payable tenderPoster;
-    //     address payable tenderAccepter;
-    //     uint256 postDate;
-    //     uint256 auctionDate;
-    //     uint256 revealDate;
-    //     uint256 dueDate;
-    //     string addr;
-    //     string city;
-    //     string state;
-    //     address[] allowedHospitals;
-    //     uint256 maxBid;
-    //     uint256 penalty;
-    //     // Maps an address to its bid. This enforces one bid per address, 
-    //     //so that ambulances do not just bid as many prices as they can, 
-    //     //and then reveal lower and lower bids during the reveal period.
-    //     // We use 2 arrays because we can't have nested mappings in Solidity.
-    //     address[] bidders;
-    //     uint[] bidHashArray;
-    //     uint256 finalBid;
-    //     string severity;
-    // }
-
-    // // struct to hold tender information
-    // struct Tender {
-    //     TenderDetails details;
-    //     TenderStatus status;
-    //     uint256 tenderId;
-    // }
-
     function setUp() public {
-        // set this address as the admin address and create instance of the AmbulanceBounties contract
+        // set this address as the admin address and create instance of the Auctions contract
         superAdmin = vm.addr(1);
         vm.startPrank(superAdmin);
         acc = new Accounts();

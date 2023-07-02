@@ -8,12 +8,7 @@ import Popup from '../Popup/Popup';
 import stylesP from '../../styles/Popup.module.css'
 import * as Constants from '../../pages/constants';
 import { useContractFunction } from '@usedapp/core';
-import { Contract } from '@ethersproject/contracts';
-import { accounts_abi, accountsAddress } from '../../config';
-import { utils } from 'ethers';
-
-const AbiInterface = new utils.Interface(accounts_abi);
-const ContractInstance = new Contract(accountsAddress, AbiInterface);
+import { ACCOUNT_INSTANCE } from '../../pages/_app';
 
 const columns = [
   { field: 'policeDept', headerName: 'Police Department', width: 270, sortable: true},
@@ -31,8 +26,8 @@ const columns = [
  */
 export default function PoliceDataGird({data, popUpChecked}) {
     // smart contract API calls for add and remove police
-    const { state: state1, send: send1 } = useContractFunction(ContractInstance, 'addInitiator');
-    const { state: state2, send: send2 } = useContractFunction(ContractInstance, 'removeInitiator');
+    const { state: state1, send: send1 } = useContractFunction(ACCOUNT_INSTANCE, 'addInitiator');
+    const { state: state2, send: send2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeInitiator');
 
     // allows for the data in the table to be updated (Add/Remove)
     const [dataContacts, setDataContacts] = useState(data);
@@ -59,7 +54,6 @@ export default function PoliceDataGird({data, popUpChecked}) {
 
     // Used for delete button popup
     const [deletePopup, setDeletePopup] = useState(false);
-
 
     // Will read information written inside the add button's 
     // form and store the data in 'setAddFormData'
@@ -131,7 +125,6 @@ export default function PoliceDataGird({data, popUpChecked}) {
         } else {
             alert("Error deleting rows");
         }
-        
     }
 
     // Helper function for deleteRows to update the datagrid with deletions

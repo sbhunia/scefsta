@@ -8,12 +8,7 @@ import Popup from '../Popup/Popup';
 import stylesP from '../../styles/Popup.module.css'
 import * as Constants from '../../pages/constants';
 import { useContractFunction } from '@usedapp/core';
-import { Contract } from '@ethersproject/contracts';
-import { accounts_abi, accountsAddress } from '../../config';
-import { utils } from 'ethers';
-
-const AbiInterface = new utils.Interface(accounts_abi);
-const ContractInstance = new Contract(accountsAddress, AbiInterface);
+import { ACCOUNT_INSTANCE } from '../../pages/_app';
 
 const columns = [
   { field: 'username', headerName: 'Ambulance System', width: 175, sortable: true},
@@ -31,8 +26,8 @@ const columns = [
  */
 export default function AmbulanceDataGrid({data, popUpChecked}) {
     // smart contract API connection for add and remove ambulance users
-    const { state: state1, send: send1 } = useContractFunction(ContractInstance, 'addAmbulance');
-    const { state: state2, send: send2 } = useContractFunction(ContractInstance, 'removeAmbulance');
+    const { state: state1, send: send1 } = useContractFunction(ACCOUNT_INSTANCE, 'addAmbulance');
+    const { state: state2, send: send2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeAmbulance');
 
     // allows for the data in the table to be updated (Add/Remove)
     const [dataContacts, setDataContacts] = useState(data);

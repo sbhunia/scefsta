@@ -1,7 +1,5 @@
 import React from 'react'
 import { useContractFunction, transactionErrored} from '@usedapp/core';
-import { Contract } from '@ethersproject/contracts';
-import { auctions_abi, auctionsAddress } from '../../config';
 import { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
@@ -55,10 +53,6 @@ function getStyles(name, injuryType, theme) {
     };
 }
 
-// function ethToWei(eth) {
-//     return eth * 1000000000000000000n;
-// }
-
 /**
  * Handles adding data to the MongoDB data for patients and tenders
  * @param {*} patient 
@@ -103,8 +97,6 @@ export default function TenderForm() {
 
     const [allowedHospitals, setAllowedHospital] = useState(["0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80"]);
 
-    // Creating ambulanceBounties contract
-    const ambulanceBounties = new Contract(auctionsAddress, auctions_abi);
     // Obtaining React Hooks from postTender smart contract function
     const {state , send: send1, events} = useContractFunction(AUCTION_INSTANCE, 'postTender');
 

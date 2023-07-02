@@ -1,17 +1,6 @@
-import { useCall, useContractFunction, useEthers } from '@usedapp/core';
-//import { Contract } from '@ethersproject/contracts';
-import { accountsAddress, accounts_abi, auctionsAddress, auctions_abi } from './config';
-import { utils, Contract } from 'ethers';
+import { useCall } from '@usedapp/core';
+import { accountsAddress, auctionsAddress } from './config';
 import { ACCOUNT_INSTANCE, AUCTION_INSTANCE } from './pages/_app';
-
-// // accounts info
-// const accountsAbiInterface = new utils.Interface(accounts_abi);
-// const accountsContractInstance = new Contract(accountsAddress, accountsAbiInterface);
-
-// // auctions info
-// const auctionsAbiInterface = new utils.Interface(auctions_abi);
-// const auctionsContractInstance = new Contract(auctionsAbiInterface, auctions_abi);
-
 
 /**
  * Checks if a user is a verified contract administrator
@@ -29,7 +18,6 @@ export const checkAdmin = (account) => {
         console.error(error.message);
         return undefined;
     }
-    //console.log("value: ", value?.[0]);
     return value?.[0];
 }
 
@@ -49,7 +37,6 @@ export const checkHospital = (account) => {
         console.error(error.message);
         return undefined;
     }
-    //console.log("value: ", value?.[0]);
     return value?.[0];
 }
 
@@ -68,7 +55,6 @@ export const checkPolice = (account) => {
         console.error(error.message);
         return undefined;
     }
-    //console.log("value: ", value?.[0]);
     return value?.[0];
 }
 
@@ -88,7 +74,6 @@ export const checkAmbulance = (account) => {
         console.error(error.message);
         return undefined;
     }
-    //console.log("value: ", value?.[0]);
     return value?.[0];
 }
 
