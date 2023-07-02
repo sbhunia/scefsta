@@ -95,8 +95,6 @@ export default function Police() {
         return open.status == 2;
     });
 
-    //console.log(openTendersArr);
-
     let totalTenders = 0;
     let openTenders = 0;
     const { account } = useEthers();
@@ -116,7 +114,6 @@ export default function Police() {
     }
 
     const isPolice = checkPolice(account);
-    // const isPolice = true; // Temporary fix
 
     const [value, setValue] = React.useState(0);
 

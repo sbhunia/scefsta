@@ -41,18 +41,6 @@ export default function Tenders(tend) {
     
     return (
         <div className={ styles.containerPolice }>
-            {/* <div className={ styles.tenderSearchContainer }>
-                <input
-                    ref={inputEl}
-                    type="text"
-                    placeholder="Search Tenders..."
-                    value={tenders.searchTerm}
-                    onChange={getSearchTerm}
-                    className={ styles.tenderSearchInput }
-                />
-            </div> */}
-
-            {/* <TenderTable data={searchTerm.length < 1 ? tenders : searchResults} popUpChecked={popUpChecked} openTenders={false}/> */}
             {<TendersDataGrid data={searchTerm.length < 1 ? tenders : searchResults} popUpChecked={popUpChecked} openTenders={false}/>}
 
         </div>

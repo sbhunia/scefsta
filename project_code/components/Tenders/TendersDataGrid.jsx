@@ -122,7 +122,7 @@ export default function TendersDataGrid({data, popUpChecked, openTenders}) {
                                     </div>
                                 </Popup>
                                 <Popup trigger={addPopup} setTrigger={setAddPopup} className={styles.popupWin}>
-                                    <TenderForm />
+                                    <TenderForm setTrigger={setAddPopup}/>
                                 </Popup>
                             </div>
                         );

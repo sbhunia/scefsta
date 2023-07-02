@@ -8,7 +8,6 @@ import { Select, Typography, TextField, Button, ButtonGroup, Input, MenuItem, Ou
 import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
-import { postTender } from '../../solidityCalls';
 import { AUCTION_INSTANCE } from '../../pages/_app';
 
 const ITEM_HEIGHT = 48;
@@ -81,7 +80,7 @@ function getStyles(name, injuryType, theme) {
     }
 }
 
-export default function TenderForm() {
+export default function TenderForm(props) {
     const theme = useTheme();
     const [name, setName] = React.useState('');
     const [injuryType, setInjuryType] = React.useState([]);
@@ -152,6 +151,16 @@ export default function TenderForm() {
     // allowed hospitals - hospitals that are near enough to service patient(s)
     // penalty - cost for ambulance if job is not completed
     const confirm = async () => {
+        // create tender for blockchain
+        send1(auctionLength, deliveryTime, location, city, stateIn, penaltyAmt, severity, allowedHospitals, {value: tenderAmt});
+    }
+
+    const finalizeTransaction = async () => {
+        /**
+         * Patient name, type of injury, location, isAccepted
+         * Missing: age, gender, mechanism of injury, city, state
+         */
+
         // create patient in database
         const newPatient = {
             name: name,
@@ -171,39 +180,7 @@ export default function TenderForm() {
             body: JSON.stringify(newPatient)
         })
 
-        // create tender for blockchain
-        send1(auctionLength, deliveryTime, location, city, stateIn, penaltyAmt, severity, allowedHospitals, {value: tenderAmt});
-    }
-
-    const finalizeTransaction = () => {
-        /**
-         * Patient name, type of injury, location, isAccepted
-         * Missing: age, gender, mechanism of injury, city, state
-         */
-        // const patient = {
-        //     name: name,
-        //     injury: injuryType,
-        //     mechanism_of_injury: mechanismofInjury,
-        //     address: location,
-        //     isAccepted: false,
-        //     tender_id: parseInt(events[0].args.index._hex)
-        // }
-
-        // /**
-        //      * Expiration of tender, penalty fee, status of tender, severity
-        //      */
-        // const tender = {
-        //     patient_name: name,
-        //     expiration_time: auctionLength,
-        //     penalty_amount: penaltyAmt,
-        //     payment_amount: tenderAmt,
-        //     address: location,
-        //     status: "Open",
-        //     severity: severity,
-        //     tender_id: parseInt(events[0].args.index._hex)
-        // }
-        // // Submit data to MongoDB - critical step
-        // handlePost(patient, tender)
+        props.setTrigger(false);
     }
 
     return (
@@ -304,7 +281,7 @@ export default function TenderForm() {
                         </Select>
                     </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                     <div className={styles.paymentAmt}>
                         <InputLabel htmlFor="payment-amount">Payment Amount</InputLabel>
                         <Input
@@ -328,35 +305,35 @@ export default function TenderForm() {
                         />
                     </div>
                 </div>
-                <div className={styles.injuryDiv}>
-                    <InputLabel id="expiration">Auction Length</InputLabel>
-                    <Select
-                        labelId="expiration"
-                        id={styles.severity}
-                        value={auctionLength}
-                        label="Auction Length"
-                        onChange={handleChangeAuctionLength}
-                    >
-                        <MenuItem value={30}>30 Seconds</MenuItem>
-                        <MenuItem value={60}>1 Minute</MenuItem>
-                        <MenuItem value={90}>1.5 Minutes</MenuItem>
-                        <MenuItem value={300}>5 Minutes</MenuItem>
-                    </Select>
-                </div>
-                <div className={styles.injuryDiv}>
-                    <InputLabel id="delivery-time">Delivery Time Limit</InputLabel>
-                    <Select
-                        labelId="delivery-time"
-                        id={styles.severity}
-                        value={deliveryTime}
-                        label="Delivery Time Limit"
-                        onChange={handleChangeAuctionLength}
-                    >
-                        <MenuItem value={300}>5 Minutes</MenuItem>
-                        <MenuItem value={600}>10 Minutes</MenuItem>
-                        <MenuItem value={900}>15 Minutes</MenuItem>
-                        <MenuItem value={1800}>30 Minutes</MenuItem>
-                    </Select>
+                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                    <div className={styles.timeDiv}>
+                        <InputLabel id="expiration">Auction Length</InputLabel>
+                        <Select
+                            labelId="expiration"
+                            value={auctionLength}
+                            label="Auction Length"
+                            onChange={handleChangeAuctionLength}
+                        >
+                            <MenuItem value={30}>30 Seconds</MenuItem>
+                            <MenuItem value={60}>1 Minute</MenuItem>
+                            <MenuItem value={90}>1.5 Minutes</MenuItem>
+                            <MenuItem value={300}>5 Minutes</MenuItem>
+                        </Select>
+                    </div>
+                    <div className={styles.timeDiv}>
+                        <InputLabel id="delivery-time">Delivery Time Limit</InputLabel>
+                        <Select
+                            labelId="delivery-time"
+                            value={deliveryTime}
+                            label="Delivery Time Limit"
+                            onChange={handleChangeAuctionLength}
+                        >
+                            <MenuItem value={300}>5 Minutes</MenuItem>
+                            <MenuItem value={600}>10 Minutes</MenuItem>
+                            <MenuItem value={900}>15 Minutes</MenuItem>
+                            <MenuItem value={1800}>30 Minutes</MenuItem>
+                        </Select>
+                    </div>
                 </div>
                     <div className={styles.buttonGroup}>
                         <ButtonGroup variant="contained" aria-label="outlined button group">
@@ -368,9 +345,11 @@ export default function TenderForm() {
                 {(function () {
                     if (state.status === 'Mining') {
                         return (
+                            <label>Waiting for tender to post
                             <Box sx={{ display: 'flex' }}>
                                 <CircularProgress />
                             </Box>
+                            </label>
                         )
                     }
                     if (transactionErrored(state)) {
