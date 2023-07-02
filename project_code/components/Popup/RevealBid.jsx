@@ -55,7 +55,6 @@ export default function RevealBid( { tenderID, penaltyAmt } ) {
          * penaltyAmt - msg.value
          * 
          */
-        const abi = ethers.utils.defaultAbiCoder.encode(["string"], [bidValue.concat(salt)])
         send(tenderID, bidValue, 10, bidID, {value: penaltyAmt});
     }
 
