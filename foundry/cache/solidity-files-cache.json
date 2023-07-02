@@ -266,8 +266,8 @@
       }
     },
     "src/Auctions.sol": {
-      "lastModificationDate": 1688083692878,
-      "contentHash": "a18418d461a12b37958f1ac6574e3fd0",
+      "lastModificationDate": 1688318918902,
+      "contentHash": "a768f7b90ab0aea800715bb000886150",
       "sourceName": "src/Auctions.sol",
       "solcConfig": {
         "settings": {
@@ -491,8 +491,8 @@
       }
     },
     "test/Auctions.t.sol": {
-      "lastModificationDate": 1688083692884,
-      "contentHash": "59ac16cac13705a1675b6dc12f0e1d92",
+      "lastModificationDate": 1688319178392,
+      "contentHash": "8f57d57ef98c09512dd91a3ca586a1c9",
       "sourceName": "test/Auctions.t.sol",
       "solcConfig": {
         "settings": {

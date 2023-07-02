@@ -239,6 +239,15 @@ contract Auctions {
     }
 
     /*
+     * Get a tender from a given tenderID
+     *
+     * @param tenderId - given tenderID
+     */
+     function getTender(uint256 tenderId) public view returns (Tender memory) {
+        return tenderMapping[tenderId];
+     }
+
+    /*
      * get the winner of an auction
      *
      * @param tenderId - given tender ID

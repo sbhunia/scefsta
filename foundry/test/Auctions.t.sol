@@ -37,44 +37,44 @@ contract AuctionsTest is Test {
 
     // struct info for tenders
     // enum for various possible tender status's, closed is default
-    enum TenderStatus {
-        Closed,
-        InProgress,
-        Open,
-        Retracted,
-        Reclaimed
-    }
+    // enum TenderStatus {
+    //     Closed,
+    //     InProgress,
+    //     Open,
+    //     Retracted,
+    //     Reclaimed
+    // }
 
-    // helper struct for tender details
-     struct TenderDetails {
-        address payable tenderPoster;
-        address payable tenderAccepter;
-        uint256 postDate;
-        uint256 auctionDate;
-        uint256 revealDate;
-        uint256 dueDate;
-        string addr;
-        string city;
-        string state;
-        address[] allowedHospitals;
-        uint256 maxBid;
-        uint256 penalty;
-        // Maps an address to its bid. This enforces one bid per address, 
-        //so that ambulances do not just bid as many prices as they can, 
-        //and then reveal lower and lower bids during the reveal period.
-        // We use 2 arrays because we can't have nested mappings in Solidity.
-        address[] bidders;
-        uint[] bidHashArray;
-        uint256 finalBid;
-        string severity;
-    }
+    // // helper struct for tender details
+    //  struct TenderDetails {
+    //     address payable tenderPoster;
+    //     address payable tenderAccepter;
+    //     uint256 postDate;
+    //     uint256 auctionDate;
+    //     uint256 revealDate;
+    //     uint256 dueDate;
+    //     string addr;
+    //     string city;
+    //     string state;
+    //     address[] allowedHospitals;
+    //     uint256 maxBid;
+    //     uint256 penalty;
+    //     // Maps an address to its bid. This enforces one bid per address, 
+    //     //so that ambulances do not just bid as many prices as they can, 
+    //     //and then reveal lower and lower bids during the reveal period.
+    //     // We use 2 arrays because we can't have nested mappings in Solidity.
+    //     address[] bidders;
+    //     uint[] bidHashArray;
+    //     uint256 finalBid;
+    //     string severity;
+    // }
 
-    // struct to hold tender information
-    struct Tender {
-        TenderDetails details;
-        TenderStatus status;
-        uint256 tenderId;
-    }
+    // // struct to hold tender information
+    // struct Tender {
+    //     TenderDetails details;
+    //     TenderStatus status;
+    //     uint256 tenderId;
+    // }
 
     function setUp() public {
         // set this address as the admin address and create instance of the AmbulanceBounties contract
@@ -219,6 +219,13 @@ contract AuctionsTest is Test {
         auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", penalty, "High", allowedHospitals);
         tenders = auc.getAllTenders();
         assertEq(tenders.length, 2);
+    }
+
+    function testGetTender() public {
+        hoax(initiator, 10000 ether);
+        tender = auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", penalty, "High", allowedHospitals);
+        Auctions.Tender memory retTender = auc.getTender(tender);
+        assertEq(retTender.tenderId, tender);
     }
 
     function testGetAuctionWinner() public {

@@ -47,6 +47,10 @@ contract("Auctions", (accounts) => {
 
     });
 
+    it("tests getTender", async () => {
+        
+    });
+
     it("tests getAuctionWinner", async () => {
 
     });
