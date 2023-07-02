@@ -11,6 +11,7 @@ import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import { postTender } from '../../solidityCalls';
+import { AUCTION_INSTANCE } from '../../pages/_app';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -94,7 +95,8 @@ export default function TenderForm() {
     const [mechanismofInjury, setMechanismOfInjury] = React.useState([]);
     const [tenderAmt, setTenderAmt] = React.useState(0);
     const [penaltyAmt, setPenaltyAmt] = React.useState(0);
-    const [timeLimit, setTimeLimit] = React.useState(30);
+    const [auctionLength, setAuctionLength] = React.useState(30);
+    const [deliveryTime, setDeliveryTime] = React.useState(900);
     const [location, setLocation] = useState("");
     const [stateIn, setStateIn] = useState("");
     const [city, setCity] = useState("");
@@ -104,7 +106,7 @@ export default function TenderForm() {
     // Creating ambulanceBounties contract
     const ambulanceBounties = new Contract(auctionsAddress, auctions_abi);
     // Obtaining React Hooks from postTender smart contract function
-    const {state , send: send1, events} = useContractFunction(ambulanceBounties, 'postTender');
+    const {state , send: send1, events} = useContractFunction(AUCTION_INSTANCE, 'postTender');
 
     const handleChangeName = (event) => {
         setName(event.target.value);
@@ -130,9 +132,14 @@ export default function TenderForm() {
     const handleChangePenalty = (event) => {
         setPenaltyAmt(event.target.value);
     };
-    const handleChangeTimeLimit = (event) => {
-        setTimeLimit(event.target.value);
+    const handleChangeAuctionLength = (event) => {
+        setAuctionLength(event.target.value);
     };
+
+    const handleChangeDeliveryTime = (event) => {
+        setDeliveryTime(event.target.value);
+    }
+
     const handleSetLocation = (event) => { 
         setLocation(event.target.value);
     }
@@ -148,7 +155,7 @@ export default function TenderForm() {
         setStateIn(event.target.value);
     }
 
-    // timeLimit - how long in minutes the ambulnaces have to deliver the patient
+    // auctionLength - how long in minutes the ambulnaces have to bid in the auction
     // location - the location of the incident
     // allowed hospitals - hospitals that are near enough to service patient(s)
     // penalty - cost for ambulance if job is not completed
@@ -173,7 +180,7 @@ export default function TenderForm() {
         })
 
         // create tender for blockchain
-        send1(timeLimit, location, allowedHospitals, penaltyAmt, severity, name, {value: tenderAmt});
+        send1(auctionLength, deliveryTime, location, city, stateIn, penaltyAmt, severity, allowedHospitals, {value: tenderAmt});
     }
 
     const finalizeTransaction = () => {
@@ -195,7 +202,7 @@ export default function TenderForm() {
         //      */
         // const tender = {
         //     patient_name: name,
-        //     expiration_time: timeLimit,
+        //     expiration_time: auctionLength,
         //     penalty_amount: penaltyAmt,
         //     payment_amount: tenderAmt,
         //     address: location,
@@ -330,18 +337,33 @@ export default function TenderForm() {
                     </div>
                 </div>
                 <div className={styles.injuryDiv}>
-                    <InputLabel id="expiration">Expiration Time</InputLabel>
+                    <InputLabel id="expiration">Auction Length</InputLabel>
                     <Select
                         labelId="expiration"
                         id={styles.severity}
-                        value={timeLimit}
-                        label="Expiration Time"
-                        onChange={handleChangeTimeLimit}
+                        value={auctionLength}
+                        label="Auction Length"
+                        onChange={handleChangeAuctionLength}
                     >
                         <MenuItem value={30}>30 Seconds</MenuItem>
                         <MenuItem value={60}>1 Minute</MenuItem>
                         <MenuItem value={90}>1.5 Minutes</MenuItem>
                         <MenuItem value={300}>5 Minutes</MenuItem>
+                    </Select>
+                </div>
+                <div className={styles.injuryDiv}>
+                    <InputLabel id="delivery-time">Delivery Time Limit</InputLabel>
+                    <Select
+                        labelId="delivery-time"
+                        id={styles.severity}
+                        value={deliveryTime}
+                        label="Delivery Time Limit"
+                        onChange={handleChangeAuctionLength}
+                    >
+                        <MenuItem value={300}>5 Minutes</MenuItem>
+                        <MenuItem value={600}>10 Minutes</MenuItem>
+                        <MenuItem value={900}>15 Minutes</MenuItem>
+                        <MenuItem value={1800}>30 Minutes</MenuItem>
                     </Select>
                 </div>
                     <div className={styles.buttonGroup}>

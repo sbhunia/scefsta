@@ -13,12 +13,13 @@ import TenderForm from '../TenderForm/TenderForm';
 
 const columns = [
     { field: 'id', headerName: 'Tender ID', width: 100, sortable: false},
-    { field: 'patientName', headerName: 'Patient Name', width: 150, sortable: true},
     { field: 'patientLocation', headerName: 'Patient Location', width: 250, sortable: true},
-    // { field: 'paymentAmount', headerName: 'Payment Amount', width: 175, sortable: true},
-    { field: 'dueDate', headerName: 'Due Date', width: 200, sortable: true},
+    { field: 'postDate', headerName: 'Post Date', width: 175, sortable: true},
+    { field: 'auctionDate', headerName: 'Auction End Date', width: 175, sortable: true},
+    { field: 'revealDate', headerName: 'Reveal Bid Date', width: 175, sortable: true},
+    { field: 'dueDate', headerName: 'Delivery Due Date', width: 175, sortable: true},
     { field: 'penaltyAmount', headerName: 'Penalty Amount', width: 175, sortable: true},
-    //{ field: 'walletId', headerName: 'Wallet ID', width: 400, sortable: true},
+    { field: 'walletId', headerName: 'Tender Poster Wallet ID', width: 400, sortable: true},
 ];
 
   /**
@@ -89,7 +90,7 @@ export default function TendersDataGrid({data, popUpChecked, openTenders}) {
                 pageSize={10}
                 // pageSizeOptions={[5, 10, 25]}
                 checkboxSelection={false}
-                //autoHeight={true}
+                autoHeight
             />
             {(function () {
                 // Displays the add button

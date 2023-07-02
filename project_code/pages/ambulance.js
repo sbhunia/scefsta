@@ -72,15 +72,31 @@ export default function ambulance({patients}) {
             Object.assign({}, item, {selected:false})
         )
         tenders.forEach( tender => {
-            var dueDate = new Date(parseInt(tender['dueDate']['_hex'], 16)*1000)
-            var formattedDueDate = dueDate.toLocaleDateString() + " " + dueDate.toLocaleTimeString();
-
             tender['id'] = new BigNumber(tender['tenderId']['_hex']).toString();
-            tender['patientName'] = tender['name'];
-            tender['patientLocation'] = tender[5];
-            tender['penaltyAmount'] = new BigNumber(tender['penalty']['_hex']).toString()
+
+            // tender details
+            tender['walletId'] = tender[0]['tenderPoster'];
+            tender['patientLocation'] = tender[0]['addr'] + ", " + tender[0]['city'] + ", " + tender[0]['state'];
+            tender['penaltyAmount'] = new BigNumber(tender[0]['penalty']['_hex']).toString()
+            
+            // get the dates
+            var postDate = new Date(parseInt(tender[0]['postDate']['_hex'], 16)*1000)
+            var formattedPostDate = postDate.toLocaleDateString() + " " + postDate.toLocaleTimeString();
+            tender['postDate'] = formattedPostDate;
+
+            var auctionDate = new Date(parseInt(tender[0]['auctionDate']['_hex'], 16)*1000)
+            var formattedAuctionDate = auctionDate.toLocaleDateString() + " " + auctionDate.toLocaleTimeString();
+            tender['auctionDate'] = formattedAuctionDate;
+
+            var revealDate = new Date(parseInt(tender[0]['revealDate']['_hex'], 16)*1000)
+            var formattedRevealDate = revealDate.toLocaleDateString() + " " + revealDate.toLocaleTimeString();
+            tender['revealDate'] = formattedRevealDate;
+
+            var dueDate = new Date(parseInt(tender[0]['dueDate']['_hex'], 16)*1000)
+            var formattedDueDate = dueDate.toLocaleDateString() + " " + dueDate.toLocaleTimeString();
             tender['dueDate'] = formattedDueDate;
-            tender['walletId'] = tender[0];
+            
+            console.log("tender: ", tender);
         });
     }
 
