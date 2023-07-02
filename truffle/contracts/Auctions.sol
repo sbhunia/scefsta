@@ -233,6 +233,8 @@ contract Auctions {
 
     /*
      * get all the tenders present in tenders array
+     *
+     * @returns all tenders on the blockchain
      */
     function getAllTenders() public view returns (Tender[] memory) {
         return tenders;
@@ -242,6 +244,8 @@ contract Auctions {
      * Get a tender from a given tenderID
      *
      * @param tenderId - given tenderID
+     *
+     * @returns a single tender with given tenderId
      */
      function getTender(uint256 tenderId) public view returns (Tender memory) {
         return tenderMapping[tenderId];
