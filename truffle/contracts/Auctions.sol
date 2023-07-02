@@ -9,7 +9,7 @@ contract Auctions {
 
     // constants
     uint256 constant MAX_INT = 2**256 - 1;
-    uint256 constant REVEAL_PERIOD = 5000;
+    uint256 constant REVEAL_PERIOD = 300;
 
     // enum for various possible tender status's, closed is default
     enum TenderStatus {
