@@ -95,8 +95,6 @@ export default function ambulance({patients}) {
             var dueDate = new Date(parseInt(tender[0]['dueDate']['_hex'], 16)*1000)
             var formattedDueDate = dueDate.toLocaleDateString() + " " + dueDate.toLocaleTimeString();
             tender['dueDate'] = formattedDueDate;
-            
-            console.log("tender: ", tender);
         });
     }
 

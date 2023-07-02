@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -13,18 +14,18 @@ import FilledInput from '@mui/material/FilledInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import Map from '../mapSmall';
 import { auctionsAddress, auctions_abi } from '../../config';
-import { useCall, useContractFunction, transactionErrored, useEthers } from '@usedapp/core';
+import { useContractFunction, transactionErrored, useEthers } from '@usedapp/core';
 import { CircularProgress } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
-import { getAllTenders } from '../../solidityCalls';
-import { ethers } from "ethers";
-/**Depracated */
-//import { keccak256 } from '@usedapp/core/node_modules/ethers/lib/utils';
+import { getTender } from '../../solidityCalls';
 import * as Constants from '../../pages/constants';
 import { Contract } from '@ethersproject/contracts';
-import { utils } from 'ethers';
 import BigNumber from 'bignumber.js';
+import Web3 from 'web3';
+import { AUCTION_INSTANCE } from '../../pages/_app';
+
+const web3 = new Web3();
 
 async function addBid(walletID, tenderID, bidID) {
 
@@ -42,33 +43,17 @@ async function addBid(walletID, tenderID, bidID) {
   } else {
     console.log("Failed at adding bid to DB!")
   }
-
 }
 
 /**
  * Creates bidding form for ambulances.
  * @returns 
  */
-export default function BiddingForm(data) {
-
+export default function BiddingForm (data){
   const { account } = useEthers();
-  const AbiInterface = new utils.Interface(auctions_abi);
-  const ContractInstance = new Contract(auctionsAddress, AbiInterface);
 
   let patientData = data.data.patients;
-  // make smart contract calls
-  const tenderData = getAllTenders();
-  //console.log(tenderData);
-  const { value, error } = useCall(auctionsAddress && {
-    contract: ContractInstance,
-    method: 'hashVal',
-    args: [100, 10],
-  }) ?? {};
-  if (error) {
-    console.error(error.message);
-    return undefined;
-  }
-
+  const [patientId, setPatientId] = React.useState('[Patient ID]');
   const [patientName, setPatientName] = React.useState('[Patient Name]');
   const [patientGender, setPatientGender] = React.useState('[Patient sex/gender]');
   const [patientLocation, setPatientLocation] = React.useState('[Patient Location]');
@@ -79,63 +64,48 @@ export default function BiddingForm(data) {
   const [proposedTender, setProposedTender] = React.useState(0);
   const [desiredBid, setDesiredBid] = React.useState('');
   const [tenderID, setTenderID] = React.useState(0);
+  
+  let tender = getTender(patientId);  
 
+  // handle changing selected patient in dropdown
   const dropDownChange = (event) => {
     // Finds the patient's data from the JSON object
     var patient = patientData.find(t => t.name == event.target.value);
+    setPatientId(patient.patientId - 1);
 
-    // Find corresponding tender data from patient
-    var matchTender;
-    if (tenderData != undefined) {
-      tenderData[0].forEach(tender => {
-        let tenderId = new BigNumber(tender['tenderId']['_hex']).toString();
-        // if the patient id matches the current tender id set the match
-        if (patient.patientId - 1 == tenderId) {
-          matchTender = tender;
-          //console.log(matchTender);
-        }
-      });
+    // the tender has a
+    if (tender && tender != undefined) {
+      let severity = tender[0]['details']['severity'];
+      var dueDate = new Date(parseInt(tender[0]['details']['dueDate']['_hex'], 16) * 1000)
+      var formattedDueDate = dueDate.toLocaleDateString() + " " + dueDate.toLocaleTimeString();
+
+      // set state variables
+      setPatientName(patient.name);
+      setPatientGender(patient.gender);
+      setPatientLocation(patient.address + ", " + patient.city + ", " + patient.state);
+      setPatientInjury(patient.injuries);
+      setPatientMethodInjury(patient.mechanism_of_injury);
+      setPatientSeverity(severity);
+      setPatientExpiration("Due: " + formattedDueDate);
+      setProposedTender(0);
+      setTenderID(patient.patientId);
     }
-
-    // set data from the matched tender
-    let severity = matchTender['severity'];
-    var dueDate = new Date(parseInt(matchTender['dueDate']['_hex'], 16) * 1000)
-    var formattedDueDate = dueDate.toLocaleDateString() + " " + dueDate.toLocaleTimeString();
-
-    // set state variables
-    setPatientName(patient.name);
-    setPatientGender(patient.gender);
-    setPatientLocation(patient.address);
-    setPatientInjury(patient.injuries);
-    setPatientMethodInjury(patient.mechanism_of_injury);
-    setPatientSeverity(severity);
-    setPatientExpiration("Due: " + formattedDueDate);
-    setProposedTender(0);
-    setTenderID(patient.patientId);
   };
 
   const handleDesiredBid = (event) => {
     setDesiredBid(event.target.value);
   }
 
-  // Creating ambulanceBounties contract
-  const ambulanceBounties = new Contract(auctionsAddress, auctions_abi);
-  // Obtaining React Hook from bid smart contract function
-
   // useDapp hook to place a bid
-  const { state: state1, send: send1, events } = useContractFunction(ambulanceBounties, 'secretBid');
+  const { state: state1, send: send1, events } = useContractFunction(AUCTION_INSTANCE, 'secretBid');
 
-  // let min = 10000000;
-  // let max = 1000000000;
-  // const randSalt = Math.floor(Math.random() * (max - min + 1)) + min;
-
+  // submit the bid to the blockchain
   const submitBid = () => {
-    //   console.log(parseInt(desiredBid));
-    if (value != undefined) {
-      console.log(tenderID - 1);
-      send1(tenderID - 1, value[0], {value: 20});
-    }
-
+    // need to update the + 10 to a generated salt value (stored in DB??)
+    console.log(parseInt(desiredBid));
+    let hash = web3.utils.soliditySha3(parseInt(desiredBid) + 10);
+    let penalty = parseInt(new BigNumber(tender[0]['details']['penalty']['_hex']).toString());
+    send1(patientId, hash, {value: penalty});
   }
 
   const finalizeTransaction = () => {
@@ -144,9 +114,8 @@ export default function BiddingForm(data) {
     addBid(account, tenderID, parseInt(events[0].args.index._hex))
   }
 
-  if (events != undefined) {
-    console.log(parseInt(events[0].args.index._hex))
-  }
+  // re-render specifically if patientId is changed (in dropdown menu)
+  useEffect(() => {}, [patientId]);
 
   return (
     <Grid container spacing={2} columns={16} >
@@ -207,11 +176,10 @@ export default function BiddingForm(data) {
         <div className={styles.tenderRewardDiv}>
 
           <FormControl fullWidth variant="filled" className={styles.givenRewardDiv}>
-            <InputLabel htmlFor="filled-adornment-amount">Proposed Tender</InputLabel>
+            <InputLabel htmlFor="filled-adornment-amount">Tender ID</InputLabel>
             <FilledInput
               id="filled-adornment-amount"
               value={proposedTender}
-              startAdornment={<InputAdornment position="start">WEI</InputAdornment>}
             />
           </FormControl>
 

@@ -1,4 +1,4 @@
-import { useCall, useContractFunction } from '@usedapp/core';
+import { useCall, useContractFunction, useEthers } from '@usedapp/core';
 //import { Contract } from '@ethersproject/contracts';
 import { accountsAddress, accounts_abi, auctionsAddress, auctions_abi } from './config';
 import { utils, Contract } from 'ethers';
@@ -101,6 +101,25 @@ export const getAllTenders = () => {
         contract: AUCTION_INSTANCE,
         method: 'getAllTenders',
         args: [],
+        }) ?? {};
+
+    if(error) {
+        console.error(error.message);
+        return undefined;
+    } 
+    return value;
+}
+
+/**
+ * 
+ * @param {*} tenderId 
+ * @returns 
+ */
+export const getTender = (tenderId) => {
+    const { value, error } = useCall(auctionsAddress && { 
+        contract: AUCTION_INSTANCE,
+        method: 'getTender',
+        args: [tenderId],
         }) ?? {};
 
     if(error) {
