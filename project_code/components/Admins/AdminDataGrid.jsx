@@ -8,14 +8,12 @@ import Popup from '../Popup/Popup';
 import stylesP from '../../styles/Popup.module.css'
 import * as Constants from '../../pages/constants';
 import { useContractFunction } from '@usedapp/core';
-import { Contract } from '@ethersproject/contracts';
-import { accounts_abi, accountsAddress } from '../../config';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
-import { utils } from 'ethers';
 
 const columns = [
-  { field: 'username', headerName: 'Admin System', width: 175, sortable: true},
-  { field: 'licensePlate', headerName: 'License Plate', width: 150,  sortable: false},
+  { field: 'firstName', headerName: 'First Name', width: 100, sortable: true},
+  { field: 'lastName', headerName: 'Last Name', width: 100,  sortable: true},
+  { field: 'email', headerName: 'Email', width: 150,  sortable: true},
   { field: 'address', headerName: 'Address', width: 175, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
   { field: 'state', headerName: 'State', width: 100, sortable: true},
@@ -90,16 +88,22 @@ export default function AdminDataGrid({data, popUpChecked}) {
             walletId: addFormData.walletId,
         };
 
+        console.log("contract", newContact);
+
         let response = await fetch(Constants.addAdmin, {
             method: 'POST',
             body: JSON.stringify(newContact)
         });
-
+        console.log("response: ", response);
         newContact['id'] = newContact['walletId'];
 
         setDataContacts([...dataContacts, newContact,]);
 
         let data = await response.json();
+        console.log("data: ", data);
+        
+        // add to blockchain
+        send1(addFormData.walletId);
 
         if (data.success) {
             setAddPopup(false);
@@ -110,13 +114,11 @@ export default function AdminDataGrid({data, popUpChecked}) {
     const deleteRows = async (event) => {
         event.preventDefault();
 
-        //console.log(selectedRows[0]);
-
-        let response = await fetch(Constants.deleteAdmin, {
+        // make database changes
+        let response = await fetch(Constants.deleteAdmins, {
             method: 'DELETE',
             body: JSON.stringify(selectedRows)
         });
-
         let status = await response.json();
 
         setDataContacts(dataContacts.filter(checkSelected))
@@ -126,8 +128,8 @@ export default function AdminDataGrid({data, popUpChecked}) {
             send2(removeId);
         });
 
-        if(status.success){
-            
+        // if the DB changes succeed close popup
+        if(status.success){ 
             setDeletePopup(false);
         } else {
             alert("Error deleting rows");
@@ -145,7 +147,6 @@ export default function AdminDataGrid({data, popUpChecked}) {
 
     // useDapp function to confirm addAdmin transaction - payable
     const submitAdmin = () => {
-        send1(addFormData.walletId);
     }
 
     return (
@@ -321,7 +322,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                     />
                                     <br />
                                     <div className={stylesP.submitButtonDiv}>
-                                        <button type="submit" className={stylesP.submitButton} onClick={submitAdmin}>
+                                        <button type="submit" className={stylesP.submitButton}>
                                             Submit
                                         </button>
                                     </div>

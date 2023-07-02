@@ -11,7 +11,7 @@ export default function Admins(adm) {
 
     // JSON containing data on admins
     let admins = adm.data
-
+    console.log(admins);
     // Boolean value that enables/disables pop-ups to edit/delete admins
     const popUpChecked = adm.popUpChecked;
 

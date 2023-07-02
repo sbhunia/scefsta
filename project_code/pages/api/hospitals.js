@@ -13,7 +13,7 @@ export default async function handler(req, res) {
             return addHospital(req, res)
         }
         case 'DELETE': {
-            return deletHospital(req, res)
+            return deleteHospital(req, res)
         }
     }
 }
@@ -28,10 +28,10 @@ async function addHospital(req, res) {
 
     let query = "   INSERT INTO " + Constants.Users + " (" + Constants.walletId + ", " + Constants.address + ", " + Constants.city + ", " + Constants.state + ", " + Constants.hospitalSystem + ") \
                     VALUES ('" + walletId + "', '" + address + "', '" + city + "', '" + state + "', '" + hospitalSystem + "' );";
-
+    console.log(query);
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {
-            //console.log(d);
+            console.log(d);
             res.status(200).send({success: true});
             resolve();
         }).catch(e => {

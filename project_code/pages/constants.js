@@ -8,7 +8,11 @@ export const DevProfileURL = '/profile';
 export const DevAboutURL = '/about';                                
 
 // Database constansts, used in queries with the database
-// user table
+// table names
+export const Users = 'Users';
+export const Patients = 'Patients';
+
+// user table variables
 export const walletId = 'walletId';
 export const firstName = 'firstName';
 export const lastName = 'lastName';
@@ -22,10 +26,9 @@ export const policeDept = 'policeDept';
 export const station = 'station';
 export const hospitalSystem = 'hospitalSystem';
 export const licensePlate = 'licensePlate';
-export const Users = 'Users';
-export const Patients = 'Patients';
+export const adminAccount = 'adminAccount';
 
-// patient table
+// patient table variables
 export const patientId = "patientId";
 export const name = "name";
 export const gender = "gender";
@@ -35,7 +38,7 @@ export const injuries = "injuries";
 export const mech = "mechanismOfInjury";
 
 // API URLs
-export const getAdmins = 'http://localhost:3000/api/admin';        
+export const getAdmins = 'http://localhost:3000/api/admins';        
 export const getPatients = 'http://localhost:3000/api/patients';        
 export const getPolice = 'http://localhost:3000/api/police';            
 export const getAmbulances ='http://localhost:3000/api/ambulances';     
@@ -48,7 +51,7 @@ export const addPolice = 'api/police';
 export const deleteAdmins = 'api/admins'; 
 export const deleteAmbulance = 'api/ambulances';       
 export const deletePolice = 'api/police';   
-export const deleteHospital = 'api/police';   
+export const deleteHospital = 'api/hospitals';   
 
 // Page titles
 export const DASHBOARD = 'Dashboard';
