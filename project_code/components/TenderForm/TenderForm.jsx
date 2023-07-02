@@ -101,7 +101,7 @@ export default function TenderForm() {
     const [stateIn, setStateIn] = useState("");
     const [city, setCity] = useState("");
 
-    const [allowedHospitals, setAllowedHospital] = useState(["0x37b17D21569C2cA6c7A078f2283D06BC222F554C"]);
+    const [allowedHospitals, setAllowedHospital] = useState(["0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80"]);
 
     // Creating ambulanceBounties contract
     const ambulanceBounties = new Contract(auctionsAddress, auctions_abi);
