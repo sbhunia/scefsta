@@ -1,6 +1,6 @@
 // contract addresses for both contracts
-export const accountsAddress = '0x570A428C3d128E1297E4D304555665C20A687990';
-export const auctionsAddress = '0x4a5E05baD30b7F2A764241c3d6E1F45362D2Db28';
+export const accountsAddress = '0x507A4485b37c473F8Dc84D52F73F8bd7f30Db506';
+export const auctionsAddress = '0x921Dd59443176093811fba83798f762170C4E8d8';
 
 export const accounts_abi = [
   {
@@ -693,6 +693,125 @@ export const auctions_abi = [
         "internalType": "struct Auctions.Tender[]",
         "name": "",
         "type": "tuple[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tenderId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getTender",
+    "outputs": [
+      {
+        "components": [
+          {
+            "components": [
+              {
+                "internalType": "address payable",
+                "name": "tenderPoster",
+                "type": "address"
+              },
+              {
+                "internalType": "address payable",
+                "name": "tenderAccepter",
+                "type": "address"
+              },
+              {
+                "internalType": "uint256",
+                "name": "postDate",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "auctionDate",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "revealDate",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "dueDate",
+                "type": "uint256"
+              },
+              {
+                "internalType": "string",
+                "name": "addr",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "city",
+                "type": "string"
+              },
+              {
+                "internalType": "string",
+                "name": "state",
+                "type": "string"
+              },
+              {
+                "internalType": "address[]",
+                "name": "allowedHospitals",
+                "type": "address[]"
+              },
+              {
+                "internalType": "uint256",
+                "name": "maxBid",
+                "type": "uint256"
+              },
+              {
+                "internalType": "uint256",
+                "name": "penalty",
+                "type": "uint256"
+              },
+              {
+                "internalType": "address[]",
+                "name": "bidders",
+                "type": "address[]"
+              },
+              {
+                "internalType": "uint256[]",
+                "name": "bidHashArray",
+                "type": "uint256[]"
+              },
+              {
+                "internalType": "uint256",
+                "name": "finalBid",
+                "type": "uint256"
+              },
+              {
+                "internalType": "string",
+                "name": "severity",
+                "type": "string"
+              }
+            ],
+            "internalType": "struct Auctions.TenderDetails",
+            "name": "details",
+            "type": "tuple"
+          },
+          {
+            "internalType": "enum Auctions.TenderStatus",
+            "name": "status",
+            "type": "uint8"
+          },
+          {
+            "internalType": "uint256",
+            "name": "tenderId",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Auctions.Tender",
+        "name": "",
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",

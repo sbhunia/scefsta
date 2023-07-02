@@ -8,6 +8,6 @@ module.exports = async function (deployer) {
     await deployer.deploy(Auctions, accountsContract.address);
     const auctionsContract = await Auctions.deployed();
   
-    console.log("Accounts contract address:", accountsContract.address);
-    console.log("Auctions contract address:", auctionsContract.address);
+    console.log("export const accountsAddress = '" + accountsAddress + "';\n  \
+                 export const auctionsAddress = '" + auctionsAddress + "';");
   };
