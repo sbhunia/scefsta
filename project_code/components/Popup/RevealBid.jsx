@@ -44,7 +44,7 @@ export default function RevealBid( { tenderID, penaltyAmt } ) {
         const saltInfo = {
             patientId: tenderID,
             bidId: bidID,
-            walletId: 
+            walletId: account
         };
 
         // get the salt value
