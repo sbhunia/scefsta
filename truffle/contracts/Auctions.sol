@@ -169,7 +169,7 @@ contract Auctions {
         require(bidVal < tender.details.maxBid, "bid was not below max bid amount");
         require(msg.sender == tender.details.bidders[index], "wrong bid ID");
         require(tender.details.penalty == msg.value, "did not send correct penalty amount");
-        require(tender.details.bidHashArray[index] == hashVal(bidVal, salt), "bid value does not match hashed value");
+        require(tender.details.bidHashArray[index] == uint256(keccak256(abi.encodePacked(bidVal + salt))), "bid value does not match hashed value");
 
         // if job was already assigned, refund 
         if (tender.details.tenderAccepter != address(0)) {
@@ -330,10 +330,5 @@ contract Auctions {
             }
         }
         return false;
-    }
-
-    // bad fix to hash values in javascript
-    function hashVal(uint256 bidValue, uint256 salt) public pure returns (uint256) {
-        return uint256(keccak256(abi.encodePacked(bidValue + salt)));
     }
 }

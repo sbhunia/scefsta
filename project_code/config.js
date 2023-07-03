@@ -1,6 +1,7 @@
 // contract addresses for both contracts
-export const accountsAddress = '0x507A4485b37c473F8Dc84D52F73F8bd7f30Db506';
-export const auctionsAddress = '0x921Dd59443176093811fba83798f762170C4E8d8';
+// sample deployment addresses
+export const accountsAddress = '0xb035a84749fd6F4fb389b6beA301394bB61cC0ba';
+export const auctionsAddress = '0x9307948aDA2d784063f647E2343C8dea2DB99b88';
 
 export const accounts_abi = [
   {
@@ -863,30 +864,5 @@ export const auctions_abi = [
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "bidValue",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "salt",
-        "type": "uint256"
-      }
-    ],
-    "name": "hashVal",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "pure",
-    "type": "function",
-    "constant": true
   }
 ];
