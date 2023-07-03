@@ -36,6 +36,17 @@ CREATE TABLE Patients (
     PRIMARY KEY (patientId)
 );
 
+CREATE TABLE Salts (
+    saltId int NOT NULL AUTO_INCREMENT,
+    walletId VARCHAR(100) NOT NULL,
+    tenderId int NOT NULL,
+    bidId int NOT NULL,
+    saltVal int NOT NULL,
+    PRIMARY KEY (saltId),
+    FOREIGN KEY (walletId) REFERENCES Users(walletId),
+    FOREIGN KEY (tenderId) REFERENCES Patients(patientId)
+);
+
 /******* Test Data ******/
 
 /* Hospitals */
