@@ -11,6 +11,7 @@ export const DevAboutURL = '/about';
 // table names
 export const Users = 'Users';
 export const Patients = 'Patients';
+export const Salts = 'Salts';
 
 // user table variables
 export const walletId = 'walletId';
@@ -37,6 +38,11 @@ export const status = "status";
 export const injuries = "injuries";
 export const mech = "mechanismOfInjury";
 
+// salt table variables
+export const saltId = "saltId";
+export const saltVal = "saltVal";
+export const bidId = "bidId";
+
 // API URLs
 export const getAdmins = 'http://localhost:3000/api/admins';        
 export const getPatients = 'http://localhost:3000/api/patients';        
@@ -52,6 +58,11 @@ export const deleteAdmins = 'api/admins';
 export const deleteAmbulance = 'api/ambulances';       
 export const deletePolice = 'api/police';   
 export const deleteHospital = 'api/hospitals';   
+
+export const getSalt = 'http://localhost:3000/api/salts';        
+export const addSalt = 'api/salts';        
+export const deleteSalt = 'api/salts'; 
+
 
 // Page titles
 export const DASHBOARD = 'Dashboard';

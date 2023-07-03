@@ -1,4 +1,3 @@
-//import clientPromise from  '../../util/mongodb'
 'use strict';
 const mysqlLib = require('../../config_database/mysqlLib')
 import * as Constants from '../constants'

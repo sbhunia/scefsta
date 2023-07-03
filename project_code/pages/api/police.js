@@ -18,7 +18,6 @@ export default async function handler(req, res) {
 }
 
 async function addPolice(req, res) {
-
     let policeDept = JSON.parse(req.body)["policeDept"];
     let station = JSON.parse(req.body)["station"];
     let address = JSON.parse(req.body)["address"];
