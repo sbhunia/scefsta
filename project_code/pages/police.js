@@ -16,7 +16,6 @@ import {Total} from '../components/Dashboard/Total'
 import * as Constants from '../pages/constants';
 import { checkPolice } from '../solidityCalls';
 import { getAllTenders } from '../solidityCalls';
-import * as Constants from '../pages/constants';
 
 const BigNumber = require('bignumber.js');
 
