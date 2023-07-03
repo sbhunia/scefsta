@@ -9,6 +9,7 @@ import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import { AUCTION_INSTANCE } from '../../pages/_app';
+import * as Constants from '../../pages/constants';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -188,7 +189,7 @@ export default function TenderForm(props) {
             <div style={{ display: 'flex' }}>
                 <LocalPoliceIcon style={{ fontSize: '2.6rem' }}/>
                 <Typography variant="h4" component="div" gutterBottom className={styles.heading}>
-                    Police Tender Form
+                    {Constants.POLICE} Tender Form
                 </Typography>
             </div>
             <form className={styles.tenderForm}>

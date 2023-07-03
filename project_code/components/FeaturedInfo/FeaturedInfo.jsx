@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaHospitalSymbol, FaBuilding, FaFileContract } from 'react-icons/fa';
+import * as Constants from '../../pages/constants';
 
 export default function FeaturedInfo() {
     return (
@@ -13,7 +14,7 @@ export default function FeaturedInfo() {
                 </div>
 
                 <div className="col-sm FeaturedInfo_item">
-                    <span className="FeaturedInfo_title">Total Police Users</span>
+                    <span className="FeaturedInfo_title">Total {Constants.POLICE} Users</span>
                         <div className="FeaturedInfo_hospital-container">
                             <span className="FeaturedInfo_hospital-users"><FaBuilding /> 557</span>
                         </div>

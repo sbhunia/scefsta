@@ -26,7 +26,7 @@ export default function Hero() {
                         </div>
                         <div className={styles.footerItem}>
                             <Link href={Constants.DevPoliceURL}>
-                                <a>Police Departments</a>
+                                <a>{Constants.POLICE}</a>
                             </Link>
                         </div>
                         <div className={styles.footerItem}>

@@ -16,7 +16,7 @@ import { CircularProgress } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import * as Constants from '../pages/constants';
 import { checkAdmin } from '../solidityCalls';
-
+import * as Constants from '../pages/constants';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -87,7 +87,7 @@ function AdminPortal( {admins, hospitals, ambulances, police} ) {
                                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                                     <Tab label="Admins" className={styles.tabText} {...a11yProps(0)} />
                                     <Tab label="Hospitals" className={styles.tabText} {...a11yProps(1)} />
-                                    <Tab label="Police Stations" className={styles.tabText} {...a11yProps(2)} />
+                                    <Tab label={Constants.POLICE} className={styles.tabText} {...a11yProps(2)} />
                                     <Tab label="Ambulances" className={styles.tabText} {...a11yProps(3)} />
                                 </Tabs>
                             </Box>

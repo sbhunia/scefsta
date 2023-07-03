@@ -16,6 +16,8 @@ import {Total} from '../components/Dashboard/Total'
 import * as Constants from '../pages/constants';
 import { checkPolice } from '../solidityCalls';
 import { getAllTenders } from '../solidityCalls';
+import * as Constants from '../pages/constants';
+
 const BigNumber = require('bignumber.js');
 
 function TabPanel(props) {
@@ -129,7 +131,7 @@ export default function Police() {
                     <Sidebar/>
                     <div className={styles.tablesTotalContainer}>
                         <div className={styles.pageTitle}>
-                            <h2>Police / Dispatcher</h2>
+                            <h2>{Constants.POLICE} / Dispatcher</h2>
                         </div>
                         <Box sx={{ width: '100%' }}>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

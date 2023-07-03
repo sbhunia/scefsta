@@ -5,7 +5,7 @@ import styles from "../../styles/Tender.module.css"
 import TendersDataGrid from './TendersDataGrid';
 
 /**
- * Main component for Tenders table and search; used when looking at Open Police Tenders.
+ * Main component for Tenders table and search; used when looking at Open Tenders.
  * @param {*} tend JSON object containing open tenders.
  */
 export default function Tenders(tend) {
