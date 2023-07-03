@@ -11,7 +11,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
 import * as Constants from '../../pages/constants';
-
+import { useEthers } from '@usedapp/core'
 /**
  * 
  * @param {*} tenderID ID of the tender

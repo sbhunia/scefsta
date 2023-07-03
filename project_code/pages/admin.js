@@ -16,7 +16,6 @@ import { CircularProgress } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import * as Constants from '../pages/constants';
 import { checkAdmin } from '../solidityCalls';
-import * as Constants from '../pages/constants';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;

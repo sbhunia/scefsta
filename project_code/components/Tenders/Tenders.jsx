@@ -4,15 +4,16 @@ import TenderTable from './TenderTable';
 import styles from "../../styles/Tender.module.css"
 import TendersDataGrid from './TendersDataGrid';
 
-export default function Tenders(tend) {
+export default function Tenders(props) {
 
     // Filtering so as to only have Open tenders
-    let tenders = tend.data.filter(function(open) {
+    let tenders = props.data.filter(function(open) {
         return open.status == "Open";
     });
 
-    const popUpChecked = tend.popUpChecked;
-    const openTenders = tend.openTenders;
+    const popUpChecked = props.popUpChecked;
+    const openTenders = props.openTenders;
+    const biddingForm = props.biddingForm;
 
     const [searchTerm, setSearchTerm] = useState("");
     const inputEl = useRef("");
@@ -54,7 +55,7 @@ export default function Tenders(tend) {
             </div> */}
 
             {/* {<TenderTable data={searchTerm.length < 1 ? tenders : searchResults} popUpChecked={popUpChecked} openTenders={openTenders}/>} */}
-            {<TendersDataGrid data={tend.data} popUpChecked={popUpChecked} openTenders={true}/>}
+            {<TendersDataGrid data={props.data} popUpChecked={popUpChecked} openTenders={true} biddingForm={biddingForm} patients={props.patients}/>}
 
         </div>
     );

@@ -122,20 +122,20 @@ export default function ambulance({patients}) {
                         <Box sx={{ width: '100%' }}>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                                    <Tab label="Patient Information" className={styles.tabText} {...a11yProps(0)} />
-                                    <Tab label="Available Tenders" className={styles.tabText} {...a11yProps(1)} />
-                                    <Tab label="Bidding Form" className={styles.tabText} {...a11yProps(2)} />
+                                    <Tab label="Available Tenders" className={styles.tabText} {...a11yProps(0)} />
+                                    <Tab label="Open Bids" className={styles.tabText} {...a11yProps(1)} />
+                                    {/* <Tab label="Patient Information" className={styles.tabText} {...a11yProps(2)} /> */}
                                 </Tabs>
                             </Box>
                             <TabPanel value={value} index={0}>
-                                <Patients data={patients} />
+                                <Tenders data={tenders} biddingForm={true} openTenders={true} popUpChecked={true} patients={patients}/>
                             </TabPanel>
                             <TabPanel value={value} index={1}>
                                 <Tenders data={tenders} popUpChecked={true} openTenders={true} />
                             </TabPanel>
-                            <TabPanel value={value} index={2}>
-                                <BiddingForm data={{patients, tenders}} />
-                            </TabPanel>
+                            {/* <TabPanel value={value} index={2}>
+                                <Patients data={patients} />
+                            </TabPanel> */}
                         </Box>
                     </div>
                 </div>

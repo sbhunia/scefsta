@@ -27,7 +27,7 @@ export const policeDept = 'policeDept';
 export const station = 'station';
 export const hospitalSystem = 'hospitalSystem';
 export const licensePlate = 'licensePlate';
-export const adminAccount = 'adminAccount';
+export const accountType = "accountType";
 
 // patient table variables
 export const patientId = "patientId";

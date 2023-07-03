@@ -10,6 +10,7 @@ import ReclaimTender from '../Popup/ReclaimTender';
 import RetractTender from "../Popup/RetractTender";
 import styles from '../../styles/Tender.module.css';
 import TenderForm from '../TenderForm/TenderForm';
+import BiddingForm from './BiddingForm';
 
 const columns = [
     { field: 'id', headerName: 'Tender ID', width: 100, sortable: false},
@@ -28,8 +29,7 @@ const columns = [
    * @param {*} popUpChecked Boolen - if true, table is editable depending on user privileges; false otherwise
    * @param {*} openTenders Boolean - if true, tender entries are biddable.
    */
-export default function TendersDataGrid({data, popUpChecked, openTenders}) {
-    console.log(data);
+export default function TendersDataGrid({data, popUpChecked, openTenders, biddingForm, patients}) {
     // Allos popup to be displayed when a row is clicked
     const [rowPopup, setRowPopup] = useState(false);
     
@@ -106,12 +106,18 @@ export default function TendersDataGrid({data, popUpChecked, openTenders}) {
             }())}
             {(function () {
                 if (popUpChecked) {
-                    if (openTenders) {
+                    if (openTenders && !biddingForm) {
                         return (
                             <Popup trigger={rowPopup} setTrigger={setRowPopup}>
                                 <RevealBid tenderID={tenderID} penaltyAmt={penaltyAmt}/>
                             </Popup>
                         );
+                    } else if (biddingForm) {
+                        return(
+                            <Popup trigger={rowPopup} setTrigger={setRowPopup}>
+                                <BiddingForm tenderId={tenderID} penalty={penaltyAmt}/>
+                            </Popup>
+                        )
                     } else {
                         return (
                             <div>

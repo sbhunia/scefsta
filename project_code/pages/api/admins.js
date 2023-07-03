@@ -31,25 +31,10 @@ async function addAdmin(req, res) {
     let city = JSON.parse(req.body)["city"];
     let state = JSON.parse(req.body)["state"];
     let walletId = JSON.parse(req.body)["walletId"];
-    let adminAccount = 10;
-    console.log("firstName: ", firstName);
+    let adminAccount = 'admin';
     let query = "   INSERT INTO " + Constants.Users + " (   " + Constants.walletId + ", " + Constants.firstName + ", " + Constants.lastName + ", " + Constants.email + ", " + Constants.address + ", \
-                                                            " + Constants.city + ", " + Constants.state + ", " + Constants.adminAccount + ") \
-                    VALUES ('" + walletId + "', '" + firstName + "', '" + lastName + "', '" + email + "', '" + address + "', '" + city + "', '" + state + "', '" + adminAccount + "' );";
-
-    // let firstName = JSON.parse(req.body)["firstName"];
-    // let lastName = JSON.parse(req.body)["lastName"];
-    // let email = JSON.parse(req.body)["email"];
-    // let address = JSON.parse(req.body)["address"];
-    // let city = JSON.parse(req.body)["city"];
-    // let state = JSON.parse(req.body)["state"];
-    // let walletId = JSON.parse(req.body)["walletId"];
-    // let adminAccount = 10;
-    // // + ", " + Constants.adminAccount
-    // // ", " + adminAccount +
-    // let query = "   INSERT INTO " + Constants.Users + " (   " + Constants.walletId + ", " + Constants.firstName + ", " + Constants.lastName + ", " + Constants.email + ", " + Constants.address + ", \
-    //                                                         " + Constants.city + ", " + Constants.state + ", " + Constants.licensePlate + ") \
-    //                 VALUES ('" + walletId + "', '" + firstName + "', '" + lastName + "', '" + email + "', '" + address + "', '" + city + "', '" + state + "', '" + licensePlate + "' );";
+                                                            " + Constants.city + ", " + Constants.state + ", " + Constants.accountType + ") \
+                    VALUES ('" + walletId + "', '" + firstName + "', '" + lastName + "', '" + email + "', '" + address + "', '" + city + "', '" + state + "', '" + adminAccount + "' );"; 
 
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {
@@ -74,11 +59,11 @@ async function getAdmins(req, res) {
 
     let query = "   SELECT  " + Constants.walletId + ", " + Constants.firstName + ", " + Constants.lastName + ", " + Constants.email + ", \
                             " + Constants.ipAddress + ", " + Constants.username + ", " + Constants.address + ", " + Constants.city + ",   \
-                            " + Constants.state + ", " + Constants.licensePlate + ", " + Constants.adminAccount + "                       \
+                            " + Constants.state + ", " + Constants.licensePlate + ", " + Constants.accountType + "                       \
                     FROM    " + Constants.Users + "                                                       \
                     WHERE   " + Constants.station + "         IS  NULL         AND                        \
                             " + Constants.policeDept + "      IS  NULL         AND                        \
-                            " + Constants.adminAccount + "    IS  NOT NULL     AND                        \                     \
+                            " + Constants.accountType + "    = 'admin'     AND                        \                     \
                             " + Constants.licensePlate + "    IS  NULL;"
 
     return new Promise((resolve, reject) => {
