@@ -10,6 +10,7 @@ import FilledInput from '@mui/material/FilledInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
+import * as Constants from '../../pages/constants';
 
 /**
  * 
@@ -19,6 +20,7 @@ import { ACCOUNT_INSTANCE } from '../../pages/_app';
  * @returns 
  */
 export default function RevealBid( { tenderID, penaltyAmt } ) {
+    const { account } = useEthers();
 
     //Hooks
     const [bidValue, setBidValue] = React.useState(0);
@@ -38,7 +40,19 @@ export default function RevealBid( { tenderID, penaltyAmt } ) {
     console.log(state);
 
     // When button is clicked, the tender is reclaimed
-    const handleRevealBid = () => {
+    const handleRevealBid = async () => {
+        const saltInfo = {
+            patientId: tenderID,
+            bidId: bidID,
+            walletId: 
+        };
+
+        // get the salt value
+        let response = await fetch(Constants.getSalt, {
+            method: 'GET',
+            body: JSON.stringify(saltInfo)
+        });
+
         /**
          * revealBid(tenderID, bidValue, salt, bidID)
          * tenderID - ID of the tender

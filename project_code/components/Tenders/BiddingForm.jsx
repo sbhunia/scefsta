@@ -13,17 +13,16 @@ import Select from '@mui/material/Select';
 import FilledInput from '@mui/material/FilledInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import Map from '../mapSmall';
-import { auctionsAddress, auctions_abi } from '../../config';
 import { useContractFunction, transactionErrored, useEthers } from '@usedapp/core';
 import { CircularProgress } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
 import { getTender } from '../../solidityCalls';
 import * as Constants from '../../pages/constants';
-import { Contract } from '@ethersproject/contracts';
 import BigNumber from 'bignumber.js';
 import Web3 from 'web3';
 import { AUCTION_INSTANCE } from '../../pages/_app';
+import random from "random";
 
 const web3 = new Web3();
 
@@ -49,10 +48,10 @@ async function addBid(walletID, tenderID, bidID) {
  * Creates bidding form for ambulances.
  * @returns 
  */
-export default function BiddingForm (data){
+export default function BiddingForm (props){
   const { account } = useEthers();
 
-  let patientData = data.data.patients;
+  let patientData = props.data.patients;
   const [patientId, setPatientId] = React.useState('[Patient ID]');
   const [patientName, setPatientName] = React.useState('[Patient Name]');
   const [patientGender, setPatientGender] = React.useState('[Patient sex/gender]');
@@ -63,7 +62,7 @@ export default function BiddingForm (data){
   const [patientExpiration, setPatientExpiration] = React.useState('[Tender Expiration]');
   const [proposedTender, setProposedTender] = React.useState(0);
   const [desiredBid, setDesiredBid] = React.useState('');
-  const [tenderID, setTenderID] = React.useState(0);
+  const [salt, setSalt] = React.useState();
   
   let tender = getTender(patientId);  
 
@@ -88,7 +87,6 @@ export default function BiddingForm (data){
       setPatientSeverity(severity);
       setPatientExpiration("Due: " + formattedDueDate);
       setProposedTender(0);
-      setTenderID(patient.patientId);
     }
   };
 
@@ -101,17 +99,35 @@ export default function BiddingForm (data){
 
   // submit the bid to the blockchain
   const submitBid = () => {
-    // need to update the + 10 to a generated salt value (stored in DB??)
-    console.log(parseInt(desiredBid));
-    let hash = web3.utils.soliditySha3(parseInt(desiredBid) + 10);
+    // generate random salt value (16 digits)
+    const salt = "";
+    for (let i = 0; i < 16; i++) {
+      salt += String(random.randint(0, 9));
+    }
+    
+    setSalt(parseInt(salt));
+    let hash = web3.utils.soliditySha3(parseInt(desiredBid) + parseInt(salt));
     let penalty = parseInt(new BigNumber(tender[0]['details']['penalty']['_hex']).toString());
     send1(patientId, hash, {value: penalty});
   }
 
-  const finalizeTransaction = () => {
+  const finalizeTransaction = async () => {
     // Adding to a map inside the ambulances table (corresponding to that specific ambulance) where the key is 
     // the tenderID and the value is the bidID
-    addBid(account, tenderID, parseInt(events[0].args.index._hex))
+    //addBid(account, tenderID, parseInt(events[0].args.index._hex))
+
+    // add the salt value to a table
+    const newSalt = {
+      patientId: patientId,
+      walletId: account,
+      bidId: parseInt(events[0].args.index._hex),
+      saltVal: salt,
+    }
+
+    let response = await fetch(Constants.addSalt, {
+      method: 'POST',
+      body: JSON.stringify(newSalt)
+    });
   }
 
   // re-render specifically if patientId is changed (in dropdown menu)
