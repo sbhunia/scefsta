@@ -30,7 +30,7 @@
     "ethers": "^5.7.2",
     "export": "^0.1.337",
     "ganache": "^7.8.0",
-    "google-map-react": "^2.2.0",
+    "google-map-react": "^2.2.1",
     "history": "^5.0.1",
     "keccak256": "^1.0.6",
     "leaflet": "^1.7.1",

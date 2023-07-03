@@ -1,6 +1,7 @@
-import MapGL, {GeolocateControl} from "react-map-gl"
+import MapGL, {GeolocateControl, Marker} from "react-map-gl"
 import React, { useState } from "react";
 import styles from '../styles/Home.module.css';
+import styles2 from '../styles/Map.module.css';
 
 const Map = () => {
 
@@ -14,6 +15,7 @@ const Map = () => {
   const _onViewportChange = viewport =>
     setViewPort({ ...viewport, transitionDuration: 20 });
 
+   
   return (
     <MapGL
       {...viewport}
@@ -27,6 +29,12 @@ const Map = () => {
         trackUserLocation={true}
         auto
       />
+
+      <Marker 
+        postion={[viewport.latitude, viewport.longitude]} icon ={"text"} latitude={39.103119} longitude={-84.512016}
+      >
+      <div className={`${styles2.marker}`}><span></span></div>
+      </Marker>
     </MapGL>
   );
 }
