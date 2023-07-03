@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { useState, useEffect, useMemo } from 'react';
-import { Button, TextField } from '@mui/material';
+import { useState } from 'react';
+import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import Popup from '../Popup/Popup';
-const BigNumber = require('bignumber.js');
 import RevealBid from "../Popup/RevealBid";
 import ReclaimTender from '../Popup/ReclaimTender';
 import RetractTender from "../Popup/RetractTender";
