@@ -5,7 +5,7 @@ import TopNavbar from '../components/TopNavbar/TopNavbar';
 import Sidebar from '../components/SideBar/Sidebar';
 import Ambulances from '../components/Ambulances/Ambulances';
 import Tenders from '../components/Tenders/Tenders';
-import Map from './map';
+import Map from './Map';
 import { useEthers } from '@usedapp/core'
 import Router from 'next/router';
 import { Button, CircularProgress } from '@mui/material';
