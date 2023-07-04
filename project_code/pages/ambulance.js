@@ -14,6 +14,7 @@ import Router from 'next/router';
 import * as Constants from '../pages/constants';
 import { checkAmbulance } from '../solidityCalls';
 import { getAllTenders } from '../solidityCalls';
+import SaltsDataGrid from '../components/Salts/SaltsDataGrid';
 const BigNumber = require('bignumber.js');
 
 
@@ -57,11 +58,17 @@ function a11yProps(index) {
  * @returns 
  */
 export default function ambulance({patients}) {
-
     const { account } = useEthers();
 
     const isAmbulance = checkAmbulance(account);
 
+    const salts = {
+        walletId: "0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80",
+        patientId: 2,
+        bidId: 0,
+        saltValue: "78757623669420"
+    }
+    
     // get all the tenders
     var valueTend = getAllTenders();
     var tenders = [];
@@ -131,7 +138,7 @@ export default function ambulance({patients}) {
                                 <Tenders data={tenders} biddingForm={true} openTenders={true} popUpChecked={true} patients={patients}/>
                             </TabPanel>
                             <TabPanel value={value} index={1}>
-                                <Tenders data={tenders} popUpChecked={true} openTenders={true} />
+                                <SaltsDataGrid data={salts}/>
                             </TabPanel>
                             {/* <TabPanel value={value} index={2}>
                                 <Patients data={patients} />
@@ -174,8 +181,8 @@ export default function ambulance({patients}) {
 
 export async function getStaticProps(ctx) {
 
-    const res1 = await fetch(Constants.getPatients)
-    const data1 = await res1.json()
+    const res1 = await fetch(Constants.getPatients);
+    const data1 = await res1.json();
 
     return {
         props: {

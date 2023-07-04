@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     
     switch (req.method) {
         case 'GET': {
-            return getSalt(req, res)
+            return getSalts(req, res)
         }
         case 'POST': {
             return addSalt(req, res)
@@ -41,18 +41,14 @@ async function addSalt(req, res) {
 }
 
 // Queries the database for police and returns the results
-async function getSalt(req, res) {
+async function getSalts(req, res) {
     let walletId = JSON.parse(req.body)['walletId'];
-    let patientId = JSON.parse(req.body)['patientId'];
-    let bidId = JSON.parse(req.body)['bidId'];
 
     let query = "   SELECT  " + Constants.saltId + ", " + Constants.walletId + ", " + Constants.patientId + ",    \
                             " + Constants.saltVal + ", " + Constants.bidId + "                                    \
                     FROM    " + Constants.Salts + "                                                       \
-                    WHERE   " + Constants.walletId + " = " + walletId + " AND                                 \
-                            " + Constants.patientId + " = " + patientId + " \
-                            " + Constants.bidId + " = " + bidId + ";";
-
+                    WHERE   " + Constants.walletId + " = " + walletId + ";";
+                        
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {
             //console.log(d);
