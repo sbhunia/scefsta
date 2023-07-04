@@ -59,10 +59,8 @@ function a11yProps(index) {
  * Path: localhost:3000/admin
  */
 function AdminPortal( {admins, hospitals, ambulances, police} ) {
-
     const { account } = useEthers();
     const isAdmin = checkAdmin(account);
-    //const isAdmin = true; // Temporary fix for testing
 
     const [value, setValue] = React.useState(0);
 
