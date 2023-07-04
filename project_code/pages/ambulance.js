@@ -138,7 +138,7 @@ export default function ambulance({patients}) {
                                 <Tenders data={tenders} biddingForm={true} openTenders={true} popUpChecked={true} patients={patients}/>
                             </TabPanel>
                             <TabPanel value={value} index={1}>
-                                <SaltsDataGrid data={salts}/>
+                                <SaltsDataGrid data={salts} accountId={account}/>
                             </TabPanel>
                             {/* <TabPanel value={value} index={2}>
                                 <Patients data={patients} />

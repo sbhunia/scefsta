@@ -42,16 +42,23 @@ async function addSalt(req, res) {
 
 // Queries the database for police and returns the results
 async function getSalts(req, res) {
-    let walletId = JSON.parse(req.body)['walletId'];
-
-    let query = "   SELECT  " + Constants.saltId + ", " + Constants.walletId + ", " + Constants.patientId + ",    \
-                            " + Constants.saltVal + ", " + Constants.bidId + "                                    \
-                    FROM    " + Constants.Salts + "                                                       \
-                    WHERE   " + Constants.walletId + " = " + walletId + ";";
-                        
+    let walletId = req.query.walletId;
+    let query = "SELECT  * \
+                FROM    " + Constants.Salts + " \
+                LEFT JOIN " + Constants.Patients + " ON \
+                " + Constants.Patients + "." + Constants.patientId + " = " + Constants.Salts + "." + Constants.patientId + " \
+                WHERE   " + Constants.walletId + " = '" + walletId + "';";
+    
+    // let query = "SELECT  " + Constants.saltId + ", " + Constants.walletId + ", " + Constants.Salts + "." + Constants.patientId + ", \
+    //                         " + Constants.saltVal + ", " + Constants.bidId + " \
+    //             FROM    " + Constants.Salts + " \
+    //             LEFT JOIN " + Constants.Patients + " ON \
+    //             " + Constants.Patients + "." + Constants.patientId + " = " + Constants.Salts + "." + Constants.patientId + " \
+    //             WHERE   " + Constants.walletId + " = '" + walletId + "';";
+    
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {
-            //console.log(d);
+            console.log(d);
             res.status(200).send(d);
             resolve();
         }).catch(e => {
