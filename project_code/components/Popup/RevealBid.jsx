@@ -19,12 +19,11 @@ import { useEthers } from '@usedapp/core'
  * @param {*} penaltyAmt the penalty amount of the tender
  * @returns 
  */
-export default function RevealBid( { tenderID, penaltyAmt } ) {
+export default function RevealBid( { tenderID, penaltyAmt, saltVal, bidId } ) {
     const { account } = useEthers();
 
     //Hooks
     const [bidValue, setBidValue] = React.useState(0);
-    const [bidID, setBidID] = React.useState(0);
    
     // Obtaining React Hooks from reclaimTender smart contract function
     const {send, state} = useContractFunction(ACCOUNT_INSTANCE, 'revealBid');
@@ -33,26 +32,10 @@ export default function RevealBid( { tenderID, penaltyAmt } ) {
         setBidValue(event.target.value)
     }
 
-    const handleBidID = (event) => {
-        setBidID(event.target.value)
-    }
-
-    console.log(state);
+    console.log(bidId);
 
     // When button is clicked, the tender is reclaimed
     const handleRevealBid = async () => {
-        const saltInfo = {
-            patientId: tenderID,
-            bidId: bidID,
-            walletId: account
-        };
-
-        // get the salt value
-        let response = await fetch(Constants.getSalt, {
-            method: 'GET',
-            body: JSON.stringify(saltInfo)
-        });
-
         /**
          * revealBid(tenderID, bidValue, salt, bidID)
          * tenderID - ID of the tender
@@ -62,7 +45,7 @@ export default function RevealBid( { tenderID, penaltyAmt } ) {
          * penaltyAmt - msg.value
          * 
          */
-        send(tenderID, bidValue, 10, bidID, {value: penaltyAmt});
+        send(tenderID, bidValue, saltVal, bidId, {value: penaltyAmt});
     }
 
     return (
@@ -70,7 +53,7 @@ export default function RevealBid( { tenderID, penaltyAmt } ) {
             <h2>Bid Reveal</h2>
             <div>
                 <FormControl fullWidth variant="filled" className={styles.givenRewardDiv}>
-                    <InputLabel htmlFor="filled-adornment-amount">Please re-enter your bid value:</InputLabel>
+                    <InputLabel htmlFor="filled-adornment-amount">Please re-confirm your bid value:</InputLabel>
                     <FilledInput
                         id="filled-adornment-amount"
                         value={bidValue}
@@ -79,11 +62,11 @@ export default function RevealBid( { tenderID, penaltyAmt } ) {
                     />
                 </FormControl>
                 <FormControl fullWidth variant="filled" className={styles.givenRewardDiv}>
-                    <InputLabel htmlFor="filled-adornment-amount">Enter your unique bid ID:</InputLabel>
+                    <InputLabel htmlFor="filled-adornment-amount">Your Unique Bid ID:</InputLabel>
                     <FilledInput
                         id="filled-adornment-amount"
-                        value={bidID}
-                        onChange={handleBidID}
+                        value={bidId}
+                        disabled={true}
                     />
                 </FormControl>
             </div>

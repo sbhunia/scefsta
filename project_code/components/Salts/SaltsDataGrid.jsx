@@ -8,6 +8,7 @@ import * as Constants from "../../pages/constants";
 const columns = [
   { field: 'patientId', headerName: 'Tender ID', width: 100, sortable: true},
   { field: 'bidId', headerName: 'Bid ID', width: 75, sortable: true},
+  { field: 'bidValue', headerNmae: 'Proposed Bid', width: 75, sortable: true},
   { field: 'fullAddress', headerName: 'Address of Incident', width: 375, sortable: false, resizable: true},
   { field: 'injuries', headerName: 'Patient Injuries', width: 200, sortable: false},
   { field: 'mechanismOfInjury', headerName: 'Mechanism of Injury', width: 200, sortable: false}
@@ -19,6 +20,7 @@ export default function SaltsDataGrid({ accountId }) {
   const [penaltyAmt, setPenaltyAmt] = useState();
   const [salts, setSalts] = useState();
   const [loading, setLoading] = useState(true);
+  const [bidId, setBidId] = useState();
 
   useEffect(() => {
     const getSalts = async () => {
@@ -38,10 +40,11 @@ export default function SaltsDataGrid({ accountId }) {
     }
   }, []);
 
-  const performPopup = (index, value, penalty) => {
+  const performPopup = (index, value, penalty, bidId) => {
     setRowPopup(true);
     setTenderID(index);
     setPenaltyAmt(penalty);
+    setBidId(bidId);
   };
 
   if (loading) {
@@ -65,7 +68,7 @@ export default function SaltsDataGrid({ accountId }) {
           borderColor: '#ff8a80',
         }}
         onRowClick={(row) => {
-          performPopup(row['row']['id'], row['row']['paymentAmount'], row['row']['penaltyAmount']);
+          performPopup(row['row']['id'], row['row']['paymentAmount'], row['row']['penaltyAmount'], row['row']['bidId']);
         }}
         rows={salts}
         getRowId={(row) => row.saltId}
@@ -93,7 +96,7 @@ export default function SaltsDataGrid({ accountId }) {
         autoHeight
       />
       <Popup trigger={rowPopup} setTrigger={setRowPopup}>
-        <RevealBid tenderID={tenderID} penaltyAmt={penaltyAmt} />
+        <RevealBid tenderID={tenderID} penaltyAmt={penaltyAmt} bidId={bidId}/>
       </Popup>
     </div>
   );
