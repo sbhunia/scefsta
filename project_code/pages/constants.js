@@ -42,6 +42,7 @@ export const mech = "mechanismOfInjury";
 export const saltId = "saltId";
 export const saltVal = "saltVal";
 export const bidId = "bidId";
+export const bidVal = "bidVal";
 
 // API URLs
 export const getAdmins = 'http://localhost:3000/api/admins';        

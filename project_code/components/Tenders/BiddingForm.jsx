@@ -62,6 +62,7 @@ export default function BiddingForm ({tenderId, penalty}){
       walletId: account,
       bidId: bidID,
       saltVal: salt,
+      bidVal: parseInt(desiredBid)
     }
 
     let response = await fetch(Constants.addSalt, {

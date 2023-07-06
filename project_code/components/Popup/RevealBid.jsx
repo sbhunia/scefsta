@@ -53,6 +53,25 @@ export default function RevealBid( { tenderID, penaltyAmt, saltVal, bidId } ) {
             <h2>Bid Reveal</h2>
             <div>
                 <FormControl fullWidth variant="filled" className={styles.givenRewardDiv}>
+                    <InputLabel htmlFor="filled-adornment-amount">Proposed Bid Amount:</InputLabel>
+                    <FilledInput
+                        id="filled-adornment-amount"
+                        value={bidValue}
+                        startAdornment={<InputAdornment position="start">WEI</InputAdornment>}
+                        disabled={true}
+                    />
+                </FormControl>
+                <FormControl fullWidth variant="filled" className={styles.givenRewardDiv}>
+                <InputLabel htmlFor="filled-adornment-amount">Proposed Tender ID:</InputLabel>
+                    <FilledInput
+                        id="filled-adornment-amount"
+                        value={bidId}
+                        disabled={true}
+                    />
+                </FormControl>
+            </div>
+            <div>
+                <FormControl fullWidth variant="filled" className={styles.givenRewardDiv}>
                     <InputLabel htmlFor="filled-adornment-amount">Please re-confirm your bid value:</InputLabel>
                     <FilledInput
                         id="filled-adornment-amount"

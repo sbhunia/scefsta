@@ -8,7 +8,7 @@ import * as Constants from "../../pages/constants";
 const columns = [
   { field: 'patientId', headerName: 'Tender ID', width: 100, sortable: true},
   { field: 'bidId', headerName: 'Bid ID', width: 75, sortable: true},
-  { field: 'bidValue', headerNmae: 'Proposed Bid', width: 75, sortable: true},
+  { field: 'bidVal', headerName: 'Bid Value', width: 125, sortable: true},
   { field: 'fullAddress', headerName: 'Address of Incident', width: 375, sortable: false, resizable: true},
   { field: 'injuries', headerName: 'Patient Injuries', width: 200, sortable: false},
   { field: 'mechanismOfInjury', headerName: 'Mechanism of Injury', width: 200, sortable: false}
@@ -26,10 +26,10 @@ export default function SaltsDataGrid({ accountId }) {
     const getSalts = async () => {
       const res = await fetch(Constants.getSalt + '?walletId=' + accountId);
       const data = await res.json();
+      console.log(data);
       for (var i = 0; i < data.length; i++) {
         data[i]['fullAddress'] = data[i]['address'] + ", " + data[i]['city'] + ", " + data[i]['state'];
       }
-      console.log("data", data);
 
       setSalts(data);
       setLoading(false);

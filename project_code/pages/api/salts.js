@@ -22,11 +22,15 @@ async function addSalt(req, res) {
     let patientId = JSON.parse(req.body)['patientId'];
     let bidId = JSON.parse(req.body)['bidId'];
     let saltVal = JSON.parse(req.body)['saltVal'];
+    let bidVal = JSON.parse(req.body)['bidVal'];
+
+    // let query = "   INSERT INTO " + Constants.Salts + " (   " + Constants.walletId + ", " + Constants.patientId + ", " + Constants.bidId + ", \
+    //                                                         " + Constants.saltVal + ") \
+    //                 VALUES ('" + walletId + "', '" + patientId + "', '" + bidId + "', '" + saltVal + "');";
 
     let query = "   INSERT INTO " + Constants.Salts + " (   " + Constants.walletId + ", " + Constants.patientId + ", " + Constants.bidId + ", \
-                                                            " + Constants.saltVal + ") \
-                    VALUES ('" + walletId + "', '" + patientId + "', '" + bidId + "', '" + saltVal + "');";
-
+            " + Constants.saltVal + ", " + Constants.bidVal + ") \
+            VALUES ('" + walletId + "', '" + patientId + "', '" + bidId + "', '" + saltVal + "', '" + bidVal + ");";
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {
             //console.log(d);
@@ -55,7 +59,7 @@ async function getSalts(req, res) {
     //             LEFT JOIN " + Constants.Patients + " ON \
     //             " + Constants.Patients + "." + Constants.patientId + " = " + Constants.Salts + "." + Constants.patientId + " \
     //             WHERE   " + Constants.walletId + " = '" + walletId + "';";
-    
+    console.log("query: ", query);
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {
             console.log(d);
