@@ -4,22 +4,20 @@ CREATE DATABASE AIS;
 USE AIS;
 
 CREATE TABLE Users (
-            walletId            VARCHAR(100)    NOT NULL,
+            walletId            VARCHAR(42)    NOT NULL,
             firstName           VARCHAR(50),
             lastName            VARCHAR(50),
             email               VARCHAR(50),
-            username            VARCHAR(50),
             address             VARCHAR(50)     NOT NULL,
             city                VARCHAR(50)     NOT NULL,
             state               VARCHAR(50)     NOT NULL,
             policeDept          VARCHAR(50),
-            station             VARCHAR(50),
-            hospitalSystem      VARCHAR(100),
-            licensePlate        VARCHAR(50),
+            stationNumber             VARCHAR(50),
             transportCompany    VARCHAR(100),
+            licensePlate        VARCHAR(50),
             facilityName        VARCHAR(100),
-            accountType ENUM('admin', 'initiator', 'facility', 'transport')     NOT NULL,
             initiatorType ENUM('emergency', 'private', 'facility'),
+            accountType ENUM('admin', 'initiator', 'facility', 'transport')     NOT NULL,
             PRIMARY KEY (walletId)
 );
 
@@ -32,11 +30,10 @@ CREATE TABLE Patients (
             city                VARCHAR(50)     NOT NULL,
             state               VARCHAR(50)     NOT NULL,
             zipcode             INT             NOT NULL,
+            injuries            VARCHAR(200),
+            mechanismOfInjury   VARCHAR(50),
+            severity            VARCHAR(50),
             status              ENUM('pending', 'incoming', 'accepted')     NOT NULL,
-            injuries            VARCHAR(100),
-            mechanismOfInjury   VARCHAR(50),
-            mechanismOfInjury   VARCHAR(50),
-            severity VARCHAR(50),
             PRIMARY KEY (patientId)
 );
 
@@ -46,6 +43,7 @@ CREATE TABLE Salts (
             patientId int NOT NULL,
             bidId int NOT NULL,
             saltVal BIGINT NOT NULL,
+            bidVal INT NOT NULL,
             PRIMARY KEY (saltId),
             FOREIGN KEY (walletId) REFERENCES Users(walletId),
             FOREIGN KEY (patientId) REFERENCES Patients(patientId)
@@ -54,26 +52,26 @@ CREATE TABLE Salts (
 /******* Test Data ******/
 
 /* Hospitals */
-insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, station, hospitalSystem, licensePlate) values ('1DnkEH4zGcCTDqJboBUT15cNtoNHbq4Kqf', 'Inigo', 'Murcutt', 'imurcutt1@cnbc.com', '217.226.82.185', 'imurcutt1', '110 N. Poplar St.', 'Oxford', 'Ohio', null, null, 'McCullough-Hyde Memorial Hospital', null);
-insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, station, hospitalSystem, licensePlate) values ('1EuQMyqZHZNU44ukXgtRAaNkGAQuYSQHNC', 'Ambur', 'Puddifer', 'apuddiferc@gravatar.com', '54.180.103.220', 'apuddiferc', '8614 Shepherd Farm Drive', 'West Chester', 'Ohio', null, null, 'Beckett Springs Hospital', null);
-insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, station, hospitalSystem, licensePlate) values ('1JuBUNvHbApGvtEa91XBj67rW4j8Jecq2n', 'Rosita', 'Fishwick', 'rfishwick3@scribd.com', '255.224.253.2', 'rfishwick3', '3075 Hamilton-Mason Road', 'Hamilton', 'Ohio', null, null, 'Bethesda Butler Hospital', null);
-insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, station, hospitalSystem, licensePlate) values ('15gm7rTmeZybRBHG5YFosiQNzYsxoQm9sn', 'Genovera', 'Christophe', 'gchristophe4@photobucket.com', '82.10.20.223', 'gchristophe4', '6939 Cox Road', 'Liberty Township', 'Ohio', null, null, 'The Christ Hospital Medical Center - Liberty Township', null);   
-insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, station, hospitalSystem, licensePlate) values ('1F5C1YnjnfP8afMo2rgmNzCBZP6dTTPWyR', 'Gaby', 
+insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, stationNumber, hospitalSystem, licensePlate) values ('1DnkEH4zGcCTDqJboBUT15cNtoNHbq4Kqf', 'Inigo', 'Murcutt', 'imurcutt1@cnbc.com', '217.226.82.185', 'imurcutt1', '110 N. Poplar St.', 'Oxford', 'Ohio', null, null, 'McCullough-Hyde Memorial Hospital', null);
+insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, stationNumber, hospitalSystem, licensePlate) values ('1EuQMyqZHZNU44ukXgtRAaNkGAQuYSQHNC', 'Ambur', 'Puddifer', 'apuddiferc@gravatar.com', '54.180.103.220', 'apuddiferc', '8614 Shepherd Farm Drive', 'West Chester', 'Ohio', null, null, 'Beckett Springs Hospital', null);
+insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, stationNumber, hospitalSystem, licensePlate) values ('1JuBUNvHbApGvtEa91XBj67rW4j8Jecq2n', 'Rosita', 'Fishwick', 'rfishwick3@scribd.com', '255.224.253.2', 'rfishwick3', '3075 Hamilton-Mason Road', 'Hamilton', 'Ohio', null, null, 'Bethesda Butler Hospital', null);
+insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, stationNumber, hospitalSystem, licensePlate) values ('15gm7rTmeZybRBHG5YFosiQNzYsxoQm9sn', 'Genovera', 'Christophe', 'gchristophe4@photobucket.com', '82.10.20.223', 'gchristophe4', '6939 Cox Road', 'Liberty Township', 'Ohio', null, null, 'The Christ Hospital Medical Center - Liberty Township', null);   
+insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, stationNumber, hospitalSystem, licensePlate) values ('1F5C1YnjnfP8afMo2rgmNzCBZP6dTTPWyR', 'Gaby', 
 'Cecere', 'gcecere7@topsy.com', '230.108.65.20', 'gcecere7', '630 Eaton Ave', 'Hamilton', 'Ohio', null, null, 'Kettering Health Hamilton', null);
-insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, station, hospitalSystem, licensePlate) values ('1MX2d2jkwGULGAQyozrqZKA9S3Qg83eNrg', 'Candis', 'Danks', 'cdanks8@constantcontact.com', '87.34.152.3', 'cdanks8', '3000 Mack Rd.', 'Fairfield', 'Ohio', null, null, 'Mercy Health - Fairfield Hospital', null);
-insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, station, hospitalSystem, licensePlate) values ('13XngTHLgGv7RnvCgJik3Z788DobThsXko', 'Rene', 
+insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, stationNumber, hospitalSystem, licensePlate) values ('1MX2d2jkwGULGAQyozrqZKA9S3Qg83eNrg', 'Candis', 'Danks', 'cdanks8@constantcontact.com', '87.34.152.3', 'cdanks8', '3000 Mack Rd.', 'Fairfield', 'Ohio', null, null, 'Mercy Health - Fairfield Hospital', null);
+insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, stationNumber, hospitalSystem, licensePlate) values ('13XngTHLgGv7RnvCgJik3Z788DobThsXko', 'Rene', 
 'Kendell', 'rkendell9@reddit.com', '214.107.41.188', 'rkendell9', '7700 University Drive', 'West Chester', 'Ohio', null, null, 'West Chester Hospital', null);
-insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, station, hospitalSystem, licensePlate) values ('19Y8LRs9zcKvznphuQbkscqpF3YeH46ukM', 'Kesley', 'Harrismith', 'kharrismithb@jimdo.com', '46.172.12.243', 'kharrismithb', '7750 Discovery Drive', 'West Chester', 'Ohio', null, null, 'The West Chester Hospital Surgical Center', null);
+insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, stationNumber, hospitalSystem, licensePlate) values ('19Y8LRs9zcKvznphuQbkscqpF3YeH46ukM', 'Kesley', 'Harrismith', 'kharrismithb@jimdo.com', '46.172.12.243', 'kharrismithb', '7750 Discovery Drive', 'West Chester', 'Ohio', null, null, 'The West Chester Hospital Surgical Center', null);
 
 
 /* Police */
-insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, station, hospitalSystem, licensePlate) values ('1HHRofTaCBHLKz7Jt15BpyWYyszGTEM32f', 'Jacob', 'Linscott', 'jlinscott0@livejournal.com', '144.139.215.145', 'jlinscott0', '20086 Farragut Junction', 'Prescott', 'Arizona', 'Prescott Police Department', '1', null, null);
-insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, station, hospitalSystem, licensePlate) values ('14TJnbdoqFWAAg6Z4VD8T6HnJ5VmA4PViL', 'Vannie', 'Bottrell', 'vbottrell5@ifeng.com', '75.91.12.14', 'vbottrell5', '52256 Alpine Road', 'Cincinnati', 'Ohio', 'Cincinnati Police Department', '3', null, null);
-insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, station, hospitalSystem, licensePlate) values ('18qrb3P1rtyRkyc8uEZWbxJDkdErKkD4T1', 'Edsel', 'Killeley', 'ekilleleya@wired.com', '26.33.70.92', 'ekilleleya', '01112 Hudson Plaza', 'Denver', 'Colorado', 'Denver Police Department', '1', null, null);
+insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, stationNumber, hospitalSystem, licensePlate) values ('1HHRofTaCBHLKz7Jt15BpyWYyszGTEM32f', 'Jacob', 'Linscott', 'jlinscott0@livejournal.com', '144.139.215.145', 'jlinscott0', '20086 Farragut Junction', 'Prescott', 'Arizona', 'Prescott Police Department', '1', null, null);
+insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, stationNumber, hospitalSystem, licensePlate) values ('14TJnbdoqFWAAg6Z4VD8T6HnJ5VmA4PViL', 'Vannie', 'Bottrell', 'vbottrell5@ifeng.com', '75.91.12.14', 'vbottrell5', '52256 Alpine Road', 'Cincinnati', 'Ohio', 'Cincinnati Police Department', '3', null, null);
+insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, stationNumber, hospitalSystem, licensePlate) values ('18qrb3P1rtyRkyc8uEZWbxJDkdErKkD4T1', 'Edsel', 'Killeley', 'ekilleleya@wired.com', '26.33.70.92', 'ekilleleya', '01112 Hudson Plaza', 'Denver', 'Colorado', 'Denver Police Department', '1', null, null);
 
 /* Ambulances */
-insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, station, hospitalSystem, licensePlate) values ('12a1pFk7igGbmWpKMSyDAoPQ7rwPN3jHBg', 'Wadsworth', 'Cordle', 'wcordle2@dion.ne.jp', '185.137.217.75', 'wcordle2', '86380 Jay Junction', 'Reno', 'Nevada', null, null, null, '9UUD 94');
-insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, station, hospitalSystem, licensePlate) values ('1HEi5LC4WbWadvKz3n9yWS4NgXXb6bYXt7', 'Geoffrey', 'Knok', 'gknok6@berkeley.edu', '187.143.175.177', 'gknok6', '7265 East Terrace', 'Los Angeles', 'California', null, null, null, 'FEL-7471');
+insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, stationNumber, hospitalSystem, licensePlate) values ('12a1pFk7igGbmWpKMSyDAoPQ7rwPN3jHBg', 'Wadsworth', 'Cordle', 'wcordle2@dion.ne.jp', '185.137.217.75', 'wcordle2', '86380 Jay Junction', 'Reno', 'Nevada', null, null, null, '9UUD 94');
+insert into Users (walletId, firstName, lastName, email, ipAddress, username, address, city, state, policeDept, stationNumber, hospitalSystem, licensePlate) values ('1HEi5LC4WbWadvKz3n9yWS4NgXXb6bYXt7', 'Geoffrey', 'Knok', 'gknok6@berkeley.edu', '187.143.175.177', 'gknok6', '7265 East Terrace', 'Los Angeles', 'California', null, null, null, 'FEL-7471');
 
 /* Patients */
 -- insert into Patients (patientId, name, gender, age, address, city, state, status, injuries, mechanismOfInjury) values (1, 'Filbert Woodwind', 'Male', 30, '71453 Gale Alley', 'Philadelphia', 'Pennsylvania', 'incoming', 'broken arm', 'car accident');
