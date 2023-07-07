@@ -29,7 +29,6 @@ contract Accounts {
     function addAmbulance(address addr) public {
         // verify account does not already have another role
         require(ambulances[addr] == false, "sender is already ambulance");
-        require(hospitals[addr] == false, "sender is already hospital");
         require(initiators[addr] == false, "sender is already initiator");
         require(admins[addr] == false, "sender is already admin");
 
@@ -83,7 +82,6 @@ contract Accounts {
     function addHospital(address addr) public {
          // verify account does not already have another role
         require(ambulances[addr] == false, "already an ambulance");
-        require(hospitals[addr] == false, "already a hospital");
         require(initiators[addr] == false, "already a police");
         require(admins[addr] == false, "already an admin");
 
