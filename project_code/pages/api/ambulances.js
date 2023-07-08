@@ -28,16 +28,15 @@ export default async function handler(req, res) {
 // Adds an ambulance to the database
 async function addAmbulance(req, res) {
 
-    let username = JSON.parse(req.body)["username"];
     let licensePlate = JSON.parse(req.body)["licensePlate"];
     let address = JSON.parse(req.body)["address"];
     let city = JSON.parse(req.body)["city"];
     let state = JSON.parse(req.body)["state"];
     let walletId = JSON.parse(req.body)["walletId"];
 
-    let query = "   INSERT INTO " + Constants.Users + " (   " + Constants.walletId + ", " + Constants.username + ", " + Constants.address + ", \
+    let query = "   INSERT INTO " + Constants.Users + " (   " + Constants.walletId + ", " + Constants.address + ", \
                                                             " + Constants.city + ", " + Constants.state + ", " + Constants.licensePlate + ") \
-                    VALUES ('" + walletId + "', '" + username + "', '" + address + "', '" + city + "', '" + state + "', '" + licensePlate + "' );";
+                    VALUES ('" + walletId + "', '" + address + "', '" + city + "', '" + state + "', '" + licensePlate + "' );";
 
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {
@@ -58,7 +57,7 @@ async function getAmbulances(req, res) {
     // console.log('inside get function');
     
     let query = "   SELECT  " + Constants.walletId + ", " + Constants.firstName + ", " + Constants.lastName + ", " + Constants.email + ", \
-                            " + Constants.ipAddress + ", " + Constants.username + ", " + Constants.address + ", " + Constants.city + ", \
+                            " + Constants.address + ", " + Constants.city + ", \
                             " + Constants.state + ", " + Constants.licensePlate + "    \
                     FROM    " + Constants.Users + "                                                       \
                     WHERE   " + Constants.station + "         IS NULL         AND                         \

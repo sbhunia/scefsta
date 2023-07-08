@@ -12,7 +12,7 @@ import { ACCOUNT_INSTANCE } from '../../pages/_app';
 
 const columns = [
   { field: 'policeDept', headerName: 'Police Department', width: 270, sortable: true},
-  { field: 'station', headerName: 'Station', width: 80,  sortable: false},
+  { field: 'stationNumber', headerName: 'Station', width: 80,  sortable: false},
   { field: 'address', headerName: 'Address', width: 175, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
   { field: 'state', headerName: 'State', width: 100, sortable: true},

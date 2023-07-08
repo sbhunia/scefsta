@@ -24,8 +24,8 @@ export const address = 'address';
 export const city = 'city';
 export const state = 'state';
 export const policeDept = 'policeDept';
-export const station = 'station';
-export const hospitalSystem = 'hospitalSystem';
+export const station = 'stationNumber';
+export const hospitalSystem = 'facilityName';
 export const licensePlate = 'licensePlate';
 export const accountType = "accountType";
 

@@ -47,7 +47,7 @@ async function getPolice(req, res) {
     //console.log(req.query.printerModel);
     // console.log('inside get function');
 
-    let query = "   SELECT  " + Constants.walletId + ", " + Constants.email + ", " + Constants.ipAddress + ", " + Constants.username + ",  \
+    let query = "   SELECT  " + Constants.walletId + ",  \
                             " + Constants.address + ", " + Constants.city + ", " + Constants.state + ", " + Constants.policeDept + ", \
                             " + Constants.station + ", " + Constants.licensePlate + "    \
                     FROM    " + Constants.Users + "                                                       \

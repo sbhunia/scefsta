@@ -11,7 +11,7 @@ import { useContractFunction } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
 
 const columns = [
-  { field: 'username', headerName: 'Ambulance System', width: 175, sortable: true},
+  { field: 'transportCompany', headerName: 'Ambulance System', width: 175, sortable: true},
   { field: 'licensePlate', headerName: 'License Plate', width: 150,  sortable: false},
   { field: 'address', headerName: 'Address', width: 175, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
