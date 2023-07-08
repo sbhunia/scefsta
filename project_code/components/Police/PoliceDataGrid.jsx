@@ -7,8 +7,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Popup from '../Popup/Popup';
 import stylesP from '../../styles/Popup.module.css'
 import * as Constants from '../../pages/constants';
-import { useContractFunction } from '@usedapp/core';
+import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
+import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+import { CircularProgress } from '@mui/material';
 
 const columns = [
   { field: 'policeDept', headerName: 'Police Department', width: 270, sortable: true},
@@ -16,6 +19,7 @@ const columns = [
   { field: 'address', headerName: 'Address', width: 175, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
   { field: 'state', headerName: 'State', width: 100, sortable: true},
+  { field: Constants.zipcode, headerName: 'Zipcode', width: 100, sortable: true},
   { field: 'id', headerName: 'Wallet ID', width: 400, sortable: false},
 ];
 
@@ -26,8 +30,10 @@ const columns = [
  */
 export default function PoliceDataGird({data, popUpChecked}) {
     // smart contract API calls for add and remove police
-    const { state: state1, send: send1 } = useContractFunction(ACCOUNT_INSTANCE, 'addInitiator');
-    const { state: state2, send: send2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeInitiator');
+    const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addInitiator');
+    const { state: state2, send: send2, events: events2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeInitiator');
+    const [showMessage1, setShowMessage1] = useState(false);
+    const [showMessage2, setShowMessage2] = useState(false);
 
     // allows for the data in the table to be updated (Add/Remove)
     const [dataContacts, setDataContacts] = useState(data);
@@ -50,6 +56,7 @@ export default function PoliceDataGird({data, popUpChecked}) {
         address: '',
         city: '',
         state: '',
+        zipcode: '',
     });
 
     // Used for delete button popup
@@ -74,7 +81,19 @@ export default function PoliceDataGird({data, popUpChecked}) {
     // that new object gets added to the table.
     const handleAddFormSubmit = async (event) => {
         event.preventDefault();
-        
+        setShowMessage1(false);
+
+        // add to blockchain
+        send1(addFormData.walletId);
+
+        await delay(2000);
+        setShowMessage1(true);
+
+        // temporary delete function for blockchain
+        // send2(addFormData.walletId);
+    }
+
+    const finalizeAddInitiator = async () => {
         const newContact = {
             policeDept: addFormData.policeDept,
             station: addFormData.station,
@@ -82,6 +101,7 @@ export default function PoliceDataGird({data, popUpChecked}) {
             city: addFormData.city,
             state: addFormData.state,
             walletId: addFormData.walletId,
+            zipcode: addFormData.zipcode,
         };
 
         let response = await fetch(Constants.addPolice, {
@@ -98,33 +118,39 @@ export default function PoliceDataGird({data, popUpChecked}) {
         if (data.success) {
             setAddPopup(false);
         }
+
+        setShowMessage1(false);
     }
 
     // Queries the database to delete the selected rows and removes them from the datagrid
     const deleteRows = async (event) => {
         event.preventDefault();
 
-        //console.log(selectedRows[0]);
+        // Removes each police from the blockchain
+        selectedRows.forEach( removeId => {
+            send2(removeId);
+        });     
+        
+        await delay(2000);
+        setShowMessage2(true);
+    }
 
+    const finalizeDeleteInitiator = async () => {
         let response = await fetch(Constants.deletePolice, {
             method: 'DELETE',
             body: JSON.stringify(selectedRows)
         });
 
         let status = await response.json();
-
         setDataContacts(dataContacts.filter(checkSelected))
-
-        // Removes each police from the blockchain
-        selectedRows.forEach( removeId => {
-            send2(removeId);
-        });     
-
+        
         if(status.success){
             setDeletePopup(false);
         } else {
             alert("Error deleting rows");
         }
+
+        setShowMessage2(false);
     }
 
     // Helper function for deleteRows to update the datagrid with deletions
@@ -133,11 +159,6 @@ export default function PoliceDataGird({data, popUpChecked}) {
         if( !(selectedRows.includes(row.id)) ) {
             return row;
         }
-    }
-
-    // useDapp function to confirm addAmbulance transaction - payable
-    const submitPolice = () => {
-        send1(addFormData.walletId);
     }
 
     return (
@@ -228,6 +249,35 @@ export default function PoliceDataGird({data, popUpChecked}) {
                                         Delete
                                     </Button>
                                 </div>
+                                {(function () {
+                                    if (showMessage2) {
+                                        if (state2.status === 'Mining') {
+                                            return (
+                                            <div>
+                                                <Alert severity="warning">Waiting for {Constants.POLICE}(s) to be deleted</Alert>
+                                                <Box sx={{ display: 'flex' }}>
+                                                    <CircularProgress />
+                                                </Box>
+                                            </div>
+                                            )
+                                        }
+                                        if (transactionErrored(state2)) {
+                                            return (
+                                            <div>
+                                                <Alert severity="error">Transaction failed: {state2.errorMessage}</Alert>
+                                            </div>
+                                            )
+                                        }
+                                        if (state2.status === 'Success' && events2 != undefined) {
+                                            return (
+                                            <div>
+                                                <Alert severity="success">Your transaction was successful! {Constants.POLICE}(s) were deleted from the blockchain</Alert>
+                                                <Button color='success' onClick={finalizeDeleteInitiator}>Finalize and Exit</Button>
+                                            </div>
+                                            )
+                                        }
+                                    }
+                                })()}
                             </Popup>
                             
                             <Popup trigger={addPopup} setTrigger={setAddPopup}>
@@ -301,12 +351,52 @@ export default function PoliceDataGird({data, popUpChecked}) {
                                         onChange={handleAddFormData}
                                     />
                                     <br />
+                                    <TextField
+                                        type="text"
+                                        name="zipcode"
+                                        label="Zipcode"
+                                        variant="standard"
+                                        placeholder="Zipcode"
+                                        className={stylesP.formInput}
+                                        required
+                                        onChange={handleAddFormData}
+                                    />
+                                    <br />
                                     <div className={stylesP.submitButtonDiv}>
-                                        <button type="submit" className={stylesP.submitButton} onClick={submitPolice}>
+                                        <button type="submit" className={stylesP.submitButton}>
                                             Submit
                                         </button>
                                     </div>
                                 </form>
+                                {(function () {
+                                    if (showMessage1) {
+                                        if (state1.status === 'Mining') {
+                                                return (
+                                                <div>
+                                                    <Alert severity="warning">Waiting for {Constants.POLICE} to be added</Alert>
+                                                    <Box sx={{ display: 'flex' }}>
+                                                        <CircularProgress />
+                                                    </Box>
+                                                </div>
+                                                )
+                                            }
+                                        if (transactionErrored(state1)) {
+                                                return (
+                                                <div>
+                                                <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                                                </div>
+                                                )
+                                            }
+                                        if (state1.status === 'Success' && events1 != undefined) {
+                                            return (
+                                                <div>
+                                                    <Alert severity="success">Your transaction was successful! {Constants.POLICE} was added to the blockchain</Alert>
+                                                <Button color='success' onClick={finalizeAddInitiator}>Finalize and Exit</Button>
+                                                </div>
+                                            )
+                                        }
+                                    }
+                                })()}
                             </Popup>
                         </div>
                     );
@@ -315,3 +405,5 @@ export default function PoliceDataGird({data, popUpChecked}) {
         </div>    
   );
 }
+
+const delay = ms => new Promise(res => setTimeout(res, ms));

@@ -23,11 +23,15 @@ async function addPolice(req, res) {
     let address = JSON.parse(req.body)["address"];
     let city = JSON.parse(req.body)["city"];
     let state = JSON.parse(req.body)["state"];
+    let zipcode = JSON.parse(req.body)[Constants.zipcode];
     let walletId = JSON.parse(req.body)["walletId"];
+    let accountType = "initiator";
 
     let query = "   INSERT INTO " + Constants.Users + " (   " + Constants.walletId + ", " + Constants.policeDept + ", " + Constants.station + ", \
-                                                            " + Constants.address + ", " + Constants.city + ", " + Constants.state + ") \
-                    VALUES ('" + walletId + "', '" + policeDept + "', '" + station + "', '" + address + "', '" + city + "', '" + state + "');";
+                                                            " + Constants.address + ", " + Constants.city + ", " + Constants.state + "," + Constants.zipcode 
+                                                            + "," + Constants.accountType +  ") \
+                    VALUES ('" + walletId + "', '" + policeDept + "', '" + station + "', '" + address + "', '" + city + "', '"
+                    + state + "','" + zipcode + "','" + accountType + "');";
 
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {
