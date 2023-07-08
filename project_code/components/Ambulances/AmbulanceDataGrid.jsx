@@ -7,15 +7,19 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Popup from '../Popup/Popup';
 import stylesP from '../../styles/Popup.module.css'
 import * as Constants from '../../pages/constants';
-import { useContractFunction } from '@usedapp/core';
+import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
+import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+import { CircularProgress } from '@mui/material';
 
 const columns = [
-  { field: 'transportCompany', headerName: 'Ambulance System', width: 175, sortable: true},
+  { field: Constants.transportCompany, headerName: `${Constants.AMBULANCE} Company`, width: 175, sortable: true},
   { field: 'licensePlate', headerName: 'License Plate', width: 150,  sortable: false},
   { field: 'address', headerName: 'Address', width: 175, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
   { field: 'state', headerName: 'State', width: 100, sortable: true},
+  { field: 'zipcode', headerName: 'Zipcode', width: 100, sortable: true},
   { field: 'id', headerName: 'Wallet ID', width: 400, sortable: false},
 ];
 
@@ -25,9 +29,12 @@ const columns = [
  * @param {*} popUpChecked Boolean -if true, allows for adding/deleting ambulances; false otherwise.
  */
 export default function AmbulanceDataGrid({data, popUpChecked}) {
+    console.log("data", data);
     // smart contract API connection for add and remove ambulance users
-    const { state: state1, send: send1 } = useContractFunction(ACCOUNT_INSTANCE, 'addAmbulance');
-    const { state: state2, send: send2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeAmbulance');
+    const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addAmbulance');
+    const { state: state2, send: send2, events: events2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeAmbulance');
+    const [showMessage1, setShowMessage1] = useState(false);
+    const [showMessage2, setShowMessage2] = useState(false);
 
     // allows for the data in the table to be updated (Add/Remove)
     const [dataContacts, setDataContacts] = useState(data);
@@ -44,12 +51,13 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
     // Used for add button popup
     const [addPopup, setAddPopup] = useState(false);
     const [addFormData, setAddFormData] = useState({
-        username: '',
+        transportCompany: '',
         licensePlate: '',
         address: '',
         city: '',
         state: '',
         walletId: '',
+        zipcode: '',
     });
 
     // Used for delete button popup
@@ -75,14 +83,24 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
     // that new object gets added to the table.
     const handleAddFormSubmit = async (event) => {
         event.preventDefault();
-        
+        send1(addFormData.walletId);
+
+        // temporary to handle removing accounts manually
+        //send2(addFormData.walletId);
+
+        await delay(2000);
+        setShowMessage1(true);
+    }
+
+    const finalizeAddAmbulance = async () => {
         const newContact = {
-            username: addFormData.username,
+            transportCompany: addFormData.transportCompany,
             licensePlate: addFormData.licensePlate,
             address: addFormData.address,
             city: addFormData.city,
             state: addFormData.state,
             walletId: addFormData.walletId,
+            zipcode: addFormData.zipcode,
         };
 
         let response = await fetch(Constants.addAmbulance, {
@@ -99,14 +117,24 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
         if (data.success) {
             setAddPopup(false);
         }
+
+        setShowMessage1(false);
     }
 
     // Queries the database to delete the selected rows and removes them from the datagrid
     const deleteRows = async (event) => {
         event.preventDefault();
 
-        //console.log(selectedRows[0]);
+        // Removes each ambulance from the blockchain
+        selectedRows.forEach( removeId => {
+            send2(removeId);
+        });
 
+        await delay(2000);
+        setShowMessage2(true);
+    }
+
+    const finalizeDeleteAmbulance = async () => {
         let response = await fetch(Constants.deleteAmbulance, {
             method: 'DELETE',
             body: JSON.stringify(selectedRows)
@@ -116,18 +144,14 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
 
         setDataContacts(dataContacts.filter(checkSelected))
 
-        // Removes each ambulance from the blockchain
-        selectedRows.forEach( removeId => {
-            send2(removeId);
-        });
-
         if(status.success){
             
             setDeletePopup(false);
         } else {
             alert("Error deleting rows");
         }
-        
+
+        setShowMessage2(false);
     }
 
     // Helper function for deleteRows to update the datagrid with deletions
@@ -136,11 +160,6 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
         if( !(selectedRows.includes(row.id)) ) {
             return row;
         }
-    }
-
-    // useDapp function to confirm addAmbulance transaction - payable
-    const submitAmbulance = () => {
-        send1(addFormData.walletId);
     }
 
     return (
@@ -172,7 +191,7 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
                 columns={columns}
                 initialState={{
                     sorting: {
-                      sortModel: [{ field: 'username', sort: 'asc' }],
+                      sortModel: [{ field: Constants.transportCompany, sort: 'asc' }],
                     },
                     pagination: { paginationModel: { pageSize: 10 } },
                 }}
@@ -231,19 +250,48 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
                                         Delete
                                     </Button>
                                 </div>
+                                {(function () {
+                                    if (showMessage2) {
+                                        if (state2.status === 'Mining') {
+                                            return (
+                                            <div>
+                                                <Alert severity="warning">Waiting for {Constants.AMBULANCE} to be deleted</Alert>
+                                                <Box sx={{ display: 'flex' }}>
+                                                    <CircularProgress />
+                                                </Box>
+                                            </div>
+                                            )
+                                        }
+                                        if (transactionErrored(state2)) {
+                                            return (
+                                            <div>
+                                                <Alert severity="error">Transaction failed: {state2.errorMessage}</Alert>
+                                            </div>
+                                            )
+                                        }
+                                        if (state2.status === 'Success' && events2 != undefined) {
+                                            return (
+                                            <div>
+                                                <Alert severity="success">Your transaction was successful! {Constants.AMBULANCE}(s) was deleted from the blockchain</Alert>
+                                                <Button color='success' onClick={finalizeDeleteAmbulance}>Finalize and Exit</Button>
+                                            </div>
+                                            )
+                                        }
+                                    }
+                                })()}
                             </Popup>
                             
                             <Popup trigger={addPopup} setTrigger={setAddPopup}>
                                 <div className={stylesP.editHospital}>
-                                    <h1>Add an Ambulance</h1>
+                                    <h1>Add New {Constants.AMBULANCE}</h1>
                                 </div>
                                 <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
                                     <TextField
                                         type="text"
-                                        name="username"
-                                        label="Ambulance Name"
+                                        name={Constants.transportCompany}
+                                        label={Constants.AMBULANCE + " Company"}
                                         variant="standard"
-                                        placeholder="Ambulance Name"
+                                        placeholder={Constants.AMBULANCE + " Company"}
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
@@ -296,20 +344,59 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
                                     <TextField
                                         type="text"
                                         name="state"
-                                        label="state"
+                                        label="State"
                                         variant="standard"
-                                        placeholder="Ohio"
+                                        placeholder="State"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
                                     />
-                                    <br />
+                                   <br />
+                                    <TextField
+                                        type="text"
+                                        name="zipcode"
+                                        label="Zipcode"
+                                        variant="standard"
+                                        placeholder="Zipcode"
+                                        className={stylesP.formInput}
+                                        required
+                                        onChange={handleAddFormData}
+                                    />
                                     <div className={stylesP.submitButtonDiv}>
-                                        <button type="submit" className={stylesP.submitButton} onClick={submitAmbulance}>
+                                        <button type="submit" className={stylesP.submitButton}>
                                             Submit
                                         </button>
                                     </div>
                                 </form>
+                                {(function () {
+                                    if (showMessage1) {
+                                        if (state1.status === 'Mining') {
+                                                return (
+                                                <div>
+                                                    <Alert severity="warning">Waiting for {Constants.AMBULANCE} to be added</Alert>
+                                                    <Box sx={{ display: 'flex' }}>
+                                                        <CircularProgress />
+                                                    </Box>
+                                                </div>
+                                                )
+                                            }
+                                        if (transactionErrored(state1)) {
+                                                return (
+                                                <div>
+                                                <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                                                </div>
+                                                )
+                                            }
+                                        if (state1.status === 'Success' && events1 != undefined) {
+                                            return (
+                                                <div>
+                                                    <Alert severity="success">Your transaction was successful! {Constants.AMBULANCE} was added to the blockchain</Alert>
+                                                <Button color='success' onClick={finalizeAddAmbulance}>Finalize and Exit</Button>
+                                                </div>
+                                            )
+                                        }
+                                    }
+                                })()}  
                             </Popup>
                         </div>
                     );
@@ -319,3 +406,5 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
         
   );
 }
+
+const delay = ms => new Promise(res => setTimeout(res, ms));

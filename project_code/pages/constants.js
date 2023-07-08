@@ -29,6 +29,7 @@ export const station = 'stationNumber';
 export const hospitalSystem = 'facilityName';
 export const licensePlate = 'licensePlate';
 export const accountType = "accountType";
+export const transportCompany = "transportCompany";
 
 // patient table variables
 export const patientId = "patientId";
@@ -72,6 +73,6 @@ export const ADMINISTRATOR = 'Administrator';
 export const ADMIN = 'Admin';
 export const HOSPITAL = 'Facility';
 export const POLICE = 'Initiator';
-export const AMBULANCE = 'Ambulance';
+export const AMBULANCE = 'Transport';
 export const PROFILE = 'Profile';
 export const ABOUT = 'About AIS'

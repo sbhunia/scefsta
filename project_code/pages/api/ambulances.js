@@ -27,16 +27,19 @@ export default async function handler(req, res) {
 
 // Adds an ambulance to the database
 async function addAmbulance(req, res) {
-
+    let transportComapny = JSON.parse(req.body)[Constants.transportCompany];
     let licensePlate = JSON.parse(req.body)["licensePlate"];
     let address = JSON.parse(req.body)["address"];
     let city = JSON.parse(req.body)["city"];
     let state = JSON.parse(req.body)["state"];
+    let zipcode = JSON.parse(req.body)[Constants.zipcode];
     let walletId = JSON.parse(req.body)["walletId"];
-
-    let query = "   INSERT INTO " + Constants.Users + " (   " + Constants.walletId + ", " + Constants.address + ", \
-                                                            " + Constants.city + ", " + Constants.state + ", " + Constants.licensePlate + ") \
-                    VALUES ('" + walletId + "', '" + address + "', '" + city + "', '" + state + "', '" + licensePlate + "' );";
+    let accountType = "transport";
+    let query = "   INSERT INTO " + Constants.Users + " (   " + Constants.transportCompany + ", " + Constants.walletId + ", " + Constants.address + ", \
+                                                            " + Constants.city + ", " + Constants.state + ", " + Constants.zipcode + ", " 
+                                                            + Constants.licensePlate + ", " + Constants.accountType + ") \
+                    VALUES ('" + transportComapny + "', '" + walletId + "', '" + address + "', '" + city + "', '" + state + "', '" + zipcode 
+                    + "', '" + licensePlate + "', '" + accountType + "' );";
 
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {
@@ -57,12 +60,10 @@ async function getAmbulances(req, res) {
     // console.log('inside get function');
     
     let query = "   SELECT  " + Constants.walletId + ", " + Constants.firstName + ", " + Constants.lastName + ", " + Constants.email + ", \
-                            " + Constants.address + ", " + Constants.city + ", \
-                            " + Constants.state + ", " + Constants.licensePlate + "    \
+                            " + Constants.address + ", " + Constants.city + ", " + Constants.zipcode + ", \
+                            " + Constants.state + ", " + Constants.licensePlate + ", " + Constants.transportCompany + "    \
                     FROM    " + Constants.Users + "                                                       \
-                    WHERE   " + Constants.station + "         IS NULL         AND                         \
-                            " + Constants.policeDept + "      IS  NULL        AND                         \
-                            " + Constants.licensePlate + "   IS NOT NULL;"
+                    WHERE   " + Constants.accountType + " = 'transport';"
 
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {
