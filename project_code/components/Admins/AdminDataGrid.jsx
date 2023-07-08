@@ -7,8 +7,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Popup from '../Popup/Popup';
 import stylesP from '../../styles/Popup.module.css'
 import * as Constants from '../../pages/constants';
-import { useContractFunction } from '@usedapp/core';
+import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
+import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+import { CircularProgress } from '@mui/material';
 
 const columns = [
   { field: 'firstName', headerName: 'First Name', width: 100, sortable: true},
@@ -78,6 +81,11 @@ export default function AdminDataGrid({data, popUpChecked}) {
     const handleAddFormSubmit = async (event) => {
         event.preventDefault();
         
+        // add to blockchain
+        send1(addFormData.walletId);
+    }
+
+    const finalizeTransaction = async () => {
         const newContact = {
             firstName: addFormData.firstName,
             lastName: addFormData.lastName,
@@ -101,14 +109,11 @@ export default function AdminDataGrid({data, popUpChecked}) {
 
         let data = await response.json();
         console.log("data: ", data);
-        
-        // add to blockchain
-        send1(addFormData.walletId);
 
         if (data.success) {
             setAddPopup(false);
         }
-    }
+      }
 
     // Queries the database to delete the selected rows and removes them from the datagrid
     const deleteRows = async (event) => {
@@ -320,13 +325,38 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                         required
                                         onChange={handleAddFormData}
                                     />
-                                    <br />
                                     <div className={stylesP.submitButtonDiv}>
                                         <button type="submit" className={stylesP.submitButton}>
                                             Submit
                                         </button>
                                     </div>
                                 </form>
+                                {(function () {
+                                if (state1.status === 'Mining') {
+                                    return (
+                                    <label>Waiting for admin to be added
+                                    <Box sx={{ display: 'flex' }}>
+                                        <CircularProgress />
+                                    </Box>
+                                    </label>
+                                    )
+                                }
+                                if (transactionErrored(state1)) {
+                                    return (
+                                    <div>
+                                        <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                                    </div>
+                                    )
+                                }
+                                if (state1.status === 'Success' && events != undefined) {
+                                    return (
+                                    <div>
+                                        <Alert severity="success">Your transaction was successful! Admin was added</Alert>
+                                        <Button color='success' onClick={finalizeTransaction}>Finalize and Exit</Button>
+                                    </div>
+                                    )
+                                }
+                            })()}
                             </Popup>
                         </div>
                     );
