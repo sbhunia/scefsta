@@ -291,7 +291,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                             
                             <Popup trigger={addPopup} setTrigger={setAddPopup}>
                                 <div className={stylesP.editHospital}>
-                                    <h1>Add an Admin</h1>
+                                    <h1>Add New {Constants.ADMIN}</h1>
                                 </div>
                                 <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
                                     <TextField
