@@ -11,6 +11,7 @@ CREATE TABLE Users (
             address             VARCHAR(50)     NOT NULL,
             city                VARCHAR(50)     NOT NULL,
             state               VARCHAR(50)     NOT NULL,
+            zipcode             INT             NOT NULL,
             policeDept          VARCHAR(50),
             stationNumber       VARCHAR(50),
             transportCompany    VARCHAR(100),
