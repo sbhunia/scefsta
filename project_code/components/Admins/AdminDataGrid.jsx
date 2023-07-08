@@ -32,6 +32,8 @@ export default function AdminDataGrid({data, popUpChecked}) {
     // smart contract API connection for add and remove admin users
     const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addAdmin');
     const { state: state2, send: send2, events: events2} = useContractFunction(ACCOUNT_INSTANCE, 'removeAdmin');
+    const [showMessage1, setShowMessage1] = useState(false);
+    const [showMessage2, setShowMessage2] = useState(false);
 
     // allows for the data in the table to be updated (Add/Remove)
     const [dataContacts, setDataContacts] = useState(data);
@@ -65,7 +67,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
     // form and store the data in 'setAddFormData'
     const handleAddFormData = (event) => {
         event.preventDefault();
-
+        
         const fieldName = event.target.name;
         const fieldValue = event.target.value;
 
@@ -80,14 +82,26 @@ export default function AdminDataGrid({data, popUpChecked}) {
     // that new object gets added to the table.
     const handleAddFormSubmit = async (event) => {
         event.preventDefault();
-        
+        setShowMessage1(false);
+
         // add to blockchain
-        // temporary delete function
-        //send2(addFormData.walletId);
         send1(addFormData.walletId);
+
+        await delay(2000);
+        setShowMessage1(true);
+
+        // temporary function to fix disconnects w/ DB and blockchain
+        // let response = await fetch(Constants.deleteAdmins, {
+        //     method: 'DELETE',
+        //     body: JSON.stringify(addFormData.walletId)
+        // });
+        // let status = await response.json();
+
+        // temporary delete function for blockchain
+        //send2(addFormData.walletId);
     }
 
-    const finalizeTransaction = async () => {
+    const finalizeAddAdmin = async () => {
         const newContact = {
             firstName: addFormData.firstName,
             lastName: addFormData.lastName,
@@ -113,12 +127,23 @@ export default function AdminDataGrid({data, popUpChecked}) {
         if (data.success) {
             setAddPopup(false);
         }
-      }
+        setShowMessage1(false);
+    }
 
     // Queries the database to delete the selected rows and removes them from the datagrid
     const deleteRows = async (event) => {
         event.preventDefault();
 
+        // Removes each admin from the blockchain
+        selectedRows.forEach( removeId => {
+            send2(removeId);
+        });
+
+        await delay(2000);
+        setShowMessage2(true);
+    }
+
+    const finalizeDeleteAdmin = async () => {
         // make database changes
         let response = await fetch(Constants.deleteAdmins, {
             method: 'DELETE',
@@ -128,18 +153,13 @@ export default function AdminDataGrid({data, popUpChecked}) {
 
         setDataContacts(dataContacts.filter(checkSelected))
 
-        // Removes each admin from the blockchain
-        selectedRows.forEach( removeId => {
-            send2(removeId);
-        });
-
         // if the DB changes succeed close popup
         if(status.success){ 
             setDeletePopup(false);
         } else {
             alert("Error deleting rows");
         }
-        
+        setShowMessage2(false);
     }
 
     // Helper function for deleteRows to update the datagrid with deletions
@@ -148,10 +168,6 @@ export default function AdminDataGrid({data, popUpChecked}) {
         if( !(selectedRows.includes(row.id)) ) {
             return row;
         }
-    }
-
-    // useDapp function to confirm addAdmin transaction - payable
-    const submitAdmin = () => {
     }
 
     return (
@@ -242,6 +258,35 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                         Delete
                                     </Button>
                                 </div>
+                                {(function () {
+                                    if (showMessage2) {
+                                        if (state2.status === 'Mining') {
+                                            return (
+                                            <div>
+                                                <Alert severity="warning">Waiting for admin to be deleted</Alert>
+                                                <Box sx={{ display: 'flex' }}>
+                                                    <CircularProgress />
+                                                </Box>
+                                            </div>
+                                            )
+                                        }
+                                        if (transactionErrored(state2)) {
+                                            return (
+                                            <div>
+                                                <Alert severity="error">Transaction failed: {state2.errorMessage}</Alert>
+                                            </div>
+                                            )
+                                        }
+                                        if (state2.status === 'Success' && events2 != undefined) {
+                                            return (
+                                            <div>
+                                                <Alert severity="success">Your transaction was successful! Admin was deleted from the blockchain</Alert>
+                                                <Button color='success' onClick={finalizeDeleteAdmin}>Finalize and Exit</Button>
+                                            </div>
+                                            )
+                                        }
+                                    }
+                                })()}
                             </Popup>
                             
                             <Popup trigger={addPopup} setTrigger={setAddPopup}>
@@ -332,32 +377,34 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                     </div>
                                 </form>
                                 {(function () {
-                                if (state1.status === 'Mining') {
-                                    return (
-                                    <div>
-                                        <Alert severity="warning">Waiting for admin to be added</Alert>
-                                        <Box sx={{ display: 'flex' }}>
-                                            <CircularProgress />
-                                        </Box>
-                                    </div>
-                                    )
-                                }
-                                if (transactionErrored(state1)) {
-                                    return (
-                                    <div>
-                                        <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
-                                    </div>
-                                    )
-                                }
-                                if (state1.status === 'Success' && events1 != undefined) {
-                                    return (
-                                    <div>
-                                        <Alert severity="success">Your transaction was successful! Admin was added to the blockchain</Alert>
-                                        <Button color='success' onClick={finalizeTransaction}>Finalize and Exit</Button>
-                                    </div>
-                                    )
-                                }
-                            })()}
+                                    if (showMessage1) {
+                                        if (state1.status === 'Mining') {
+                                                return (
+                                                <div>
+                                                    <Alert severity="warning">Waiting for admin to be added</Alert>
+                                                    <Box sx={{ display: 'flex' }}>
+                                                        <CircularProgress />
+                                                    </Box>
+                                                </div>
+                                                )
+                                            }
+                                        if (transactionErrored(state1)) {
+                                                return (
+                                                <div>
+                                                <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                                                </div>
+                                                )
+                                            }
+                                        if (state1.status === 'Success' && events1 != undefined) {
+                                            return (
+                                                <div>
+                                                    <Alert severity="success">Your transaction was successful! Admin was added to the blockchain</Alert>
+                                                <Button color='success' onClick={finalizeAddAdmin}>Finalize and Exit</Button>
+                                                </div>
+                                            )
+                                        }
+                                    }
+                                })()}
                             </Popup>
                         </div>
                     );
@@ -367,3 +414,5 @@ export default function AdminDataGrid({data, popUpChecked}) {
         
   );
 }
+
+const delay = ms => new Promise(res => setTimeout(res, ms));
