@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState, useRef } from 'react';
-import AmbulanceTable from './AmbulanceTable';
 import AmbulanceDataGrid from './AmbulanceDataGrid';
 import styles from "../../styles/Ambulances.module.css"
 
@@ -39,19 +38,6 @@ export default function Ambulances(amb) {
     
     return (
         <div className={styles.container}>
-            {/* <div className={ styles.ambulanceSearchContainer }>
-                <input
-                    ref={inputEl}
-                    type="text"
-                    placeholder="Search Ambulances..."
-                    //value={ambulances.searchTerm}
-                    value={ambulances.searchTerm}
-                    onChange={getSearchTerm}
-                    className={ styles.ambulanceSearchInput }
-                />
-            </div> */}
-
-            {/* {<AmbulanceTable data={searchTerm.length < 1 ? ambulances : searchResults} popUpChecked={popUpChecked}/>} */}
             {<AmbulanceDataGrid data={searchTerm.length < 1 ? ambulances : searchResults} popUpChecked={popUpChecked}></AmbulanceDataGrid>}
         </div>
     );

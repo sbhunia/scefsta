@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState, useRef } from 'react';
-import TenderTable from './TenderTable';
 import styles from "../../styles/Tender.module.css"
 import TendersDataGrid from './TendersDataGrid';
 

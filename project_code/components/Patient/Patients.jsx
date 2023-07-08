@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState, useRef } from 'react';
-import PatientTable from './PatientTable';
 import styles from "../../styles/Patients.module.css"
 import PatientsDataGrid from './PatientsDataGrid';
 
@@ -34,18 +33,6 @@ export default function Patients(pat) {
     
     return (
         <div className={styles.container}>
-            {/* <div className={ styles.patientSearchContainer }>
-                <input
-                    ref={inputEl}
-                    type="text"
-                    placeholder="Search Patients..."
-                    value={patients.searchTerm}
-                    onChange={getSearchTerm}
-                    className={ styles.patientSearchInput }
-                />
-            </div> */}
-
-            {/* <PatientTable data={searchTerm.length < 1 ? patients : searchResults} arrival={arrival}/> */}
             <PatientsDataGrid data={searchTerm.length < 1 ? patients : searchResults} arrival={arrival}/>
         </div>
     );

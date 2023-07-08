@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState, useRef } from 'react';
-import TenderTable from './TenderTable';
 import styles from "../../styles/Tender.module.css"
 import TendersDataGrid from './TendersDataGrid';
 
@@ -42,21 +41,7 @@ export default function Tenders(props) {
     
     return (
         <div className={ styles.container }>
-            {/* <div className={ styles.tenderSearchContainer }>
-                <input
-                    ref={inputEl}
-                    type="text"
-                    placeholder="Search Tenders..."
-                    value={tenders.searchTerm}
-                    //value={""}
-                    onChange={getSearchTerm}
-                    className={ styles.tenderSearchInput }
-                />
-            </div> */}
-
-            {/* {<TenderTable data={searchTerm.length < 1 ? tenders : searchResults} popUpChecked={popUpChecked} openTenders={openTenders}/>} */}
             {<TendersDataGrid data={props.data} popUpChecked={popUpChecked} openTenders={true} biddingForm={biddingForm} patients={props.patients}/>}
-
         </div>
     );
 }

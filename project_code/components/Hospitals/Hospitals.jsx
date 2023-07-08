@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState, useRef } from 'react';
-import HospitalTable from "./HospitalTable";
 import styles from '../../styles/Hospitals.module.css'
 import HospitalDataGrid from './HospitalDataGrid';
 
@@ -36,18 +35,6 @@ export default function Hospitals(hospitalData) {
 
     return (
         <div className={styles.container}>
-            {/* <div className={ styles.hospitalSearchContainer }>
-                <input
-                    ref={inputEl}
-                    type="text"
-                    placeholder="Search Hospitals..."
-                    value={testData.searchTerm}
-                    onChange={getSearchTerm}
-                    className={ styles.hospitalSearchInput }
-                />
-            </div> */}
-
-            {/* <HospitalTable data={searchTerm.length < 1 ? testData : searchResults} popUpChecked={popUpChecked} /> */}
             <HospitalDataGrid data={searchTerm.length < 1 ? testData : searchResults} popUpChecked={popUpChecked} />
         </div>
     );

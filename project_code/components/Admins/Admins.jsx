@@ -38,19 +38,6 @@ export default function Admins(adm) {
     
     return (
         <div className={styles.container}>
-            {/* <div className={ styles.adminSearchContainer }>
-                <input
-                    ref={inputEl}
-                    type="text"
-                    placeholder="Search Admins..."
-                    //value={admins.searchTerm}
-                    value={admins.searchTerm}
-                    onChange={getSearchTerm}
-                    className={ styles.adminSearchInput }
-                />
-            </div> */}
-
-            {/* {<AdminTable data={searchTerm.length < 1 ? admins : searchResults} popUpChecked={popUpChecked}/>} */}
             <AdminDataGrid data={searchTerm.length < 1 ? admins : searchResults} popUpChecked={popUpChecked}></AdminDataGrid>
         </div>
     );

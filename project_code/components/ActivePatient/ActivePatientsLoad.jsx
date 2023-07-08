@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState, useRef } from 'react';
-import PatientsTable from "./ActivePatientsTable";
 import styles from '../../styles/Patients.module.css'
 import ActivePatientsDataGrid from "./ActivePatientsDataGrid";
 
@@ -30,7 +29,6 @@ export default function Hosptials(patientData) {
 
     return (
         <div className={styles.container}>
-            {/* <PatientsTable data={searchTerm.length < 1 ? testData : searchResults} /> */}
             <ActivePatientsDataGrid data={searchTerm.length < 1 ? testData : searchResults} />
         </div>
     );
