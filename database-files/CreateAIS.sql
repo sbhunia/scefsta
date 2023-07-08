@@ -12,7 +12,7 @@ CREATE TABLE Users (
             city                VARCHAR(50)     NOT NULL,
             state               VARCHAR(50)     NOT NULL,
             policeDept          VARCHAR(50),
-            stationNumber             VARCHAR(50),
+            stationNumber       VARCHAR(50),
             transportCompany    VARCHAR(100),
             licensePlate        VARCHAR(50),
             facilityName        VARCHAR(100),
