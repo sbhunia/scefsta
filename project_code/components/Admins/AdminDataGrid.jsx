@@ -30,8 +30,8 @@ const columns = [
  */
 export default function AdminDataGrid({data, popUpChecked}) {
     // smart contract API connection for add and remove admin users
-    const { state: state1, send: send1 } = useContractFunction(ACCOUNT_INSTANCE, 'addAdmin');
-    const { state: state2, send: send2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeAdmin');
+    const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addAdmin');
+    const { state: state2, send: send2, events: events2} = useContractFunction(ACCOUNT_INSTANCE, 'removeAdmin');
 
     // allows for the data in the table to be updated (Add/Remove)
     const [dataContacts, setDataContacts] = useState(data);
@@ -82,6 +82,8 @@ export default function AdminDataGrid({data, popUpChecked}) {
         event.preventDefault();
         
         // add to blockchain
+        // temporary delete function
+        //send2(addFormData.walletId);
         send1(addFormData.walletId);
     }
 
@@ -96,13 +98,11 @@ export default function AdminDataGrid({data, popUpChecked}) {
             walletId: addFormData.walletId,
         };
 
-        console.log("contract", newContact);
-
         let response = await fetch(Constants.addAdmin, {
             method: 'POST',
             body: JSON.stringify(newContact)
         });
-        console.log("response: ", response);
+
         newContact['id'] = newContact['walletId'];
 
         setDataContacts([...dataContacts, newContact,]);
@@ -334,11 +334,12 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                 {(function () {
                                 if (state1.status === 'Mining') {
                                     return (
-                                    <label>Waiting for admin to be added
-                                    <Box sx={{ display: 'flex' }}>
-                                        <CircularProgress />
-                                    </Box>
-                                    </label>
+                                    <div>
+                                        <Alert severity="warning">Waiting for admin to be added</Alert>
+                                        <Box sx={{ display: 'flex' }}>
+                                            <CircularProgress />
+                                        </Box>
+                                    </div>
                                     )
                                 }
                                 if (transactionErrored(state1)) {
@@ -348,10 +349,10 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                     </div>
                                     )
                                 }
-                                if (state1.status === 'Success' && events != undefined) {
+                                if (state1.status === 'Success' && events1 != undefined) {
                                     return (
                                     <div>
-                                        <Alert severity="success">Your transaction was successful! Admin was added</Alert>
+                                        <Alert severity="success">Your transaction was successful! Admin was added to the blockchain</Alert>
                                         <Button color='success' onClick={finalizeTransaction}>Finalize and Exit</Button>
                                     </div>
                                     )
