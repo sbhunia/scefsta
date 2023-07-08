@@ -20,6 +20,7 @@ const columns = [
   { field: 'address', headerName: 'Address', width: 175, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
   { field: 'state', headerName: 'State', width: 100, sortable: true},
+  { field: 'zipcode', headerName: 'Zipcode', width: 100, sortable: true},
   { field: 'id', headerName: 'Wallet ID', width: 400, sortable: false},
 ];
 
@@ -57,6 +58,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
         city: '',
         state: '',
         walletId: '',
+        zipcode: '',
     });
 
     // Used for delete button popup
@@ -110,6 +112,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
             city: addFormData.city,
             state: addFormData.state,
             walletId: addFormData.walletId,
+            zipcode: addFormData.zipcode,
         };
 
         let response = await fetch(Constants.addAdmin, {
@@ -299,7 +302,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                         name="firstName"
                                         label="First Name"
                                         variant="standard"
-                                        placeholder="first name"
+                                        placeholder="First Name"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
@@ -310,7 +313,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                         name="lastName"
                                         label="Last Name"
                                         variant="standard"
-                                        placeholder="last name"
+                                        placeholder="Last Name"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
@@ -321,7 +324,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                         name="email"
                                         label="Email"
                                         variant="standard"
-                                        placeholder="email"
+                                        placeholder="Email"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
@@ -332,7 +335,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                         name="walletId"
                                         label="Wallet ID"
                                         variant="standard"
-                                        placeholder="wallet ID"
+                                        placeholder="Wallet ID"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
@@ -343,7 +346,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                         name="address"
                                         label="Street Address"
                                         variant="standard"
-                                        placeholder="street address"
+                                        placeholder="Street Address"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
@@ -354,7 +357,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                         name="city"
                                         label="City"
                                         variant="standard"
-                                        placeholder="city"
+                                        placeholder="City"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
@@ -365,7 +368,18 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                         name="state"
                                         label="State"
                                         variant="standard"
-                                        placeholder="state"
+                                        placeholder="State"
+                                        className={stylesP.formInput}
+                                        required
+                                        onChange={handleAddFormData}
+                                    />
+                                     <br />
+                                    <TextField
+                                        type="text"
+                                        name="zipcode"
+                                        label="Zipcode"
+                                        variant="standard"
+                                        placeholder="Zipcode"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
