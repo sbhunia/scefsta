@@ -28,9 +28,9 @@ contract Accounts {
      // Allows the admin to add verified ambulances
     function addAmbulance(address addr) public {
         // verify account does not already have another role
-        require(hospitals[addr] == false, "already a hospital");
-        require(ambulances[addr] == false, "sender is already ambulance");
-        require(initiators[addr] == false, "sender is already initiator");
+        require(hospitals[addr] == false, "already a facility");
+        require(ambulances[addr] == false, "already an ambulance");
+        require(initiators[addr] == false, "already an initiator");
         require(admins[addr] == false, "sender is already admin");
 
         // verify the sender is an admin
