@@ -18,7 +18,7 @@ CREATE TABLE Users (
             licensePlate        VARCHAR(50),
             facilityName        VARCHAR(100),
             initiatorType ENUM('emergency', 'private', 'facility'),
-            accountType ENUM('admin', 'initiator', 'facility', 'transport')     NOT NULL,
+            accountType ENUM('admin', 'initiator', 'facility', 'transport', 'interfacility')     NOT NULL,
             PRIMARY KEY (walletId)
 );
 
