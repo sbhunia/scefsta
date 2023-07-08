@@ -20,14 +20,18 @@ export default async function handler(req, res) {
 
 async function addHospital(req, res) {
 
-    let hospitalSystem = JSON.parse(req.body)["hospitalSystem"];
+    let hospitalSystem = JSON.parse(req.body)[Constants.hospitalSystem];
     let address = JSON.parse(req.body)["address"];
     let city = JSON.parse(req.body)["city"];
     let state = JSON.parse(req.body)["state"];
+    let zipcode = JSON.parse(req.body)["zipcode"];
     let walletId = JSON.parse(req.body)["walletId"];
+    let accountType = "facility";
 
-    let query = "   INSERT INTO " + Constants.Users + " (" + Constants.walletId + ", " + Constants.address + ", " + Constants.city + ", " + Constants.state + ", " + Constants.hospitalSystem + ") \
-                    VALUES ('" + walletId + "', '" + address + "', '" + city + "', '" + state + "', '" + hospitalSystem + "' );";
+    let query = "   INSERT INTO " + Constants.Users + " (" + Constants.walletId + ", " + Constants.address + ", " + Constants.city + ", " + 
+                    Constants.state + ", " + Constants.hospitalSystem + ", " + Constants.zipcode + ", " + Constants.accountType + ") \
+                    VALUES ('" + walletId + "', '" + address + "', '" + city + "', '" + state + "', '" + 
+                    hospitalSystem + "', '" + zipcode + "', '" + accountType + "' );";
     console.log(query);
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {

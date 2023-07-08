@@ -7,14 +7,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Popup from '../Popup/Popup';
 import stylesP from '../../styles/Popup.module.css'
 import * as Constants from '../../pages/constants';
-import { useContractFunction } from '@usedapp/core';
+import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
+import Box from '@mui/material/Box';
+import Alert from '@mui/material/Alert';
+import { CircularProgress } from '@mui/material';
 
 const columns = [
-  { field: 'hospitalSystem', headerName: 'Hospital Name', width: 300, sortable: true},
+  { field: Constants.hospitalSystem, headerName: `${Constants.HOSPITAL} Name`, width: 300, sortable: true},
   { field: 'address', headerName: 'Address', width: 175, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
   { field: 'state', headerName: 'State', width: 100, sortable: true},
+  { field: Constants.zipcode, headerName: 'Zipcode', width: 100, sortable: true},
   { field: 'id', headerName: 'Wallet ID', width: 400, sortable: false},
 ];
 
@@ -25,8 +29,10 @@ const columns = [
  */
 export default function HospitalDataGrid({data, popUpChecked}) {
     // add and remove smart contract function API connections
-    const { state: state1, send: send1 } = useContractFunction(ACCOUNT_INSTANCE, 'addHospital');
-    const { state: state2, send: send2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeHospital');
+    const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addHospital');
+    const { state: state2, send: send2, events: events2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeHospital');
+    const [showMessage1, setShowMessage1] = useState(false);
+    const [showMessage2, setShowMessage2] = useState(false);
 
     // allows for the data in the table to be updated (Add/Remove)
     const [dataContacts, setDataContacts] = useState(data);
@@ -43,11 +49,12 @@ export default function HospitalDataGrid({data, popUpChecked}) {
     // Used for add button popup
     const [addPopup, setAddPopup] = useState(false);
     const [addFormData, setAddFormData] = useState({
-        hospitalSystem: '',
+        facilityName: '',
         address: '',
         city: '',
         state: '',
-        walletId: ''
+        walletId: '',
+        zipcode: ''
     });
 
     // Used for delete button popup
@@ -72,13 +79,24 @@ export default function HospitalDataGrid({data, popUpChecked}) {
     // that new object gets added to the table.
     const handleAddFormSubmit = async (event) => {
         event.preventDefault();
-        
+        setShowMessage1(false);
+
+        // add to blockchain
+        send1(addFormData.walletId);
+
+        // wait a couple seconds before displaying the transaction message
+        await delay(2000);
+        setShowMessage1(true);
+    }
+
+    const finalizeAddHospital = async () => {
         const newContact = {
-            hospitalSystem: addFormData.hospitalSystem,
+            facilityName: addFormData.facilityName,
             address: addFormData.address,
             city: addFormData.city,
             state: addFormData.state,
             walletId: addFormData.walletId,
+            zipcode: addFormData.zipcode,
         };
 
         let response = await fetch(Constants.addHospital, {
@@ -101,8 +119,17 @@ export default function HospitalDataGrid({data, popUpChecked}) {
     const deleteRows = async (event) => {
         event.preventDefault();
 
-        //console.log(selectedRows[0]);
+        // Removes each hospital from the blockchain
+        selectedRows.forEach( removeId => {
+            send2(removeId);
+        });       
 
+        await delay(2000);
+        setShowMessage2(true);
+    }
+
+    const finalizeDeleteHospital = async () => {
+        // delete from DB after transaction finishes
         let response = await fetch(Constants.deleteHospital, {
             method: 'DELETE',
             body: JSON.stringify(selectedRows)
@@ -112,17 +139,13 @@ export default function HospitalDataGrid({data, popUpChecked}) {
 
         setDataContacts(dataContacts.filter(checkSelected))
 
-        // Removes each hospital from the blockchain
-        selectedRows.forEach( removeId => {
-            send2(removeId);
-        });       
-
         if(status.success){
             setDeletePopup(false);
         } else {
             alert("Error deleting rows");
         }
-        
+
+        setShowMessage2(false);
     }
 
     // Helper function for deleteRows to update the datagrid with deletions
@@ -131,11 +154,6 @@ export default function HospitalDataGrid({data, popUpChecked}) {
         if( !(selectedRows.includes(row.id)) ) {
             return row;
         }
-    }
-
-    // useDapp function to confirm addHospital transaction - payable
-    const submitHospital = () => {
-        send1(addFormData.walletId);
     }
 
     return (
@@ -167,7 +185,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                 columns={columns}
                 initialState={{
                     sorting: {
-                      sortModel: [{ field: 'hospitalSystem', sort: 'asc' }],
+                      sortModel: [{ field: Constants.hospitalSystem, sort: 'asc' }],
                     },
                     pagination: { paginationModel: { pageSize: 10 } },
                 }}
@@ -226,19 +244,48 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                                         Delete
                                     </Button>
                                 </div>
+                                {(function () {
+                                    if (showMessage2) {
+                                        if (state2.status === 'Mining') {
+                                            return (
+                                            <div>
+                                                <Alert severity="warning">Waiting for {Constants.HOSPITAL}(s) to be deleted</Alert>
+                                                <Box sx={{ display: 'flex' }}>
+                                                    <CircularProgress />
+                                                </Box>
+                                            </div>
+                                            )
+                                        }
+                                        if (transactionErrored(state2)) {
+                                            return (
+                                            <div>
+                                                <Alert severity="error">Transaction failed: {state2.errorMessage}</Alert>
+                                            </div>
+                                            )
+                                        }
+                                        if (state2.status === 'Success' && events2 != undefined) {
+                                            return (
+                                            <div>
+                                                <Alert severity="success">Your transaction was successful! Hospital was deleted from the blockchain</Alert>
+                                                <Button color='success' onClick={finalizeDeleteHospital}>Finalize and Exit</Button>
+                                            </div>
+                                            )
+                                        }
+                                    }
+                                })()}
                             </Popup>
                             
                             <Popup trigger={addPopup} setTrigger={setAddPopup}>
                                 <div className={stylesP.editHospital}>
-                                    <h1>Add a Hospital</h1>
+                                    <h1>Add New {Constants.HOSPITAL}</h1>
                                 </div>
                                 <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
                                     <TextField
                                         type="text"
-                                        name="hospitalSystem"
-                                        label="Hospital Name"
+                                        name="facilityName"
+                                        label={Constants.HOSPITAL + " Name"}
                                         variant="standard"
-                                        placeholder="Hospital Name"
+                                        placeholder={Constants.HOSPITAL + " Name"}
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
@@ -282,18 +329,58 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                                         name="state"
                                         label="State"
                                         variant="standard"
-                                        placeholder="Ohio"
+                                        placeholder="State"
+                                        className={stylesP.formInput}
+                                        required
+                                        onChange={handleAddFormData}
+                                    />
+                                    <br />
+                                    <TextField
+                                        type="text"
+                                        name="zipcode"
+                                        label="Zipcode"
+                                        variant="standard"
+                                        placeholder="Zipcode"
                                         className={stylesP.formInput}
                                         required
                                         onChange={handleAddFormData}
                                     />
                                     <br />
                                     <div className={stylesP.submitButtonDiv}>
-                                        <button type="submit" className={stylesP.submitButton} onClick={submitHospital}>
+                                        <button type="submit" className={stylesP.submitButton}>
                                             Submit
                                         </button>
                                     </div>
                                 </form>
+                                {(function () {
+                                    if (showMessage1) {
+                                        if (state1.status === 'Mining') {
+                                                return (
+                                                <div>
+                                                    <Alert severity="warning">Waiting for {Constants.HOSPITAL} to be added</Alert>
+                                                    <Box sx={{ display: 'flex' }}>
+                                                        <CircularProgress />
+                                                    </Box>
+                                                </div>
+                                                )
+                                            }
+                                        if (transactionErrored(state1)) {
+                                                return (
+                                                <div>
+                                                <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                                                </div>
+                                                )
+                                            }
+                                        if (state1.status === 'Success' && events1 != undefined) {
+                                            return (
+                                                <div>
+                                                    <Alert severity="success">Your transaction was successful! {Constants.HOSPITAL} was added to the blockchain</Alert>
+                                                <Button color='success' onClick={finalizeAddHospital}>Finalize and Exit</Button>
+                                                </div>
+                                            )
+                                        }
+                                    }
+                                })()}
                             </Popup>
                         </div>
                     );
@@ -303,3 +390,5 @@ export default function HospitalDataGrid({data, popUpChecked}) {
         
   );
 }
+
+const delay = ms => new Promise(res => setTimeout(res, ms));

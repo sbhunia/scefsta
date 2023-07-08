@@ -23,6 +23,7 @@ export const username = 'username';
 export const address = 'address';
 export const city = 'city';
 export const state = 'state';
+export const zipcode = 'zipcode';
 export const policeDept = 'policeDept';
 export const station = 'stationNumber';
 export const hospitalSystem = 'facilityName';
@@ -68,7 +69,8 @@ export const deleteSalt = 'api/salts';
 // Page titles
 export const DASHBOARD = 'Dashboard';
 export const ADMINISTRATOR = 'Administrator';
-export const HOSPITALS = 'Hospitals';
+export const ADMIN = 'Admin';
+export const HOSPITAL = 'Facility';
 export const POLICE = 'Initiator';
 export const AMBULANCE = 'Ambulance';
 export const PROFILE = 'Profile';
