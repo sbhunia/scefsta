@@ -28,6 +28,7 @@ export const policeDept = 'policeDept';
 export const station = 'stationNumber';
 export const hospitalSystem = 'facilityName';
 export const licensePlate = 'licensePlate';
+export const initiatorType = "initiatorType";
 export const accountType = "accountType";
 export const transportCompany = "transportCompany";
 

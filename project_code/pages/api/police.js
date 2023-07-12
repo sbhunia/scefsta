@@ -53,10 +53,9 @@ async function getPolice(req, res) {
 
     let query = "   SELECT  " + Constants.walletId + ",  \
                             " + Constants.address + ", " + Constants.city + ", " + Constants.state + ", " + Constants.policeDept + ", \
-                            " + Constants.station + ", " + Constants.licensePlate + "    \
+                            " + Constants.station + ", " + Constants.licensePlate + ", " + Constants.initiatorType + "   \
                     FROM    " + Constants.Users + "                                                       \
-                    WHERE   " + Constants.station + "     IS NOT NULL AND                                 \
-                            " + Constants.policeDept + "  IS NOT NULL;"
+                    WHERE   " + Constants.accountType + "  = 'initiator';"
 
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {

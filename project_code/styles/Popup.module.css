@@ -99,3 +99,10 @@
     top: 16px;
     right: 16px;
 }
+
+.headingText {
+    font-size: 1.2rem;
+    width: 50%;
+    color: #1A588C;
+    border-bottom: 1px solid #1A588C;
+  }

@@ -28,7 +28,7 @@ export const SidebarAdminDataDashbaord = [
         cName: 'flexListItem'
     },
     {
-        title: Constants.HOSPITALS,
+        title: Constants.HOSPITAL,
         path: Constants.DevHospitalURL,
         icon: <FaIcons.FaHospitalSymbol />,
         cName: 'flexListItem'
