@@ -10,11 +10,11 @@ export default async function handler(req, res) {
         }
         case 'POST': {
             let header = JSON.parse(req.header)['X-method'];
-            if (header === "addEmergency") {
+            if (header === "emergency") {
                 return addPolice(req, res);
-            } else if (header === "addPrivate") {
+            } else if (header === "private") {
                 return addPrivate(req, res);
-            } else if (header === "addInterfacility") {
+            } else if (header === "interfacility") {
                 return addInterfacility(req, res);
             }
             return addPolice(req, res)
