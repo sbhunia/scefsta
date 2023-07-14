@@ -1,8 +1,6 @@
 // contract addresses for both contracts
-// sample deployment addresses
-export const accountsAddress = '0xbC771e92306a85Ed56453B3BB53b14937d73a7e8';
-export const auctionsAddress = '0x6230e3674575F53B07b38DBFB6E5f9561285fc9C';
-
+export const accountsAddress = '0xf40653c67033A6E5a30ff2C0550Ad0e7a49c4078';
+export const auctionsAddress = '0x1c26df4cED0fb0dF5DA92483b6c354340d677Fb3';
 export const accounts_abi = [
   {
     "inputs": [],
