@@ -21,6 +21,7 @@ export const InterfacililtyForm = ({addPopup, setAddPopup, setDataContacts, data
         city: '',
         state: '',
         zipcode: '',
+        accountType: 'reload',
     });
     
     // Will read information written inside the add button's 

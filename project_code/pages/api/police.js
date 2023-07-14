@@ -29,9 +29,15 @@ export default async function handler(req, res) {
 
 async function addPolice(req, res) {
     try {
-      const { policeDept, station, address, city, state, zipcode, walletId } = req.body;
-      const accountType = "initiator";
-      const initiatorType = "emergency";
+      let policeDept = JSON.parse(req.body)["policeDept"];
+      let station = JSON.parse(req.body)["station"];
+      let address = JSON.parse(req.body)["address"];
+      let city = JSON.parse(req.body)["city"];
+      let state = JSON.parse(req.body)["state"];
+      let zipcode = JSON.parse(req.body)[Constants.zipcode];
+      let walletId = JSON.parse(req.body)["walletId"];
+      let accountType = "initiator";
+      let initiatorType = "emergency";
   
       const query = `INSERT INTO ${Constants.Users} 
                     (${Constants.walletId}, ${Constants.policeDept}, ${Constants.station}, 
@@ -51,15 +57,23 @@ async function addPolice(req, res) {
   
   async function addPrivate(req, res) {
     try {
-      const { firstName, lastName, email, address, city, state, zipcode, walletId } = req.body;
-      const accountType = "initiator";
-      const initiatorType = "private";
+      let fName = JSON.parse(req.body)[Constants.firstName];
+      let lName = JSON.parse(req.body)[Constants.lastName];
+      let email = JSON.parse(req.body)[Constants.email];
+      let address = JSON.parse(req.body)["address"];
+      let city = JSON.parse(req.body)["city"];
+      let state = JSON.parse(req.body)["state"];
+      let zipcode = JSON.parse(req.body)[Constants.zipcode];
+      let walletId = JSON.parse(req.body)["walletId"];
+      let accountType = "initiator";
+      let initiatorType = "private";
+  
   
       const query = `INSERT INTO ${Constants.Users} 
                     (${Constants.firstName}, ${Constants.lastName}, ${Constants.email}, 
                     ${Constants.address}, ${Constants.city}, ${Constants.state}, ${Constants.zipcode}, ${Constants.walletId}, 
                     ${Constants.accountType}, ${Constants.initiatorType}) 
-                    VALUES ('${firstName}', '${lastName}', '${email}', 
+                    VALUES ('${fName}', '${lName}', '${email}', 
                     '${address}', '${city}', '${state}', '${zipcode}', '${walletId}', 
                     '${accountType}', '${initiatorType}');`;
   
@@ -128,7 +142,14 @@ async function getPolice(req, res) {
           ${Constants.policeDept},
           ${Constants.station},
           ${Constants.licensePlate},
-          ${Constants.initiatorType}
+          ${Constants.initiatorType},
+          ${Constants.hospitalSystem},
+          ${Constants.zipcode},
+          ${Constants.initiatorType},
+          ${Constants.accountType},
+          ${Constants.firstName},
+          ${Constants.lastName},
+          ${Constants.email}
         FROM
           ${Constants.Users}
         WHERE

@@ -1,19 +1,7 @@
 import * as React from 'react';
-import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { useState } from 'react';
-import { Button, TextField } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Popup from '../Popup/Popup';
-import stylesP from '../../styles/Popup.module.css'
+import stylesP from '../../styles/Popup.module.css';
 import * as Constants from '../../pages/constants';
-import { useContractFunction, transactionErrored } from '@usedapp/core';
-import { ACCOUNT_INSTANCE } from '../../pages/_app';
-import Box from '@mui/material/Box';
-import Alert from '@mui/material/Alert';
-import { CircularProgress } from '@mui/material';
 import InitiatorDataGrids from './InitiatorDataGrids';
-
 
 /**
  * Creates the table containing the police information and populates it with the data.
@@ -50,7 +38,7 @@ export default function InitiatorHandler({data, popUpChecked}) {
     const privateColumns = [
         { field: 'firstName', headerName: 'First Name', width: 100, sortable: true},
         { field: 'lastName', headerName: 'Last Name', width: 100,  sortable: false},
-        { field: 'email', headerName: 'Email', width: 80,  sortable: false},
+        { field: 'email', headerName: 'Email', width: 150,  sortable: false},
         { field: 'address', headerName: 'Address', width: 175, sortable: true},
         { field: 'city', headerName: 'City', width: 120, sortable: true},
         { field: 'state', headerName: 'State', width: 100, sortable: true},
@@ -64,7 +52,9 @@ export default function InitiatorHandler({data, popUpChecked}) {
         { field: 'city', headerName: 'City', width: 120, sortable: true},
         { field: 'state', headerName: 'State', width: 100, sortable: true},
         { field: Constants.zipcode, headerName: 'Zipcode', width: 100, sortable: true},
-        { field: 'id', headerName: 'Wallet ID', width: 400, sortable: false},
+        { field: 'id', headerName: 'Wallet ID', width: 200, sortable: false},
+        { field: Constants.accountType, headerName: 'Account Type', width: 150, sortable: false},
+
     ];
 
     return (

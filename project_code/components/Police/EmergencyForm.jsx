@@ -10,7 +10,7 @@ import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
 import * as Constants from '../../pages/constants';
 
-export const EmergencyForm = ({addPopup, setAddPopup}) => {
+export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataContacts}) => {
     const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addInitiator');
     const [showMessage1, setShowMessage1] = useState(false);
 

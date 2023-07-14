@@ -10,12 +10,14 @@ import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
 import * as Constants from '../../pages/constants';
 
-export const PrivateForm = ({addPopup, setAddPopup}) => {
+export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContacts}) => {
     const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addInitiator');
     const [showMessage1, setShowMessage1] = useState(false);
 
     const [addFormData, setAddFormData] = useState({
-        policeDept: '',
+        firstName: '',
+        lastName: '',
+        email: '',
         station: '',
         walletId: '',
         address: '',
@@ -56,8 +58,12 @@ export const PrivateForm = ({addPopup, setAddPopup}) => {
     }
 
     const finalizeAddInitiator = async () => {
+        event.preventDefault();
+
         const newContact = {
-            policeDept: addFormData.policeDept,
+            firstName: addFormData.firstName,
+            lastName: addFormData.lastName,
+            email: addFormData.email,
             station: addFormData.station,
             address: addFormData.address,
             city: addFormData.city,
@@ -92,7 +98,8 @@ export const PrivateForm = ({addPopup, setAddPopup}) => {
             <div className={stylesP.editHospital}>
                 <h1>Add New {Constants.POLICE}</h1>
             </div>
-            <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
+            {/* <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}> */}
+            <form className={stylesP.formPadding} onSubmit={finalizeAddInitiator}>
                 <TextField
                     type="text"
                     name="firstName"
