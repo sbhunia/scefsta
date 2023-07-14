@@ -9,7 +9,9 @@ export default async function handler(req, res) {
             return getPolice(req, res)
         }
         case 'POST': {
-            let header = JSON.parse(req.header)['X-method'];
+            const header = req.headers['x-method'];
+            console.log("head", header);
+
             if (header === "emergency") {
                 return addPolice(req, res);
             } else if (header === "private") {
@@ -17,7 +19,7 @@ export default async function handler(req, res) {
             } else if (header === "interfacility") {
                 return addInterfacility(req, res);
             }
-            return addPolice(req, res)
+            break;
         }
         case 'DELETE': {
             return deletePolice(req, res)
@@ -26,145 +28,136 @@ export default async function handler(req, res) {
 }
 
 async function addPolice(req, res) {
-    let policeDept = JSON.parse(req.body)["policeDept"];
-    let station = JSON.parse(req.body)["station"];
-    let address = JSON.parse(req.body)["address"];
-    let city = JSON.parse(req.body)["city"];
-    let state = JSON.parse(req.body)["state"];
-    let zipcode = JSON.parse(req.body)[Constants.zipcode];
-    let walletId = JSON.parse(req.body)["walletId"];
-    let accountType = "initiator";
-    let initiatorType = "emergency";
-
-    let query = `INSERT INTO ${Constants.Users} 
-                        (${Constants.walletId}, ${Constants.policeDept}, ${Constants.station}, 
-                        ${Constants.address}, ${Constants.city}, ${Constants.state}, 
-                        ${Constants.zipcode}, ${Constants.accountType}, ${Constants.initiatorType}) 
+    try {
+      const { policeDept, station, address, city, state, zipcode, walletId } = req.body;
+      const accountType = "initiator";
+      const initiatorType = "emergency";
+  
+      const query = `INSERT INTO ${Constants.Users} 
+                    (${Constants.walletId}, ${Constants.policeDept}, ${Constants.station}, 
+                    ${Constants.address}, ${Constants.city}, ${Constants.state}, 
+                    ${Constants.zipcode}, ${Constants.accountType}, ${Constants.initiatorType}) 
                     VALUES ('${walletId}', '${policeDept}', '${station}', '${address}', '${city}', 
-                        '${state}', '${zipcode}', '${accountType}', '${initiatorType}');`;
+                    '${state}', '${zipcode}', '${accountType}', '${initiatorType}');`;
+  
+      await mysqlLib.executeQuery(query);
+  
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false });
+    }
+  }
+  
+  async function addPrivate(req, res) {
+    try {
+      const { firstName, lastName, email, address, city, state, zipcode, walletId } = req.body;
+      const accountType = "initiator";
+      const initiatorType = "private";
+  
+      const query = `INSERT INTO ${Constants.Users} 
+                    (${Constants.firstName}, ${Constants.lastName}, ${Constants.email}, 
+                    ${Constants.address}, ${Constants.city}, ${Constants.state}, ${Constants.zipcode}, ${Constants.walletId}, 
+                    ${Constants.accountType}, ${Constants.initiatorType}) 
+                    VALUES ('${firstName}', '${lastName}', '${email}', 
+                    '${address}', '${city}', '${state}', '${zipcode}', '${walletId}', 
+                    '${accountType}', '${initiatorType}');`;
+  
+      await mysqlLib.executeQuery(query);
+  
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false });
+    }
+  }
+  
+  async function addInterfacility(req, res) {
+    try {
+        let facilityName = JSON.parse(req.body)[Constants.hospitalSystem];
+        let address = JSON.parse(req.body)["address"];
+        let city = JSON.parse(req.body)["city"];
+        let state = JSON.parse(req.body)["state"];
+        let zipcode = JSON.parse(req.body)[Constants.zipcode];
+        let walletId = JSON.parse(req.body)["walletId"];
+        let accountType = "initiator";
+        let initiatorType = "facility";
 
-    return new Promise((resolve, reject) => {
-        mysqlLib.executeQuery(query).then((d) => {
-            //console.log(d);
-            res.status(200).send({success: true});
-            resolve();
-        }).catch(e => {
-            console.log(e);
-            res.status(500).send({success: false});
-            resolve();
-        }); 
-    });
-}
+        const isFacilityQuery = `SELECT COUNT(*) FROM Users WHERE (${Constants.walletId} = '${walletId}' AND ${Constants.accountType} = 'facility');`;
+        const result = await mysqlLib.executeQuery(isFacilityQuery);
+        let rows = result[0]['COUNT(*)']
 
-async function addPrivate(req, res) {
-    let fName = JSON.parse(req.body)[Constants.firstName];
-    let lName = JSON.parse(req.body)[Constants.lastName];
-    let email = JSON.parse(req.body)[Constants.email];
-    let address = JSON.parse(req.body)["address"];
-    let city = JSON.parse(req.body)["city"];
-    let state = JSON.parse(req.body)["state"];
-    let zipcode = JSON.parse(req.body)[Constants.zipcode];
-    let walletId = JSON.parse(req.body)["walletId"];
-    let accountType = "initiator";
-    let initiatorType = "private";
-
-    let query = 
-        `INSERT INTO ${Constants.Users} 
-        (${Constants.firstName}, ${Constants.lastName}, ${Constants.email}, 
-            ${Constants.address}, ${Constants.city}, ${Constants.state}, ${Constants.zipcode}, ${Constants.walletId}, 
-            ${Constants.accountType}, ${Constants.initiatorType}) 
-        VALUES ('${fName}', '${lName}', '${email}', 
-            '${address}', '${city}', '${state}', '${zipcode}', '${walletId}', 
-            '${accountType}', '${initiatorType}');`;
-
-    return new Promise((resolve, reject) => {
-        mysqlLib.executeQuery(query).then((d) => {
-            //console.log(d);
-            res.status(200).send({success: true});
-            resolve();
-        }).catch(e => {
-            console.log(e);
-            res.status(500).send({success: false});
-            resolve();
-        }); 
-    });
-}
-
-async function addInterfacility(req, res) {
-    let facilityName = JSON.parse(req.body)[Constants.hospitalSystem];
-    let address = JSON.parse(req.body)["address"];
-    let city = JSON.parse(req.body)["city"];
-    let state = JSON.parse(req.body)["state"];
-    let zipcode = JSON.parse(req.body)[Constants.zipcode];
-    let walletId = JSON.parse(req.body)["walletId"];
-    let accountType = "initiator";
-    let initiatorType = "interfacility";
-
-    let query = 
-        `INSERT INTO ${Constants.Users} 
-        (${Constants.hospitalSystem}, 
-            ${Constants.address}, ${Constants.city}, ${Constants.state}, ${Constants.zipcode}, ${Constants.walletId}, 
-            ${Constants.accountType}, ${Constants.initiatorType}) 
-        VALUES ('${facilityName}', 
-            '${address}', '${city}', '${state}', '${zipcode}', '${walletId}', 
-            '${accountType}', '${initiatorType}');`;
-
-    return new Promise((resolve, reject) => {
-        mysqlLib.executeQuery(query).then((d) => {
-            //console.log(d);
-            res.status(200).send({success: true});
-            resolve();
-        }).catch(e => {
-            console.log(e);
-            res.status(500).send({success: false});
-            resolve();
-        }); 
-    });
-}
+        // if the entry is not already a facility then initiator type is facility
+        // if already a facility set type to inter-facility
+        if (rows === 0) {
+            const query = 
+                `INSERT INTO ${Constants.Users} 
+                    (${Constants.hospitalSystem}, 
+                    ${Constants.address}, ${Constants.city}, ${Constants.state}, ${Constants.zipcode}, ${Constants.walletId}, 
+                    ${Constants.accountType}, ${Constants.initiatorType}) 
+                 VALUES ( 
+                    '${facilityName}', '${address}', '${city}', '${state}', '${zipcode}', '${walletId}', 
+                    '${accountType}', '${initiatorType}');`;
+                    
+            console.log(query);
+            await mysqlLib.executeQuery(query);
+        } else if (rows === 1) {
+            accountType = 'interfacility';
+            const query = 
+                `UPDATE ${Constants.Users} SET ${Constants.accountType} = ${accountType} WHERE ${Constants.walletId} = ${walletId};`;
+            console.log(query);
+            await mysqlLib.executeQuery(query);
+        }
+  
+      res.status(200).json({ success: true });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false });
+    }
+  }
 
 // Queries the database for police and returns the results
 async function getPolice(req, res) {
-    //console.log(req.query.printerModel);
-    // console.log('inside get function');
-
-    let query = "   SELECT  " + Constants.walletId + ",  \
-                            " + Constants.address + ", " + Constants.city + ", " + Constants.state + ", " + Constants.policeDept + ", \
-                            " + Constants.station + ", " + Constants.licensePlate + ", " + Constants.initiatorType + "   \
-                    FROM    " + Constants.Users + "                                                       \
-                    WHERE   " + Constants.accountType + "  = 'initiator';"
-
-    return new Promise((resolve, reject) => {
-        mysqlLib.executeQuery(query).then((d) => {
-            //console.log(d);
-            res.status(200).send(d);
-            resolve();
-        }).catch(e => {
-            console.log(e);
-            res.status(500).send({success: false})
-            resolve();
-        });  
-    });
-}
+    try {
+      const query = `
+        SELECT
+          ${Constants.walletId},
+          ${Constants.address},
+          ${Constants.city},
+          ${Constants.state},
+          ${Constants.policeDept},
+          ${Constants.station},
+          ${Constants.licensePlate},
+          ${Constants.initiatorType}
+        FROM
+          ${Constants.Users}
+        WHERE
+          ${Constants.accountType} = 'initiator';
+      `;
+  
+      const result = await mysqlLib.executeQuery(query);
+      res.status(200).json(result);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false });
+    }
+  }
 
 // Deletes police from the database
 async function deletePolice(req, res) {
-
-    let walletIds = JSON.parse(req.body)
-    let formattedWalletIds = "'" + walletIds.join("','") + "'";
-
-    let query = "   DELETE FROM " + Constants.Users + " \
-                    WHERE " + Constants.walletId +" \
-                    IN (" + formattedWalletIds +");"
-
-    return new Promise((resolve, reject) => {
-        mysqlLib.executeQuery(query).then((d) => {
-            //console.log(d);
-            res.status(200).send({success: true});
-            resolve();
-        }).catch(e => {
-            console.log(e);
-            res.status(500).send({success: false});
-            resolve();
-        }); 
-    });
+    try {
+        const walletIds = JSON.parse(req.body);
+        const formattedWalletIds = walletIds.map((id) => `'${id}'`).join(',');
+    
+        const query = `
+          DELETE FROM ${Constants.Users}
+          WHERE ${Constants.walletId} IN (${formattedWalletIds});
+        `;
+    
+        await mysqlLib.executeQuery(query);
+        res.status(200).json({ success: true });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false });
+      }
 }

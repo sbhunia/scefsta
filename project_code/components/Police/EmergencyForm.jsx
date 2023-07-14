@@ -90,7 +90,7 @@ export const EmergencyForm = ({addPopup, setAddPopup}) => {
     return (
         <Popup trigger={addPopup} setTrigger={setAddPopup}>
             <div className={stylesP.editHospital}>
-                <h1>Add New {Constants.PO}</h1>
+                <h1>Add New {Constants.POLICE}</h1>
             </div>
             <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
                 <TextField 

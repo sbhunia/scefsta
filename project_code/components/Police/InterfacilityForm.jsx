@@ -10,13 +10,12 @@ import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
 import * as Constants from '../../pages/constants';
 
-export const InterfacililtyForm = ({addPopup, setAddPopup}) => {
+export const InterfacililtyForm = ({addPopup, setAddPopup, setDataContacts, dataContacts}) => {
     const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addInitiator');
     const [showMessage1, setShowMessage1] = useState(false);
 
     const [addFormData, setAddFormData] = useState({
-        policeDept: '',
-        station: '',
+        facilityName: '',
         walletId: '',
         address: '',
         city: '',
@@ -56,16 +55,17 @@ export const InterfacililtyForm = ({addPopup, setAddPopup}) => {
     }
 
     const finalizeAddInitiator = async () => {
+        event.preventDefault();
+
         const newContact = {
-            policeDept: addFormData.policeDept,
-            station: addFormData.station,
+            facilityName: addFormData.facilityName,
             address: addFormData.address,
             city: addFormData.city,
             state: addFormData.state,
             walletId: addFormData.walletId,
             zipcode: addFormData.zipcode,
         };
-
+        console.log("contact", newContact);
         let response = await fetch(Constants.addPolice, {
             method: 'POST',
             headers: {
@@ -79,12 +79,14 @@ export const InterfacililtyForm = ({addPopup, setAddPopup}) => {
         setDataContacts([...dataContacts, newContact,]);
 
         let data = await response.json();
-
+        console.log("data", data);
         if (data.success) {
-            setAddPopup(false);
+            //setAddPopup(false);
+        } else if (!data.success) {
+            alert("Error adding initiator to DB, please contact SuperAdmin");
         }
 
-        setShowMessage1(false);
+        // setShowMessage1(false);
     }
 
     return (
@@ -92,7 +94,8 @@ export const InterfacililtyForm = ({addPopup, setAddPopup}) => {
             <div className={stylesP.editHospital}>
                 <h1>Add New {Constants.POLICE}</h1>
             </div>
-            <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
+            {/* <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}> */}
+            <form className={stylesP.formPadding} onSubmit={finalizeAddInitiator}>
                 <TextField
                     type="text"
                     name="facilityName"

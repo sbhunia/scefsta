@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useRef } from 'react';
 import styles from "../../styles/Police.module.css";
-import PoliceDataGrid from './PoliceDataGrid';
+import InitiatorHandler from './InitiatorHandler';
 
 /**
  * Creates the main component for holding the table of police departments. Available in the Contract Administrator page.
@@ -35,7 +35,7 @@ export default function Police(policeData) {
 
     return (
         <div className={styles.container}>
-            <PoliceDataGrid data={searchTerm.length < 1 ? testData : searchResults} popUpChecked={popUpChecked} openTenders={false}/>
+            <InitiatorHandler data={searchTerm.length < 1 ? testData : searchResults} popUpChecked={popUpChecked} openTenders={false}/>
         </div>
     );
 }

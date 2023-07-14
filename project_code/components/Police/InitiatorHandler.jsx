@@ -20,7 +20,7 @@ import InitiatorDataGrids from './InitiatorDataGrids';
  * @param {*} data JSON containing the data.
  * @param {*} popUpChecked Boolean -if true, allows for adding/deleting police; false otherwise.
  */
-export default function PoliceDataGrid({data, popUpChecked}) {
+export default function InitiatorHandler({data, popUpChecked}) {
     let emergencyArr = [];
     let privateArr = [];
     let interfacilityArr = [];
@@ -80,11 +80,9 @@ export default function PoliceDataGrid({data, popUpChecked}) {
             </div>    
 
             <div style={{ height: 400, width: '100%' }}>
-                <h2 className={stylesP.headingText}>Inter-Facility Initiators</h2>
+                <h2 className={stylesP.headingText}>Facility Initiators</h2>
                 <InitiatorDataGrids data={interfacilityArr} popUpChecked={popUpChecked} columns={interfacilityColumns} type={"interfacility"}/>
             </div>  
         </jsx>
   );
 }
-
-const delay = ms => new Promise(res => setTimeout(res, ms));
