@@ -31,11 +31,9 @@ export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataConta
     const handleAddFormData = (event) => {
         const fieldName = event.target.name;
         const fieldValue = event.target.value;
-        console.log(fieldName);
-        console.log(fieldValue)
+       
         const newFormData = { ...addFormData }
         newFormData[fieldName] = fieldValue;
-        console.log(newFormData);
         setAddFormData(newFormData);
     }
 
