@@ -1,18 +1,17 @@
 'use strict';
-const mysqlLib = require('../../config_database/mysqlLib')
-import * as Constants from '../constants'
+const mysqlLib = require('../../config_database/mysqlLib');
+import * as Constants from '../constants';
 
 export default async function handler(req, res) {
-    
     switch (req.method) {
         case 'GET': {
-            return getSalts(req, res)
+            return getSalts(req, res);
         }
         case 'POST': {
-            return addSalt(req, res)
+            return addSalt(req, res);
         }
         case 'DELETE': {
-            return deleteSalt(req, res)
+            return deleteSalt(req, res);
         }
     }
 }
@@ -24,41 +23,30 @@ async function addSalt(req, res) {
     let saltVal = JSON.parse(req.body)['saltVal'];
     let bidVal = JSON.parse(req.body)['bidVal'];
 
-    // let query = "   INSERT INTO " + Constants.Salts + " (   " + Constants.walletId + ", " + Constants.patientId + ", " + Constants.bidId + ", \
-    //                                                         " + Constants.saltVal + ") \
-    //                 VALUES ('" + walletId + "', '" + patientId + "', '" + bidId + "', '" + saltVal + "');";
+    let query = `INSERT INTO ${Constants.Salts} (${Constants.walletId}, ${Constants.patientId}, ${Constants.bidId},
+        ${Constants.saltVal}, ${Constants.bidVal})
+        VALUES ('${walletId}', '${patientId}', '${bidId}', '${saltVal}', '${bidVal}');`;
 
-    let query = "   INSERT INTO " + Constants.Salts + " (   " + Constants.walletId + ", " + Constants.patientId + ", " + Constants.bidId + ", \
-            " + Constants.saltVal + ", " + Constants.bidVal + ") \
-            VALUES ('" + walletId + "', '" + patientId + "', '" + bidId + "', '" + saltVal + "', '" + bidVal + ");";
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {
-            //console.log(d);
-            res.status(200).send({success: true});
+            res.status(200).send({ success: true });
             resolve();
         }).catch(e => {
             console.log(e);
-            res.status(500).send({success: false});
+            res.status(500).send({ success: false });
             resolve();
-        }); 
+        });
     });
 }
 
-// Queries the database for police and returns the results
 async function getSalts(req, res) {
     let walletId = req.query.walletId;
-    let query = "SELECT  * \
-                FROM    " + Constants.Salts + " \
-                LEFT JOIN " + Constants.Patients + " ON \
-                " + Constants.Patients + "." + Constants.patientId + " = " + Constants.Salts + "." + Constants.patientId + " \
-                WHERE   " + Constants.walletId + " = '" + walletId + "';";
+    let query = `SELECT *
+                FROM ${Constants.Salts}
+                LEFT JOIN ${Constants.Patients} ON
+                ${Constants.Patients}.${Constants.patientId} = ${Constants.Salts}.${Constants.patientId}
+                WHERE ${Constants.walletId} = '${walletId}';`;
     
-    // let query = "SELECT  " + Constants.saltId + ", " + Constants.walletId + ", " + Constants.Salts + "." + Constants.patientId + ", \
-    //                         " + Constants.saltVal + ", " + Constants.bidId + " \
-    //             FROM    " + Constants.Salts + " \
-    //             LEFT JOIN " + Constants.Patients + " ON \
-    //             " + Constants.Patients + "." + Constants.patientId + " = " + Constants.Salts + "." + Constants.patientId + " \
-    //             WHERE   " + Constants.walletId + " = '" + walletId + "';";
     console.log("query: ", query);
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {
@@ -67,32 +55,30 @@ async function getSalts(req, res) {
             resolve();
         }).catch(e => {
             console.log(e);
-            res.status(500).send({success: false})
+            res.status(500).send({ success: false });
             resolve();
-        });  
+        });
     });
 }
 
-// Deletes police from the database
 async function deleteSalt(req, res) {
     let walletId = JSON.parse(req.body)['walletId'];
     let patientId = JSON.parse(req.body)['patientId'];
     let bidId = JSON.parse(req.body)['bidId'];
 
-    let query = "   DELETE FROM " + Constants.Salts + " \
-                    WHERE   " + Constants.walletId + " = " + walletId + " AND                                 \
-                    " + Constants.patientId + " = " + patientId + " \
-                    " + Constants.bidId + " = " + bidId + ";";
+    let query = `DELETE FROM ${Constants.Salts}
+                    WHERE ${Constants.walletId} = ${walletId} AND
+                    ${Constants.patientId} = ${patientId} AND
+                    ${Constants.bidId} = ${bidId};`;
 
     return new Promise((resolve, reject) => {
         mysqlLib.executeQuery(query).then((d) => {
-            //console.log(d);
-            res.status(200).send({success: true});
+            res.status(200).send({ success: true });
             resolve();
         }).catch(e => {
             console.log(e);
-            res.status(500).send({success: false});
+            res.status(500).send({ success: false });
             resolve();
-        }); 
+        });
     });
 }
