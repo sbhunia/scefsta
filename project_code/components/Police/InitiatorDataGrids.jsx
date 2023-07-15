@@ -114,7 +114,7 @@ export default function InitiatorDataGrids({data, popUpChecked, columns, type}) 
                     if (type === "emergency") {
                         return (
                             <div>
-                                <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup} data={data}
+                                <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup} data={dataContacts}
                                     selectedRows={selectedRows} dataContacts={dataContacts} setDataContacts={setDataContacts}
                                     showMessage2={showMessage2} setShowMessage2={setShowMessage2}/>
                                 <EmergencyForm addPopup={addPopup} setAddPopup={setAddPopup} setDataContacts={setDataContacts} 
@@ -124,7 +124,7 @@ export default function InitiatorDataGrids({data, popUpChecked, columns, type}) 
                     } else if (type === "private") {
                         return (
                             <div>
-                                <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup} data={data}
+                                <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup} data={dataContacts}
                                     selectedRows={selectedRows} dataContacts={dataContacts} setDataContacts={setDataContacts}
                                     showMessage2={showMessage2} setShowMessage2={setShowMessage2}/>
                                 <PrivateForm addPopup={addPopup} setAddPopup={setAddPopup} setDataContacts={setDataContacts}
@@ -134,7 +134,7 @@ export default function InitiatorDataGrids({data, popUpChecked, columns, type}) 
                     } else if (type === "interfacility") {
                         return (
                             <div>
-                                <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup} data={data}
+                                <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup} data={dataContacts}
                                     selectedRows={selectedRows} dataContacts={dataContacts} setDataContacts={setDataContacts}
                                     showMessage2={showMessage2} setShowMessage2={setShowMessage2}/>
                                 <InterfacililtyForm addPopup={addPopup} setAddPopup={setAddPopup} setDataContacts={setDataContacts} 

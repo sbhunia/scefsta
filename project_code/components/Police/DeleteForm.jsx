@@ -45,10 +45,10 @@ export const DeleteForm = ({deletePopup, setDeletePopup, selectedRows, dataConta
         });
 
         let status = await response.json();        
-        if(status.success){
+        if(status.success) {
             setDataContacts(dataContacts.filter(checkSelected))
             setDeletePopup(false);
-        } else {
+        } else if (status.success) {
             alert(`Error removing ${Constants.POLICE} from DB, please contact SuperAdmin`);
         }
 
