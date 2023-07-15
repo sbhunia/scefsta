@@ -93,7 +93,9 @@ export default function TenderForm(props) {
     const [deliveryTime, setDeliveryTime] = React.useState(900);
     const [location, setLocation] = useState("");
     const [stateIn, setStateIn] = useState("");
-    const [city, setCity] = useState("");
+    const [city, setCity] = useState("");   
+    const [zipcode, setZipcode] = useState("");
+
 
     const [allowedHospitals, setAllowedHospital] = useState(["0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80"]);
 
@@ -147,6 +149,10 @@ export default function TenderForm(props) {
         setStateIn(event.target.value);
     }
 
+    const handleSetZipcode = (event) => {
+        setZipcode(event.target.value);
+    }
+
     // auctionLength - how long in minutes the ambulnaces have to bid in the auction
     // location - the location of the incident
     // allowed hospitals - hospitals that are near enough to service patient(s)
@@ -172,6 +178,7 @@ export default function TenderForm(props) {
             state: stateIn,
             status: "posted",
             isAccepted: false,
+            zipcode: zipcode
         };
 
         console.log(newPatient);
@@ -217,6 +224,12 @@ export default function TenderForm(props) {
                         onChange={handleSetCity}/>
                     <TextField 
                         label="State"
+                        className={styles.formText}
+                        value={stateIn}
+                        onChange={handleSetStateIn}
+                        variant="standard"/>
+                    <TextField 
+                        label="Zipcode"
                         className={styles.formText}
                         value={stateIn}
                         onChange={handleSetStateIn}
