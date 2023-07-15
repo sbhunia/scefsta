@@ -38,8 +38,8 @@ export default function InitiatorHandler({data, popUpChecked}) {
 
     const privateColumns = [
         { field: 'firstName', headerName: 'First Name', width: 100, sortable: true},
-        { field: 'lastName', headerName: 'Last Name', width: 100,  sortable: false},
-        { field: 'email', headerName: 'Email', width: 225,  sortable: false},
+        { field: 'lastName', headerName: 'Last Name', width: 100,  sortable: true},
+        { field: 'email', headerName: 'Email', width: 225,  sortable: true},
         { field: 'address', headerName: 'Address', width: 225, sortable: true},
         { field: 'city', headerName: 'City', width: 120, sortable: true},
         { field: 'state', headerName: 'State', width: 100, sortable: true},
@@ -54,7 +54,7 @@ export default function InitiatorHandler({data, popUpChecked}) {
         { field: 'state', headerName: 'State', width: 100, sortable: true},
         { field: Constants.zipcode, headerName: 'Zipcode', width: 100, sortable: true},
         { field: 'id', headerName: 'Wallet ID', width: 400, sortable: false},
-        { field: Constants.accountType, headerName: 'Account Type', width: 150, sortable: false},
+        { field: Constants.accountType, headerName: 'Account Type', width: 150, sortable: true},
     ];
 
     return (
