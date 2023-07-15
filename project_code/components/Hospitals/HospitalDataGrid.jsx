@@ -132,7 +132,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                     setDeleteInterfacility(true);
                     send2(removeId);
                     send3(removeId);
-                } else {
+                } else if (removeId === data[row].walletId) {
                     send2(removeId);
                 }
             }
