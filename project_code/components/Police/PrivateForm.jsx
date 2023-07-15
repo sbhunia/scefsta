@@ -30,8 +30,6 @@ export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContact
     // Will read information written inside the add button's 
     // form and store the data in 'setAddFormData'
     const handleAddFormData = (event) => {
-        event.preventDefault();
-
         const fieldName = event.target.name;
         const fieldValue = event.target.value;
 
@@ -45,6 +43,7 @@ export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContact
     // the data will be used in a new object (newContacts) that adds an id, and 
     // that new object gets added to the table.
     const handleAddFormSubmit = async (event) => {
+        event.preventDefault();
         setShowMessage1(false);
 
         // add to blockchain
@@ -133,7 +132,6 @@ export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContact
                 />
                 <FormWalletID handleAddFormData={handleAddFormData}/>
                 <FormAddress handleAddFormData={handleAddFormData}/>
-                <br />
                 <div className={stylesP.submitButtonDiv}>
                     <button type="submit" className={stylesP.submitButton}>
                         Submit

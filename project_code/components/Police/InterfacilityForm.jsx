@@ -105,7 +105,6 @@ export const InterfacililtyForm = ({ addPopup, setAddPopup, setDataContacts, dat
         />
         <FormWalletID handleAddFormData={handleAddFormData}/>
         <FormAddress handleAddFormData={handleAddFormData} />
-        <br />
         <div className={stylesP.submitButtonDiv}>
           <button type="submit" className={stylesP.submitButton}>
             Submit
