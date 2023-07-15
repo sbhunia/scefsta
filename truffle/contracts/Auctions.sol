@@ -82,6 +82,7 @@ contract Auctions {
         string memory addr,
         string memory city,
         string memory state,
+        string memory zipcode,
         uint256 penalty,
         string memory severity,
         address[] memory allowedHospitals
