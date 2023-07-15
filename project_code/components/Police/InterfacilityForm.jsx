@@ -12,12 +12,10 @@ import * as Constants from '../../pages/constants';
 import FormAddress from "../FormComponents/FormAddress";
 import { FormWalletID } from "../FormComponents/FormWalletID";
 
-export const InterfacililtyForm = ({ addPopup, setAddPopup, setDataContacts, dataContacts }) => {
+export const InterfacililtyForm = ({ addPopup, setAddPopup, setDataContacts, dataContacts, showMessage1, setShowMessage1 }) => {
   const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addInitiator');
   /* Temporary for issues with adding to DB */
   //const { state, send: send2, events } = useContractFunction(ACCOUNT_INSTANCE, 'removeInitiator');
-
-  const [showMessage1, setShowMessage1] = useState(false);
 
   const [addFormData, setAddFormData] = useState({
     facilityName: '',
@@ -84,7 +82,7 @@ export const InterfacililtyForm = ({ addPopup, setAddPopup, setDataContacts, dat
     if (data.success) {
       setAddPopup(false);
     } else if (!data.success) {
-      alert("Error adding initiator to DB, please contact SuperAdmin");
+      alert(`Error adding ${Constants.POLICE} to DB, please contact SuperAdmin`);
     }
 
     setShowMessage1(false);
@@ -132,6 +130,7 @@ export const InterfacililtyForm = ({ addPopup, setAddPopup, setDataContacts, dat
             return (
               <div>
                 <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                <Alert severity="warning" onClick={finalizeAddInitiator}>Add to DB anyways</Alert>
               </div>
             )
           }

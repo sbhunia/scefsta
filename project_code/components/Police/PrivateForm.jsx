@@ -12,9 +12,8 @@ import * as Constants from '../../pages/constants';
 import FormAddress from "../FormComponents/FormAddress";
 import { FormWalletID } from "../FormComponents/FormWalletID";
 
-export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContacts}) => {
+export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContacts, showMessage1, setShowMessage1}) => {
     const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addInitiator');
-    const [showMessage1, setShowMessage1] = useState(false);
 
     const [addFormData, setAddFormData] = useState({
         firstName: '',
@@ -81,12 +80,12 @@ export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContact
 
         newContact['id'] = newContact['walletId'];
 
-        setDataContacts([...dataContacts, newContact,]);
-
         let data = await response.json();
-
         if (data.success) {
+            setDataContacts([...dataContacts, newContact,]);
             setAddPopup(false);
+        } else if (!data.success) {
+            alert(`Error adding ${Constants.POLICE} to DB, please contact SuperAdmin`);
         }
 
         setShowMessage1(false);
@@ -156,7 +155,8 @@ export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContact
                     if (transactionErrored(state1)) {
                             return (
                             <div>
-                            <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                                <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                                <Alert severity="warning" onClick={finalizeAddInitiator}>Add to DB anyways</Alert>
                             </div>
                             )
                         }
@@ -164,7 +164,7 @@ export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContact
                         return (
                             <div>
                                 <Alert severity="success">Your transaction was successful! {Constants.POLICE} was added to the blockchain</Alert>
-                            <Button color='success' onClick={finalizeAddInitiator}>Finalize and Exit</Button>
+                                <Button color='success' onClick={finalizeAddInitiator}>Finalize and Exit</Button>
                             </div>
                         )
                     }

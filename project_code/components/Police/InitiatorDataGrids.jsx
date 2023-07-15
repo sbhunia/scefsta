@@ -33,6 +33,9 @@ export default function InitiatorDataGrids({data, popUpChecked, columns, type}) 
     // Used for delete button popup
     const [deletePopup, setDeletePopup] = useState(false);
 
+    const [showMessage1, setShowMessage1] = useState(false);
+    const [showMessage2, setShowMessage2] = useState(false);
+
     return (
         <div style={{ height: 400, width: '100%' }}>
             <DataGrid
@@ -89,7 +92,7 @@ export default function InitiatorDataGrids({data, popUpChecked, columns, type}) 
                     if (deleteButton) {
                         return (
                             <div>
-                                <Button onClick={() => setDeletePopup(true)} style={{margin: '10px'}} variant="contained" endIcon={<DeleteIcon />} >
+                                <Button onClick={() => {setDeletePopup(true); setShowMessage1(false)}} style={{margin: '10px'}} variant="contained" endIcon={<DeleteIcon />} >
                                     Delete
                                 </Button>
                             </div>
@@ -97,7 +100,7 @@ export default function InitiatorDataGrids({data, popUpChecked, columns, type}) 
                     } else {
                         return (
                             <div>
-                                <Button onClick={() => setAddPopup(true)} style={{margin: '10px'}} variant="outlined" startIcon={<AddIcon />} >
+                                <Button onClick={() => {setAddPopup(true); setShowMessage2(false)}} style={{margin: '10px'}} variant="outlined" startIcon={<AddIcon />} >
                                     Add
                                 </Button>
                             </div>
@@ -112,25 +115,30 @@ export default function InitiatorDataGrids({data, popUpChecked, columns, type}) 
                         return (
                             <div>
                                 <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup} data={data}
-                                    selectedRows={selectedRows} dataContacts={dataContacts} setDataContacts={setDataContacts}/>
-                                <EmergencyForm addPopup={addPopup} setAddPopup={setAddPopup} setDataContacts={setDataContacts} dataContacts={dataContacts}/>
+                                    selectedRows={selectedRows} dataContacts={dataContacts} setDataContacts={setDataContacts}
+                                    showMessage2={showMessage2} setShowMessage2={setShowMessage2}/>
+                                <EmergencyForm addPopup={addPopup} setAddPopup={setAddPopup} setDataContacts={setDataContacts} 
+                                    dataContacts={dataContacts} showMessage1={showMessage1} setShowMessage1={setShowMessage1}/>
                             </div>
                         );
                     } else if (type === "private") {
                         return (
                             <div>
                                 <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup} data={data}
-                                    selectedRows={selectedRows} dataContacts={dataContacts} setDataContacts={setDataContacts}/>
-                                <PrivateForm addPopup={addPopup} setAddPopup={setAddPopup} setDataContacts={setDataContacts} dataContacts={dataContacts}/>
+                                    selectedRows={selectedRows} dataContacts={dataContacts} setDataContacts={setDataContacts}
+                                    showMessage2={showMessage2} setShowMessage2={setShowMessage2}/>
+                                <PrivateForm addPopup={addPopup} setAddPopup={setAddPopup} setDataContacts={setDataContacts}
+                                     dataContacts={dataContacts}showMessage1={showMessage1} setShowMessage1={setShowMessage1}/>
                             </div>
                         );
                     } else if (type === "interfacility") {
                         return (
                             <div>
-                                <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup}
+                                <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup} data={data}
                                     selectedRows={selectedRows} dataContacts={dataContacts} setDataContacts={setDataContacts}
-                                    data={data}/>
-                                <InterfacililtyForm addPopup={addPopup} setAddPopup={setAddPopup} setDataContacts={setDataContacts} dataContacts={dataContacts}/>
+                                    showMessage2={showMessage2} setShowMessage2={setShowMessage2}/>
+                                <InterfacililtyForm addPopup={addPopup} setAddPopup={setAddPopup} setDataContacts={setDataContacts} 
+                                    dataContacts={dataContacts} showMessage1={showMessage1} setShowMessage1={setShowMessage1}/>
                             </div>
                         );
                     }

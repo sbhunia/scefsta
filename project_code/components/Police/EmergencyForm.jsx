@@ -12,11 +12,9 @@ import * as Constants from '../../pages/constants';
 import FormAddress from "../FormComponents/FormAddress";
 import { FormWalletID } from "../FormComponents/FormWalletID";
 
-export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataContacts}) => {
+export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataContacts, showMessage1, setShowMessage1}) => {
     const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addInitiator');
     const { state: state2, send: send2, events: events2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeInitiator');
-
-    const [showMessage1, setShowMessage1] = useState(false);
 
     const [addFormData, setAddFormData] = useState({
         policeDept: '',
@@ -79,12 +77,12 @@ export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataConta
 
         newContact['id'] = newContact['walletId'];
 
-        setDataContacts([...dataContacts, newContact,]);
-
         let data = await response.json();
-
         if (data.success) {
+            setDataContacts([...dataContacts, newContact,]);
             setAddPopup(false);
+        } else if (!data.success) {
+            alert(`Error adding ${Constants.POLICE} to DB, please contact SuperAdmin`);
         }
 
         setShowMessage1(false);
@@ -142,7 +140,8 @@ export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataConta
                     if (transactionErrored(state1)) {
                             return (
                             <div>
-                            <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                                <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                                <Alert severity="warning" onClick={finalizeAddInitiator}>Add to DB anyways</Alert>
                             </div>
                             )
                         }
@@ -150,7 +149,7 @@ export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataConta
                         return (
                             <div>
                                 <Alert severity="success">Your transaction was successful! {Constants.POLICE} was added to the blockchain</Alert>
-                            <Button color='success' onClick={finalizeAddInitiator}>Finalize and Exit</Button>
+                                <Button color='success' onClick={finalizeAddInitiator}>Finalize and Exit</Button>
                             </div>
                         )
                     }

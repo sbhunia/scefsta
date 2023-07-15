@@ -10,11 +10,10 @@ import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
 import * as Constants from '../../pages/constants';
 
-export const DeleteForm = ({deletePopup, setDeletePopup, selectedRows, dataContacts, setDataContacts, data}) => {
+export const DeleteForm = ({deletePopup, setDeletePopup, selectedRows, dataContacts, setDataContacts, data, showMessage2, setShowMessage2}) => {
     const { state, send: send2, events } = useContractFunction(ACCOUNT_INSTANCE, 'removeInitiator');
     const { state: state3, send: send3, events: events3 } = useContractFunction(ACCOUNT_INSTANCE, 'removeHospital');
 
-    const [showMessage2, setShowMessage2] = useState(false);
     const [deleteInterfacility, setDeleteInterfacility] = useState(false);
 
     // Queries the database to delete the selected rows and removes them from the datagrid
@@ -45,13 +44,12 @@ export const DeleteForm = ({deletePopup, setDeletePopup, selectedRows, dataConta
             body: JSON.stringify(selectedRows)
         });
 
-        let status = await response.json();
-        setDataContacts(dataContacts.filter(checkSelected))
-        
+        let status = await response.json();        
         if(status.success){
+            setDataContacts(dataContacts.filter(checkSelected))
             setDeletePopup(false);
         } else {
-            alert("Error deleting rows");
+            alert(`Error removing ${Constants.POLICE} from DB, please contact SuperAdmin`);
         }
 
         setShowMessage2(false);
