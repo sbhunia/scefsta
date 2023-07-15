@@ -92,14 +92,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
 
         await delay(2000);
         setShowMessage1(true);
-
-        // temporary function to fix disconnects w/ DB and blockchain
-        // let response = await fetch(Constants.deleteAdmins, {
-        //     method: 'DELETE',
-        //     body: JSON.stringify(addFormData.walletId)
-        // });
-        // let status = await response.json();
-
+        
         // temporary delete function for blockchain
         //send2(addFormData.walletId);
     }
