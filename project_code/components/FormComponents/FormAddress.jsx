@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { TextField, FormControl, Autocomplete } from '@mui/material';
-import * as Constants from '../../pages/constants';
 import stylesP from '../../styles/Popup.module.css';
 
 const stateOptions = [
