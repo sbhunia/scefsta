@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -63,7 +63,17 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
 
     // Used for delete button popup
     const [deletePopup, setDeletePopup] = useState(false);
+    const [completedTransactions, setCompletedTransactions] = useState(0); 
 
+    const handleTransactionComplete = () => { 
+        setCompletedTransactions(prevCount => prevCount + 1); 
+    }; 
+
+    useEffect(() => { 
+        if (completedTransactions === selectedRows.length) { 
+        setShowMessage2(true); 
+        } 
+    }, [completedTransactions, selectedRows]); 
 
     // Will read information written inside the add button's 
     // form and store the data in 'setAddFormData'
@@ -82,7 +92,7 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
     // that new object gets added to the table.
     const handleAddFormSubmit = async (event) => {
         event.preventDefault();
-        send1(addFormData.walletId);
+        send1(addFormData.walletId).then(handleTransactionComplete); 
 
         // temporary to handle removing accounts manually
         //send2(addFormData.walletId);
@@ -126,7 +136,7 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
 
         // Removes each ambulance from the blockchain
         selectedRows.forEach( removeId => {
-            send2(removeId);
+            send2(removeId).then(handleTransactionComplete); 
         });
 
         await delay(2000);

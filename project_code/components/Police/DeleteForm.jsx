@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
 import Popup from '../Popup/Popup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@mui/material';
 import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
@@ -15,6 +15,17 @@ export const DeleteForm = ({deletePopup, setDeletePopup, selectedRows, dataConta
     const { state: state3, send: send3, events: events3 } = useContractFunction(ACCOUNT_INSTANCE, 'removeHospital');
 
     const [deleteInterfacility, setDeleteInterfacility] = useState(false);
+    const [completedTransactions, setCompletedTransactions] = useState(0); 
+
+    const handleTransactionComplete = () => { 
+        setCompletedTransactions(prevCount => prevCount + 1); 
+    }; 
+
+    useEffect(() => { 
+        if (completedTransactions === selectedRows.length) { 
+        setShowMessage2(true); 
+        } 
+    }, [completedTransactions, selectedRows]); 
 
     // Queries the database to delete the selected rows and removes them from the datagrid
     const deleteRows = async (event) => {
@@ -26,10 +37,10 @@ export const DeleteForm = ({deletePopup, setDeletePopup, selectedRows, dataConta
                 // if user is interfacility, remove from facility and initiator in blockchain
                 if (removeId === data[row].walletId && data[row].accountType === 'interfacility') {
                     setDeleteInterfacility(true);
-                    send2(removeId);
-                    send3(removeId);
+                    send2(removeId).then(handleTransactionComplete); 
+                    send3(removeId).then(handleTransactionComplete); 
                 } else if (removeId === data[row].walletId) {
-                    send2(removeId);
+                    send2(removeId).then(handleTransactionComplete); 
                 }
            }
         });  

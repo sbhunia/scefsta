@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { useState } from 'react';
-import { Button, TextField, selectClasses } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Popup from '../Popup/Popup';
@@ -65,6 +65,18 @@ export default function HospitalDataGrid({data, popUpChecked}) {
 
     // Used for delete button popup
     const [deletePopup, setDeletePopup] = useState(false);
+    const [completedTransactions, setCompletedTransactions] = useState(0); 
+
+    const handleTransactionComplete = () => { 
+        setCompletedTransactions(prevCount => prevCount + 1); 
+    }; 
+
+    useEffect(() => { 
+        if (completedTransactions === selectedRows.length) { 
+        setShowMessage2(true); 
+        } 
+    }, [completedTransactions, selectedRows]); 
+
 
     // Will read information written inside the add button's 
     // form and store the data in 'setAddFormData'
@@ -86,7 +98,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
         setShowMessage1(false);
 
         // add to blockchain
-        send1(addFormData.walletId);
+        send1(addFormData.walletId).then(handleTransactionComplete); 
 
         // wait a couple seconds before displaying the transaction message
         await delay(2000);
@@ -129,10 +141,10 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                 // if user is interfacility, remove from facility and initiator in blockchain
                 if (removeId === dataContacts[row].walletId && dataContacts[row].accountType === 'interfacility') {
                     setDeleteInterfacility(true);
-                    send2(removeId);
-                    send3(removeId);
+                    send2(removeId).then(handleTransactionComplete); 
+                    send3(removeId).then(handleTransactionComplete); 
                 } else if (removeId === dataContacts[row].walletId) {
-                    send2(removeId);
+                    send2(removeId).then(handleTransactionComplete); 
                 } else {
                 }
             }

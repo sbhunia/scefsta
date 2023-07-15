@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -66,7 +66,17 @@ export default function AdminDataGrid({data, popUpChecked}) {
 
     // Used for delete button popup
     const [deletePopup, setDeletePopup] = useState(false);
+    const [completedTransactions, setCompletedTransactions] = useState(0); 
 
+    const handleTransactionComplete = () => { 
+        setCompletedTransactions(prevCount => prevCount + 1); 
+    }; 
+
+    useEffect(() => { 
+        if (completedTransactions === selectedRows.length) { 
+        setShowMessage2(true); 
+        } 
+    }, [completedTransactions, selectedRows]); 
 
     // Will read information written inside the add button's 
     // form and store the data in 'setAddFormData'
@@ -88,7 +98,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
         setShowMessage1(false);
 
         // add to blockchain
-        send1(addFormData.walletId);
+        send1(addFormData.walletId).then(handleTransactionComplete); 
 
         await delay(2000);
         setShowMessage1(true);
@@ -136,7 +146,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
         });
 
         await delay(2000);
-        setShowMessage2(true);
+        send2(removeId).then(handleTransactionComplete); 
     }
 
     const finalizeDeleteAdmin = async () => {
