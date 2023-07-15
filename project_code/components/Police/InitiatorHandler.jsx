@@ -27,9 +27,9 @@ export default function InitiatorHandler({data, popUpChecked}) {
     }
 
     const emergencyColumns = [
-        { field: 'policeDept', headerName: 'Police Department', width: 270, sortable: true},
+        { field: 'policeDept', headerName: 'Police Department', width: 225, sortable: true},
         { field: 'stationNumber', headerName: 'Station', width: 80,  sortable: false},
-        { field: 'address', headerName: 'Address', width: 175, sortable: true},
+        { field: 'address', headerName: 'Address', width: 225, sortable: true},
         { field: 'city', headerName: 'City', width: 120, sortable: true},
         { field: 'state', headerName: 'State', width: 100, sortable: true},
         { field: Constants.zipcode, headerName: 'Zipcode', width: 100, sortable: true},
@@ -39,8 +39,8 @@ export default function InitiatorHandler({data, popUpChecked}) {
     const privateColumns = [
         { field: 'firstName', headerName: 'First Name', width: 100, sortable: true},
         { field: 'lastName', headerName: 'Last Name', width: 100,  sortable: false},
-        { field: 'email', headerName: 'Email', width: 150,  sortable: false},
-        { field: 'address', headerName: 'Address', width: 175, sortable: true},
+        { field: 'email', headerName: 'Email', width: 225,  sortable: false},
+        { field: 'address', headerName: 'Address', width: 225, sortable: true},
         { field: 'city', headerName: 'City', width: 120, sortable: true},
         { field: 'state', headerName: 'State', width: 100, sortable: true},
         { field: Constants.zipcode, headerName: 'Zipcode', width: 100, sortable: true},
@@ -49,11 +49,11 @@ export default function InitiatorHandler({data, popUpChecked}) {
     
     const interfacilityColumns = [
         { field: 'facilityName', headerName: 'Facility Name', width: 200, sortable: true},
-        { field: 'address', headerName: 'Address', width: 175, sortable: true},
+        { field: 'address', headerName: 'Address', width: 225, sortable: true},
         { field: 'city', headerName: 'City', width: 120, sortable: true},
         { field: 'state', headerName: 'State', width: 100, sortable: true},
         { field: Constants.zipcode, headerName: 'Zipcode', width: 100, sortable: true},
-        { field: 'id', headerName: 'Wallet ID', width: 200, sortable: false},
+        { field: 'id', headerName: 'Wallet ID', width: 400, sortable: false},
         { field: Constants.accountType, headerName: 'Account Type', width: 150, sortable: false},
     ];
 

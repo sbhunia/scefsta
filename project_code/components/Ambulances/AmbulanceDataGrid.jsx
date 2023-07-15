@@ -14,9 +14,9 @@ import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
 
 const columns = [
-  { field: Constants.transportCompany, headerName: `${Constants.AMBULANCE} Company`, width: 175, sortable: true},
+  { field: Constants.transportCompany, headerName: `${Constants.AMBULANCE} Company`, width: 225, sortable: true},
   { field: 'licensePlate', headerName: 'License Plate', width: 150,  sortable: false},
-  { field: 'address', headerName: 'Address', width: 175, sortable: true},
+  { field: 'address', headerName: 'Address', width: 225, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
   { field: 'state', headerName: 'State', width: 100, sortable: true},
   { field: 'zipcode', headerName: 'Zipcode', width: 100, sortable: true},

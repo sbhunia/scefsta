@@ -106,3 +106,9 @@
     color: #1A588C;
     border-bottom: 1px solid #1A588C;
   }
+
+.warningText {
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+}

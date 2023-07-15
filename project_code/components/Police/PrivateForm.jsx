@@ -98,6 +98,8 @@ export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContact
             </div>
             <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
             {/* <form className={stylesP.formPadding} onSubmit={finalizeAddInitiator}> FOR DB TESTING PURPOSES*/}
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+
                 <TextField
                     type="text"
                     name="firstName"
@@ -108,7 +110,6 @@ export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContact
                     required
                     onChange={handleAddFormData}
                 />
-                <br/>
                 <TextField
                     type="text"
                     name="lastName"
@@ -119,7 +120,7 @@ export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContact
                     required
                     onChange={handleAddFormData}
                 />
-                <br />
+            </div>
                 <TextField
                     type="text"
                     name="email"

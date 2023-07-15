@@ -93,6 +93,8 @@ export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataConta
                 <h1>Add New {Constants.POLICE}</h1>
             </div>
             <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+
                 <TextField 
                     type="text" 
                     name="policeDept" 
@@ -103,18 +105,17 @@ export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataConta
                     required
                     onChange={handleAddFormData}
                 />
-                <br />
                 <TextField 
                     type="text" 
                     name="station" 
-                    label="Police Station" 
+                    label="Station Identifier" 
                     variant="standard" 
                     placeholder="Police Station"
                     className={stylesP.formInput}
                     required
                     onChange={handleAddFormData}
                 />
-                <br />
+            </div>
                 <TextField 
                     type="text" 
                     name="walletId" 

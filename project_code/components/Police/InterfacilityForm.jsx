@@ -96,7 +96,7 @@ export const InterfacililtyForm = ({addPopup, setAddPopup, setDataContacts, data
             <div className={stylesP.editHospital}>
                 <h1>Add New {Constants.POLICE}</h1>
             </div>
-            <Alert severity="warning">NOTE: If Wallet ID is already registered as an <br/> {Constants.HOSPITAL} the account will become Interfacility</Alert>
+            <Alert className={stylesP.warningText} severity="warning">NOTE: If Wallet ID is already registered as an {Constants.HOSPITAL} the account will become Interfacility</Alert>
             <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
             {/* <form className={stylesP.formPadding} onSubmit={finalizeAddInitiator}> FOR TESTING DB PURPOSES*/}
                 <TextField

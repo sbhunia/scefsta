@@ -15,7 +15,7 @@ import { CircularProgress } from '@mui/material';
 
 const columns = [
   { field: Constants.hospitalSystem, headerName: `${Constants.HOSPITAL} Name`, width: 200, sortable: true},
-  { field: 'address', headerName: 'Address', width: 175, sortable: true},
+  { field: 'address', headerName: 'Address', width: 225, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
   { field: 'state', headerName: 'State', width: 100, sortable: true},
   { field: Constants.zipcode, headerName: 'Zipcode', width: 100, sortable: true},
@@ -325,7 +325,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                                 <div className={stylesP.editHospital}>
                                     <h1>Add New {Constants.HOSPITAL}</h1>
                                 </div>
-                                <Alert severity="warning">NOTE: If Wallet ID is already registered as an <br/> {Constants.POLICE} the account will become interfacility</Alert>
+                                <Alert className={stylesP.warningText} severity="warning">NOTE: If Wallet ID is already registered as an {Constants.POLICE} the account will become interfacility</Alert>
                                 <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
                                     <TextField
                                         type="text"

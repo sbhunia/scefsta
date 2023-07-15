@@ -14,10 +14,10 @@ import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
 
 const columns = [
-  { field: 'firstName', headerName: 'First Name', width: 100, sortable: true},
+  { field: 'firstName', headerName: 'First Name', minWidth: 125, sortable: true},
   { field: 'lastName', headerName: 'Last Name', width: 100,  sortable: true},
   { field: 'email', headerName: 'Email', width: 150,  sortable: true},
-  { field: 'address', headerName: 'Address', width: 175, sortable: true},
+  { field: 'address', headerName: 'Address', width: 225, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
   { field: 'state', headerName: 'State', width: 100, sortable: true},
   { field: `${Constants.zipcode}`, headerName: 'Zipcode', width: 100, sortable: true},
@@ -297,6 +297,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                     <h1>Add New {Constants.ADMIN}</h1>
                                 </div>
                                 <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                                     <TextField
                                         type="text"
                                         name="firstName"
@@ -307,7 +308,6 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                         required
                                         onChange={handleAddFormData}
                                     />
-                                    <br/>
                                     <TextField
                                         type="text"
                                         name="lastName"
@@ -318,7 +318,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                         required
                                         onChange={handleAddFormData}
                                     />
-                                    <br />
+                                    </div>
                                     <TextField
                                         type="text"
                                         name="email"
