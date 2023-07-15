@@ -77,11 +77,11 @@ export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataConta
 
         newContact['id'] = newContact['walletId'];
 
-        let data = await response.json();
-        if (data.success) {
+        let status = await response.json();
+        if (status.success) {
             setDataContacts([...dataContacts, newContact,]);
             setAddPopup(false);
-        } else if (!data.success) {
+        } else if (!status.success) {
             alert(`Error adding ${Constants.POLICE} to DB, please contact SuperAdmin`);
         }
 

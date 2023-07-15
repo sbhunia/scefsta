@@ -75,13 +75,11 @@ export const InterfacililtyForm = ({ addPopup, setAddPopup, setDataContacts, dat
 
     newContact['id'] = newContact['walletId'];
 
-    setDataContacts([...dataContacts, newContact]);
-
-    let data = await response.json();
-
-    if (data.success) {
+    let status = await response.json();
+    if (status.success) {
+      setDataContacts([...dataContacts, newContact]);
       setAddPopup(false);
-    } else if (!data.success) {
+    } else if (!status.success) {
       alert(`Error adding ${Constants.POLICE} to DB, please contact SuperAdmin`);
     }
 

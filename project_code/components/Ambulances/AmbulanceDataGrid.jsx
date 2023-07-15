@@ -109,11 +109,11 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
 
         newContact['id'] = newContact['walletId'];
 
-        let data = await response.json();
-        if (data.success) {
+        let status = await response.json();
+        if (status.success) {
             setDataContacts([...dataContacts, newContact,]);
             setAddPopup(false);
-        } else if (!data.success) {
+        } else if (!status.success) {
             alert(`Error adding ${Constants.AMBULANCE} to DB, please contact SuperAdmin`);
         }
 

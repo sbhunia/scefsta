@@ -92,7 +92,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
 
         await delay(2000);
         setShowMessage1(true);
-        
+
         // temporary delete function for blockchain
         //send2(addFormData.walletId);
     }
@@ -116,11 +116,11 @@ export default function AdminDataGrid({data, popUpChecked}) {
 
         newContact['id'] = newContact['walletId'];
 
-        let data = await response.json();
-        if (data.success) {
+        let status = await response.json();
+        if (status.success) {
             setDataContacts([...dataContacts, newContact,]);
             setAddPopup(false);
-        } else if (!data.success) {
+        } else if (!status.success) {
             alert(`Error adding ${Constants.ADMIN} to DB, please contact SuperAdmin`);
         }
         setShowMessage1(false);
