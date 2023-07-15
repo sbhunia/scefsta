@@ -8,7 +8,7 @@ import RevealBid from "../Popup/RevealBid";
 import ReclaimTender from '../Popup/ReclaimTender';
 import RetractTender from "../Popup/RetractTender";
 import styles from '../../styles/Tender.module.css';
-import TenderForm from '../TenderForm/TenderForm';
+import TenderForm from '../Tenders/TenderForm';
 import BiddingForm from './BiddingForm';
 
 const columns = [

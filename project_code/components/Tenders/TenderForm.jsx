@@ -10,6 +10,11 @@ import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import { AUCTION_INSTANCE } from '../../pages/_app';
 import * as Constants from '../../pages/constants';
+import FormAddress from '../FormComponents/FormAddress';
+import stylesP from '../../styles/Popup.module.css';
+import { verify } from 'crypto';
+import { AllowedHospitals } from './AllowedHospitals';
+import Popup from '../Popup/Popup';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -87,16 +92,20 @@ export default function TenderForm(props) {
     const [injuryType, setInjuryType] = React.useState([]);
     const [severity, setSeverity] = React.useState('');
     const [mechanismofInjury, setMechanismOfInjury] = React.useState([]);
-    const [tenderAmt, setTenderAmt] = React.useState(0);
-    const [penaltyAmt, setPenaltyAmt] = React.useState(0);
-    const [auctionLength, setAuctionLength] = React.useState(30);
-    const [deliveryTime, setDeliveryTime] = React.useState(900);
+    const [tenderAmt, setTenderAmt] = React.useState();
+    const [penaltyAmt, setPenaltyAmt] = React.useState();
+    const [auctionLength, setAuctionLength] = React.useState();
+    const [deliveryTime, setDeliveryTime] = React.useState();
     const [location, setLocation] = useState("");
     const [stateIn, setStateIn] = useState("");
     const [city, setCity] = useState("");   
     const [zipcode, setZipcode] = useState("");
-
-
+    const [isAuctionValid, setIsAuctionValid] = useState(true);
+    const [isDeliveryValid, setIsDeliveryValid] = useState(true);
+    const [isPaymentValid, setIsPaymentValid] = useState(true);
+    const [isPenaltyValid, setIsPenaltyValid] = useState(true);
+    
+    const [allowedHospPopup, setAllowedHospPopup] = useState(false);
     const [allowedHospitals, setAllowedHospital] = useState(["0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80"]);
 
     // Obtaining React Hooks from postTender smart contract function
@@ -130,27 +139,40 @@ export default function TenderForm(props) {
         setAuctionLength(event.target.value);
     };
 
-    const handleChangeDeliveryTime = (event) => {
-        setDeliveryTime(event.target.value);
+    const verifyNumber = (number) => {
+        const regex = /^[0-9\b]+$/;
+        return regex.test(number);
     }
 
-    const handleSetLocation = (event) => { 
-        setLocation(event.target.value);
-    }
-    const handleSetAllowedHospitals = (event) => {
-        setAllowedHospital(event.target.value);
+    const handleAddFormData = (event) => {
+        const fieldName = event.target.name;
+        const fieldValue = event.target.value;
+        
+        if (fieldName === "address") {
+            setLocation(fieldValue);
+        } else if (fieldName === "city") {
+            setCity(fieldValue);
+        } else if (fieldName === "state") {
+            setStateIn(fieldValue);
+        } else if (fieldName === "zipcode") {
+            setZipcode(fieldValue);
+        } else if (fieldName === "auction") {
+            setIsAuctionValid(verifyNumber(fieldValue));
+            setAuctionLength(fieldValue);
+        } else if (fieldName === "delivery") {
+            setIsDeliveryValid(verifyNumber(fieldValue));
+            setDeliveryTime(fieldValue);
+        } else if (fieldName === "payment") {
+            setIsPaymentValid(verifyNumber(fieldValue));
+            setTenderAmt(fieldValue);
+        } else if (fieldName === "penalty") {
+            setIsPenaltyValid(verifyNumber(fieldValue));
+            setPenaltyAmt(fieldValue);
+        }
     }
 
-    const handleSetCity = (event) => {
-        setCity(event.target.value);
-    }
-
-    const handleSetStateIn = (event) => {
-        setStateIn(event.target.value);
-    }
-
-    const handleSetZipcode = (event) => {
-        setZipcode(event.target.value);
+    const getAllowedHospitals = () => {
+        alert("here");
     }
 
     // auctionLength - how long in minutes the ambulnaces have to bid in the auction
@@ -159,7 +181,7 @@ export default function TenderForm(props) {
     // penalty - cost for ambulance if job is not completed
     const confirm = async () => {
         // create tender for blockchain
-        send1(auctionLength, deliveryTime, location, city, stateIn, penaltyAmt, severity, allowedHospitals, {value: tenderAmt});
+        send1(auctionLength, deliveryTime, location, city, stateIn, zipcode, penaltyAmt, severity, allowedHospitals, {value: tenderAmt});
     }
 
     const finalizeTransaction = async () => {
@@ -200,42 +222,12 @@ export default function TenderForm(props) {
                 </Typography>
             </div>
             <form className={styles.tenderForm}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <TextField
-                        label="Patient Name"
-                        className={styles.formText}
-                        variant="standard"
-                        value={name}
-                        onChange={handleChangeName}
-                        helperText="If the name is unknown, enter UNKNOWN"/>
-                    <TextField 
-                        label="Enter the address of the incident"
-                        className={styles.addressText}
-                        value={location}
-                        onChange={handleSetLocation}
-                        variant="standard"/>
-                </div>
-                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <TextField
-                        label="City"
-                        className={styles.formText}
-                        variant="standard"
-                        value={city}
-                        onChange={handleSetCity}/>
-                    <TextField 
-                        label="State"
-                        className={styles.formText}
-                        value={stateIn}
-                        onChange={handleSetStateIn}
-                        variant="standard"/>
-                    <TextField 
-                        label="Zipcode"
-                        className={styles.formText}
-                        value={stateIn}
-                        onChange={handleSetStateIn}
-                        variant="standard"/>
-                </div>
                 <div>
+                    <h2 className={styles.headingText}>Location</h2>
+                    <FormAddress handleAddFormData={handleAddFormData}/>
+                    <br/>
+                    <h2 className={styles.headingText}>Incident Information</h2>
+                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
                     <div className={styles.injuryDiv}>
                         <InputLabel id="injuryType">Injury Type</InputLabel>
                         <Select
@@ -273,6 +265,7 @@ export default function TenderForm(props) {
                             <MenuItem value={"Critical"}>Critical</MenuItem>
                         </Select>
                     </div>
+                    </div>
                     <div className={styles.injuryDiv}>
                         <InputLabel id="severity">Mechanism of Injury</InputLabel>
                         <Select
@@ -295,94 +288,118 @@ export default function TenderForm(props) {
                         </Select>
                     </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <div className={styles.paymentAmt}>
-                        <InputLabel htmlFor="payment-amount">Payment Amount</InputLabel>
-                        <Input
-                            id="payment-amount"
-                            className={styles.payInput}
-                            value={tenderAmt}
-                            onChange={handleChangeTender}
-                            startAdornment={<InputAdornment position="start">WEI</InputAdornment>}
-                            label="Payment Amount"
-                        />
-                    </div>
-                    <div className={styles.penaltyAmt}>
-                        <InputLabel htmlFor="penalty-amount">Penalty Amount</InputLabel>
-                        <Input
-                            id="penalty-amount"
-                            className={styles.penaltyInput}
-                            value={penaltyAmt}
-                            onChange={handleChangePenalty}
-                            startAdornment={<InputAdornment position="start">WEI</InputAdornment>}
-                            label="Penalty Amount"
-                        />
+                <br/>
+                <h2 className={styles.headingText}>Auction Information</h2>
+                <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+                        <div className={styles.dropdownDiv}>
+                            <TextField
+                                type="text"
+                                name="payment"
+                                label="Payment Amount (USD)"
+                                variant="standard"
+                                className={stylesP.formInput}
+                                required
+                                value={tenderAmt}
+                                onChange={handleAddFormData}
+                                error={!isPaymentValid}
+                                helperText={!isPaymentValid && "Please enter a valid amount in WEI"}
+                            />
+                        </div>
+                        <div className={styles.dropdownDiv}>
+                            <TextField
+                                type="text"
+                                name="penalty"
+                                label="Penalty Amount (USD)"
+                                variant="standard"
+                                placeholder="5"
+                                className={stylesP.formInput}
+                                required
+                                value={penaltyAmt}
+                                onChange={handleAddFormData}
+                                error={!isPenaltyValid}
+                                helperText={!isPenaltyValid && "Please enter a valid amount in WEI"}
+                            />
+                        </div>
                     </div>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <div className={styles.timeDiv}>
-                        <InputLabel id="expiration">Auction Length</InputLabel>
-                        <Select
-                            labelId="expiration"
+                <div className={styles.dropdownDiv} style={{ display: 'flex', justifyContent: 'space-around', paddingTop: '1rem', paddingBottom: '2rem'}}>
+                    <div className={styles.dropdownDiv}>
+                        <TextField
+                            type="text"
+                            name="auction"
+                            label="Auction Length (Minutes)"
+                            variant="standard"
+                            placeholder="5"
+                            className={stylesP.formInput}
+                            required
                             value={auctionLength}
-                            label="Auction Length"
-                            onChange={handleChangeAuctionLength}
-                        >
-                            <MenuItem value={30}>30 Seconds</MenuItem>
-                            <MenuItem value={60}>1 Minute</MenuItem>
-                            <MenuItem value={90}>1.5 Minutes</MenuItem>
-                            <MenuItem value={300}>5 Minutes</MenuItem>
-                        </Select>
+                            onChange={handleAddFormData}
+                            error={!isAuctionValid}
+                            helperText={!isAuctionValid && "Please enter a valid time length in minutes"}
+                        />
                     </div>
-                    <div className={styles.timeDiv}>
-                        <InputLabel id="delivery-time">Delivery Time Limit</InputLabel>
-                        <Select
-                            labelId="delivery-time"
+                    <div className={styles.dropdownDiv}>
+                        <TextField
+                            type="text"
+                            name="delivery"
+                            label="Delivery Time (Minutes)"
+                            variant="standard"
+                            placeholder="30"
+                            className={stylesP.formInput}
+                            required
                             value={deliveryTime}
-                            label="Delivery Time Limit"
-                            onChange={handleChangeAuctionLength}
-                        >
-                            <MenuItem value={300}>5 Minutes</MenuItem>
-                            <MenuItem value={600}>10 Minutes</MenuItem>
-                            <MenuItem value={900}>15 Minutes</MenuItem>
-                            <MenuItem value={1800}>30 Minutes</MenuItem>
-                        </Select>
+                            onChange={handleAddFormData}
+                            error={!isDeliveryValid}
+                            helperText={!isDeliveryValid && "Please enter a valid time length in minutes"}
+
+                        />
                     </div>
                 </div>
                     <div className={styles.buttonGroup}>
                         <ButtonGroup variant="contained" aria-label="outlined button group">
-                            <Button color="success" onClick={confirm}>Confirm</Button>
+                            {/* <Button color="success" onClick={getAllowedHospitals}>Confirm</Button> */}
+                            <Button color="success" onClick={() => {setAllowedHospPopup(true)}}>Set Allowed {Constants.HOSPITAL}s</Button>
+                            
                         </ButtonGroup>
                     </div>
                 </form>
                 <Divider variant="middle" className={styles.divider}/>
                 {(function () {
-                    if (state.status === 'Mining') {
-                        return (
-                            <label>Waiting for tender to post
-                            <Box sx={{ display: 'flex' }}>
-                                <CircularProgress />
-                            </Box>
-                            </label>
-                        )
-                    }
-                    if (transactionErrored(state)) {
+                    if (allowedHospPopup) {
                         return (
                             <div>
-                                <Alert severity="error">Transaction failed: {state.errorMessage}</Alert>
+                            <Popup trigger={allowedHospPopup} setTrigger={setAllowedHospPopup} style={{width: "10%"}} >
+                                <AllowedHospitals address={location} city={city} state={stateIn} zipcode={zipcode}/>
+                            </Popup>
                             </div>
-                        )
+                        );
                     }
-                    if (state.status === 'Success' && events != undefined) {
-                        return (
-                            <div>
-                                <Alert severity="success">Your transaction was successful! Please click the button to finalize the transaction.</Alert>
-                                <Button color='success' onClick={finalizeTransaction}>Finalize and Exit</Button>
-                            </div>
-                        )
-                    }
-                }
-                )()}
+                //     if (state.status === 'Mining') {
+                //         return (
+                //             <label>Waiting for tender to post
+                //             <Box sx={{ display: 'flex' }}>
+                //                 <CircularProgress />
+                //             </Box>
+                //             </label>
+                //         )
+                //     }
+                //     if (transactionErrored(state)) {
+                //         return (
+                //             <div>
+                //                 <Alert severity="error">Transaction failed: {state.errorMessage}</Alert>
+                //             </div>
+                //         )
+                //     }
+                //     if (state.status === 'Success' && events != undefined) {
+                //         return (
+                //             <div>
+                //                 <Alert severity="success">Your transaction was successful! Please click the button to finalize the transaction.</Alert>
+                //                 <Button color='success' onClick={finalizeTransaction}>Finalize and Exit</Button>
+                //             </div>
+                //         )
+                //     }
+                })()}
             </div>
     )
 }

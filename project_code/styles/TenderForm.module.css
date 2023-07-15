@@ -18,7 +18,7 @@
 }
 
 .tenderForm {
-    width: 100%;
+    width: 80%;
     margin: auto;
 }
 
@@ -30,9 +30,12 @@
     width: 65%;
 }
 
-#injuryType, #severity, #mechanism {
-    width: 20vw;
-    min-width: 400px;
+#injuryType, #severity {
+    width: 10rem;
+}
+
+#mechanism {
+    width: 25rem;
 }
 
 .injuryDiv {
@@ -49,15 +52,25 @@
     text-align: center;
 }
 
+.dropdownDiv {
+    min-width: 49%;
+}
+
+.dropdownItem {
+    width: 100%;
+    text-align: center;
+}
+
 .expiration {
     margin-top: 4%;
     text-align: center;
+    width: 10rem;
 }
 
 .paymentAmt, .penaltyAmt {
     margin-top: 2%;
     margin-bottom: 2%;
-    width: 23%;
+    width: 500px;
     text-align: center;
 }
 
@@ -76,4 +89,13 @@
     margin-top: 2%;
     margin-bottom: 5%;
 }
-  
+
+
+.headingText {
+    padding-top: .5rem;
+    font-size: 1.2rem;
+    width: 50%;
+    color: black;
+    border-bottom: 1px solid black;
+    padding-bottom: 0rem;
+  }
