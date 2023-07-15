@@ -10,9 +10,12 @@ import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
 import * as Constants from '../../pages/constants';
 import FormAddress from "../FormComponents/FormAddress";
+import { FormWalletID } from "../FormComponents/FormWalletID";
 
 export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataContacts}) => {
     const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addInitiator');
+    const { state: state2, send: send2, events: events2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeInitiator');
+
     const [showMessage1, setShowMessage1] = useState(false);
 
     const [addFormData, setAddFormData] = useState({
@@ -30,10 +33,11 @@ export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataConta
     const handleAddFormData = (event) => {
         const fieldName = event.target.name;
         const fieldValue = event.target.value;
-
+        console.log(fieldName);
+        console.log(fieldValue)
         const newFormData = { ...addFormData }
         newFormData[fieldName] = fieldValue;
-
+        console.log(newFormData);
         setAddFormData(newFormData);
     }
 
@@ -51,7 +55,7 @@ export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataConta
         setShowMessage1(true);
 
         // temporary delete function for blockchain
-        // send2(addFormData.walletId);
+        //send2(addFormData.walletId);
     }
 
     const finalizeAddInitiator = async () => {
@@ -115,16 +119,7 @@ export const EmergencyForm = ({addPopup, setAddPopup, setDataContacts, dataConta
                     onChange={handleAddFormData}
                 />
             </div>
-                <TextField 
-                    type="text" 
-                    name="walletId" 
-                    label="Wallet ID" 
-                    variant="standard" 
-                    placeholder="Wallet ID"
-                    className={stylesP.formInput}
-                    required
-                    onChange={handleAddFormData}
-                />
+                <FormWalletID handleAddFormData={handleAddFormData}/>
                 <FormAddress handleAddFormData={handleAddFormData}/>
                 <div className={stylesP.submitButtonDiv}>
                     <button type="submit" className={stylesP.submitButton}>

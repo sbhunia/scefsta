@@ -10,6 +10,7 @@ import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
 import * as Constants from '../../pages/constants';
 import FormAddress from "../FormComponents/FormAddress";
+import { FormWalletID } from "../FormComponents/FormWalletID";
 
 export const InterfacililtyForm = ({ addPopup, setAddPopup, setDataContacts, dataContacts }) => {
   const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addInitiator');
@@ -106,18 +107,7 @@ export const InterfacililtyForm = ({ addPopup, setAddPopup, setDataContacts, dat
           required
           onChange={handleAddFormData}
         />
-        <br />
-        <TextField
-          type="text"
-          name="walletId"
-          label="Wallet ID"
-          variant="standard"
-          placeholder="Wallet ID"
-          className={stylesP.formInput}
-          required
-          onChange={handleAddFormData}
-        />
-        <br />
+        <FormWalletID handleAddFormData={handleAddFormData}/>
         <FormAddress handleAddFormData={handleAddFormData} />
         <br />
         <div className={stylesP.submitButtonDiv}>

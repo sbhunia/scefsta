@@ -12,6 +12,8 @@ import { ACCOUNT_INSTANCE } from '../../pages/_app';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
+import FormAddress from '../FormComponents/FormAddress';
+import { FormWalletID } from '../FormComponents/FormWalletID';
 
 const columns = [
   { field: Constants.transportCompany, headerName: `${Constants.AMBULANCE} Company`, width: 225, sortable: true},
@@ -66,8 +68,6 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
     // Will read information written inside the add button's 
     // form and store the data in 'setAddFormData'
     const handleAddFormData = (event) => {
-        event.preventDefault();
-
         const fieldName = event.target.name;
         const fieldValue = event.target.value;
 
@@ -306,61 +306,8 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
                                         required
                                         onChange={handleAddFormData}
                                     />
-                                    <br />
-                                    <TextField
-                                        type="text"
-                                        name="walletId"
-                                        label="Wallet ID"
-                                        variant="standard"
-                                        placeholder="Wallet ID"
-                                        className={stylesP.formInput}
-                                        required
-                                        onChange={handleAddFormData}
-                                    />
-                                    <br />
-                                    <TextField
-                                        type="text"
-                                        name="address"
-                                        label="Street Address"
-                                        variant="standard"
-                                        placeholder="Street Address"
-                                        className={stylesP.formInput}
-                                        required
-                                        onChange={handleAddFormData}
-                                    />
-                                    <br />
-                                    <TextField
-                                        type="text"
-                                        name="city"
-                                        label="City"
-                                        variant="standard"
-                                        placeholder="City"
-                                        className={stylesP.formInput}
-                                        required
-                                        onChange={handleAddFormData}
-                                    />
-                                    <br />
-                                    <TextField
-                                        type="text"
-                                        name="state"
-                                        label="State"
-                                        variant="standard"
-                                        placeholder="State"
-                                        className={stylesP.formInput}
-                                        required
-                                        onChange={handleAddFormData}
-                                    />
-                                   <br />
-                                    <TextField
-                                        type="text"
-                                        name="zipcode"
-                                        label="Zipcode"
-                                        variant="standard"
-                                        placeholder="Zipcode"
-                                        className={stylesP.formInput}
-                                        required
-                                        onChange={handleAddFormData}
-                                    />
+                                    <FormWalletID handleAddFormData={handleAddFormData}/>
+                                    <FormAddress handleAddFormData={handleAddFormData}/>
                                     <div className={stylesP.submitButtonDiv}>
                                         <button type="submit" className={stylesP.submitButton}>
                                             Submit
