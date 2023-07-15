@@ -31,6 +31,7 @@ contract Auctions {
         string addr;
         string city;
         string state;
+        string zipcode;
         address[] allowedHospitals;
         uint256 maxBid;
         uint256 penalty;
@@ -117,6 +118,7 @@ contract Auctions {
         newTender.details.addr = addr;
         newTender.details.city = city;
         newTender.details.state = state;
+        newTender.details.zipcode = zipcode;
         newTender.details.severity = severity;
         
         // push new tender and adjust mappings accordingly
