@@ -46,9 +46,10 @@ export default function AdminDataGrid({data, popUpChecked}) {
 
     // Determines whether to show the add or delete button
     const [deleteButton, setDeleteButton] = useState(false);
-    
+
     // Renames the 'walletId' field to 'id'. DataGrid requires an id field
     dataContacts.map(x => x['id'] = x['walletId'])
+    
 
     // Used for add button popup
     const [addPopup, setAddPopup] = useState(false);
@@ -122,13 +123,12 @@ export default function AdminDataGrid({data, popUpChecked}) {
 
         newContact['id'] = newContact['walletId'];
 
-        setDataContacts([...dataContacts, newContact,]);
-
         let data = await response.json();
-        console.log("data: ", data);
-
         if (data.success) {
+            setDataContacts([...dataContacts, newContact,]);
             setAddPopup(false);
+        } else if (!data.success) {
+            alert(`Error adding ${Constants.ADMIN} to DB, please contact SuperAdmin`);
         }
         setShowMessage1(false);
     }
@@ -154,13 +154,12 @@ export default function AdminDataGrid({data, popUpChecked}) {
         });
         let status = await response.json();
 
-        setDataContacts(dataContacts.filter(checkSelected))
-
         // if the DB changes succeed close popup
         if(status.success){ 
+            setDataContacts(dataContacts.filter(checkSelected))
             setDeletePopup(false);
-        } else {
-            alert("Error deleting rows");
+        } else if (!data.success) {
+            alert(`Error removing ${Constants.ADMIN} from DB, please contact SuperAdmin`);
         }
         setShowMessage2(false);
     }
@@ -229,7 +228,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                     if (deleteButton) {
                         return (
                             <div>
-                                <Button onClick={() => setDeletePopup(true)} style={{margin: '10px'}} variant="contained" endIcon={<DeleteIcon />} >
+                                <Button onClick={() => {setDeletePopup(true); setShowMessage1(false)}} style={{margin: '10px'}} variant="contained" endIcon={<DeleteIcon />} >
                                     Delete
                                 </Button>
                             </div>
@@ -237,7 +236,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                     } else {
                         return (
                             <div>
-                                <Button onClick={() => setAddPopup(true)} style={{margin: '10px'}} variant="outlined" startIcon={<AddIcon />} >
+                                <Button onClick={() => {setAddPopup(true); setShowMessage2(false)}} style={{margin: '10px'}} variant="outlined" startIcon={<AddIcon />} >
                                     Add
                                 </Button>
                             </div>
@@ -266,7 +265,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                         if (state2.status === 'Mining') {
                                             return (
                                             <div>
-                                                <Alert severity="warning">Waiting for admin to be deleted</Alert>
+                                                <Alert severity="warning">Waiting for {Constants.ADMIN}(s) to be deleted</Alert>
                                                 <Box sx={{ display: 'flex' }}>
                                                     <CircularProgress />
                                                 </Box>
@@ -283,7 +282,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                         if (state2.status === 'Success' && events2 != undefined) {
                                             return (
                                             <div>
-                                                <Alert severity="success">Your transaction was successful! Admin was deleted from the blockchain</Alert>
+                                                <Alert severity="success">Your transaction was successful! {Constants.ADMIN}(s) were deleted from the blockchain</Alert>
                                                 <Button color='success' onClick={finalizeDeleteAdmin}>Finalize and Exit</Button>
                                             </div>
                                             )
@@ -354,6 +353,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                                                 return (
                                                 <div>
                                                 <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                                                <Alert severity="warning" onClick={finalizeAddAdmin}>Add to DB anyways</Alert>
                                                 </div>
                                                 )
                                             }

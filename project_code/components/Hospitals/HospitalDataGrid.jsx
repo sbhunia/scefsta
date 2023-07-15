@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { useState } from 'react';
-import { Button, TextField } from '@mui/material';
+import { Button, TextField, selectClasses } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Popup from '../Popup/Popup';
@@ -110,14 +110,13 @@ export default function HospitalDataGrid({data, popUpChecked}) {
 
         newContact['id'] = newContact['walletId'];
 
-        setDataContacts([...dataContacts, newContact,]);
-
         let data = await response.json();
-        console.log("addHosp", data);
         if (data.success) {
+            setDataContacts([...dataContacts, newContact,]);
             setAddPopup(false);
+        } else if (!data.success) {
+            alert(`Error adding ${Constants.HOSPITAL} to DB, please contact SuperAdmin`);
         }
-
     }
 
     // Queries the database to delete the selected rows and removes them from the datagrid
@@ -134,6 +133,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                     send3(removeId);
                 } else if (removeId === data[row].walletId) {
                     send2(removeId);
+                } else {
                 }
             }
         });       
@@ -151,12 +151,11 @@ export default function HospitalDataGrid({data, popUpChecked}) {
 
         let status = await response.json();
 
-        setDataContacts(dataContacts.filter(checkSelected))
-
         if(status.success){
+            setDataContacts(dataContacts.filter(checkSelected))
             setDeletePopup(false);
         } else {
-            alert("Error deleting rows");
+            alert(`Error removing ${Constants.HOSPITAL} from DB, please contact SuperAdmin`);
         }
 
         setShowMessage2(false);
@@ -227,7 +226,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                     if (deleteButton) {
                         return (
                             <div>
-                                <Button onClick={() => setDeletePopup(true)} style={{margin: '10px'}} variant="contained" endIcon={<DeleteIcon />} >
+                                <Button onClick={() => {setDeletePopup(true); setShowMessage2(false)}} style={{margin: '10px'}} variant="contained" endIcon={<DeleteIcon />} >
                                     Delete
                                 </Button>
                             </div>
@@ -235,7 +234,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                     } else {
                         return (
                             <div>
-                                <Button onClick={() => setAddPopup(true)} style={{margin: '10px'}} variant="outlined" startIcon={<AddIcon />} >
+                                <Button onClick={() => {setAddPopup(true); setShowMessage1(false)}} style={{margin: '10px'}} variant="outlined" startIcon={<AddIcon />} >
                                     Add
                                 </Button>
                             </div>
@@ -256,6 +255,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                                         Cancel
                                     </Button>
                                     <Button onClick={deleteRows} style={{margin: '10px'}} color="error" variant="contained">
+                                    {/* <Button onClick={finalizeDeleteHospital} style={{margin: '10px'}} color="error" variant="contained"> */}
                                         Delete
                                     </Button>
                                 </div>
@@ -361,6 +361,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                                                 return (
                                                 <div>
                                                 <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                                                <Alert severity="warning" onClick={finalizeAddHospital}>Add to DB anyways</Alert>
                                                 </div>
                                                 )
                                             }
@@ -368,7 +369,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                                             return (
                                                 <div>
                                                     <Alert severity="success">Your transaction was successful! {Constants.HOSPITAL} was added to the blockchain</Alert>
-                                                <Button color='success' onClick={finalizeAddHospital}>Finalize and Exit</Button>
+                                                    <Button color='success' onClick={finalizeAddHospital}>Finalize and Exit</Button>
                                                 </div>
                                             )
                                         }

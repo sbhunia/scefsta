@@ -59,45 +59,37 @@ async function addHospital(req, res) {
 
 // Queries the database for hospitals and reuturns the results
 async function getHospitals(req, res) {
-    let query = `
+    try {
+        let query = `
                     SELECT  * 
                     FROM ${Constants.Users}   
                     WHERE (${Constants.accountType} = 'facility' OR ${Constants.accountType} = 'interfacility'); 
                 `;
 
-    return new Promise((resolve, reject) => {
-        mysqlLib.executeQuery(query).then((d) => {
-            //console.log(d);
-            res.status(200).send(d)
-            resolve();
-        }).catch(e => {
-            console.log(e);
-            res.status(500).send({success: false});
-            resolve();
-        });
-    });
+        const result = await mysqlLib.executeQuery(query);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false });
+    }
 }
 
 // Deletes hospitals from the database
 async function deleteHospital(req, res) {
-    let walletIds = JSON.parse(req.body)
-    let formattedWalletIds = "'" + walletIds.join("','") + "'";
+    try {
+        let walletIds = JSON.parse(req.body)
+        let formattedWalletIds = "'" + walletIds.join("','") + "'";
 
-    let query = `
-                    DELETE FROM ${Constants.Users}
-                    WHERE ${Constants.walletId}
-                    IN (${formattedWalletIds});
-                `;
+        let query = `
+            DELETE FROM ${Constants.Users}
+            WHERE ${Constants.walletId}
+            IN (${formattedWalletIds});
+        `;
 
-    return new Promise((resolve, reject) => {
-        mysqlLib.executeQuery(query).then((d) => {
-            //console.log(d);
-            res.status(200).send({success: true});
-            resolve();
-        }).catch(e => {
-            console.log(e);
-            res.status(500).send({success: false});
-            resolve();
-        }); 
-    });
+        await mysqlLib.executeQuery(query);
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false });
+    }
 }

@@ -20,35 +20,30 @@ export default async function handler(req, res) {
 }
 
 async function addAdmin(req, res) {
-    let firstName = JSON.parse(req.body)["firstName"];
-    let lastName = JSON.parse(req.body)["lastName"];
-    let email = JSON.parse(req.body)["email"];
-    let address = JSON.parse(req.body)["address"];
-    let city = JSON.parse(req.body)["city"];
-    let state = JSON.parse(req.body)["state"];
-    let zipcode = JSON.parse(req.body)[Constants.zipcode];
-    let walletId = JSON.parse(req.body)["walletId"];
-    let adminAccount = 'admin';
-    let query = `INSERT INTO ${Constants.Users} (${Constants.walletId}, ${Constants.firstName}, ${Constants.lastName}, ${Constants.email}, ${Constants.address},
-        ${Constants.city}, ${Constants.state}, ${Constants.zipcode}, ${Constants.accountType})
-        VALUES ('${walletId}', '${firstName}', '${lastName}', '${email}', '${address}', '${city}', '${state}', '${zipcode}', '${adminAccount}');`;
+    try {
+        let firstName = JSON.parse(req.body)["firstName"];
+        let lastName = JSON.parse(req.body)["lastName"];
+        let email = JSON.parse(req.body)["email"];
+        let address = JSON.parse(req.body)["address"];
+        let city = JSON.parse(req.body)["city"];
+        let state = JSON.parse(req.body)["state"];
+        let zipcode = JSON.parse(req.body)[Constants.zipcode];
+        let walletId = JSON.parse(req.body)["walletId"];
+        let adminAccount = 'admin';
+        let query = `INSERT INTO ${Constants.Users} (${Constants.walletId}, ${Constants.firstName}, ${Constants.lastName}, ${Constants.email}, ${Constants.address},
+            ${Constants.city}, ${Constants.state}, ${Constants.zipcode}, ${Constants.accountType})
+            VALUES ('${walletId}', '${firstName}', '${lastName}', '${email}', '${address}', '${city}', '${state}', '${zipcode}', '${adminAccount}');`;
 
-    return new Promise((resolve, reject) => {
-        mysqlLib.executeQuery(query).then((d) => {
-            console.log(d);
-            console.log("query: ", query);
-            res.status(200).send({ success: true });
-            resolve();
-        }).catch(e => {
-            console.log(e);
-            console.log("query: ", query);
-            res.status(500).send({ success: false });
-            resolve();
-        });
-    });
+        await mysqlLib.executeQuery(query);
+        res.status(200).json({ success: true });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false });
+    }
 }
 
 async function getAdmins(req, res) {
+    try {
     let query = `SELECT ${Constants.walletId}, ${Constants.firstName}, ${Constants.lastName}, ${Constants.email},
         ${Constants.address}, ${Constants.city},
         ${Constants.state}, ${Constants.licensePlate}, ${Constants.accountType}, ${Constants.zipcode}
@@ -58,34 +53,28 @@ async function getAdmins(req, res) {
             ${Constants.accountType} = 'admin' AND
             ${Constants.licensePlate} IS NULL;`;
 
-    return new Promise((resolve, reject) => {
-        mysqlLib.executeQuery(query).then((d) => {
-            res.status(200).send(d);
-            resolve();
-        }).catch(e => {
-            console.log(e);
-            res.status(500).send({ success: false });
-            resolve();
-        });
-    });
+        const result = await mysqlLib.executeQuery(query);
+        res.status(200).json(result);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false });
+    }
 }
 
 async function deleteAdmin(req, res) {
-    let walletIds = JSON.parse(req.body);
-    let formattedWalletIds = "'" + walletIds.join("','") + "'";
+    try {
+        let walletIds = JSON.parse(req.body);
+        let formattedWalletIds = "'" + walletIds.join("','") + "'";
 
-    let query = `DELETE FROM ${Constants.Users}
-        WHERE ${Constants.walletId}
-        IN (${formattedWalletIds});`;
-
-    return new Promise((resolve, reject) => {
-        mysqlLib.executeQuery(query).then((d) => {
-            res.status(200).send({ success: true });
-            resolve();
-        }).catch(e => {
-            console.log(e);
-            res.status(500).send({ success: false });
-            resolve();
-        });
-    });
+        let query = `DELETE FROM ${Constants.Users}
+            WHERE ${Constants.walletId}
+            IN (${formattedWalletIds});`;
+        await mysqlLib.executeQuery(query);
+  
+        res.status(200).json({ success: true });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false });
+    }
 }
+ 
