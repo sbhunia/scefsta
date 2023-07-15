@@ -125,13 +125,13 @@ export default function HospitalDataGrid({data, popUpChecked}) {
 
         //Removes each hospital from the blockchain
         selectedRows.forEach( removeId => {
-            for (let row in data) {
+            for (let row in dataContacts) {
                 // if user is interfacility, remove from facility and initiator in blockchain
-                if (removeId === data[row].walletId && data[row].accountType === 'interfacility') {
+                if (removeId === dataContacts[row].walletId && dataContacts[row].accountType === 'interfacility') {
                     setDeleteInterfacility(true);
                     send2(removeId);
                     send3(removeId);
-                } else if (removeId === data[row].walletId) {
+                } else if (removeId === dataContacts[row].walletId) {
                     send2(removeId);
                 } else {
                 }
