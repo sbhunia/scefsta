@@ -14,13 +14,14 @@ export default function InitiatorHandler({data, popUpChecked}) {
     let interfacilityArr = [];
 
     for (let row in data) {
-        console.log("row", data[row].initiatorType);
         let initType = data[row].initiatorType;
+        let accType = data[row].accountType;
+
         if (initType === "emergency") {
             emergencyArr.push(data[row]);
         } else if (initType === "private") {
             privateArr.push(data[row]);
-        } else if (initType === "facility") {
+        } else if (initType === "facility" || accType === "interfacility") {
             interfacilityArr.push(data[row]);
         }
     }
@@ -54,7 +55,6 @@ export default function InitiatorHandler({data, popUpChecked}) {
         { field: Constants.zipcode, headerName: 'Zipcode', width: 100, sortable: true},
         { field: 'id', headerName: 'Wallet ID', width: 200, sortable: false},
         { field: Constants.accountType, headerName: 'Account Type', width: 150, sortable: false},
-
     ];
 
     return (

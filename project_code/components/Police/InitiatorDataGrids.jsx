@@ -128,7 +128,8 @@ export default function InitiatorDataGrids({data, popUpChecked, columns, type}) 
                         return (
                             <div>
                                 <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup}
-                                    selectedRows={selectedRows} dataContacts={dataContacts} setDataContacts={setDataContacts}/>
+                                    selectedRows={selectedRows} dataContacts={dataContacts} setDataContacts={setDataContacts}
+                                    data={data}/>
                                 <InterfacililtyForm addPopup={addPopup} setAddPopup={setAddPopup} setDataContacts={setDataContacts} dataContacts={dataContacts}/>
                             </div>
                         );

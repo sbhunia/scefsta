@@ -14,12 +14,13 @@ import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
 
 const columns = [
-  { field: Constants.hospitalSystem, headerName: `${Constants.HOSPITAL} Name`, width: 300, sortable: true},
+  { field: Constants.hospitalSystem, headerName: `${Constants.HOSPITAL} Name`, width: 200, sortable: true},
   { field: 'address', headerName: 'Address', width: 175, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
   { field: 'state', headerName: 'State', width: 100, sortable: true},
   { field: Constants.zipcode, headerName: 'Zipcode', width: 100, sortable: true},
   { field: 'id', headerName: 'Wallet ID', width: 400, sortable: false},
+  { field: 'accountType', headerName: 'Account Type', width: 150, sortable: true},
 ];
 
 /**
@@ -31,8 +32,11 @@ export default function HospitalDataGrid({data, popUpChecked}) {
     // add and remove smart contract function API connections
     const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addHospital');
     const { state: state2, send: send2, events: events2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeHospital');
+    const { state: state3, send: send3, events: events3 } = useContractFunction(ACCOUNT_INSTANCE, 'removeInitiator');
+
     const [showMessage1, setShowMessage1] = useState(false);
     const [showMessage2, setShowMessage2] = useState(false);
+    const [deleteInterfacility, setDeleteInterfacility] = useState(false);
 
     // allows for the data in the table to be updated (Add/Remove)
     const [dataContacts, setDataContacts] = useState(data);
@@ -109,19 +113,29 @@ export default function HospitalDataGrid({data, popUpChecked}) {
         setDataContacts([...dataContacts, newContact,]);
 
         let data = await response.json();
-
+        console.log("addHosp", data);
         if (data.success) {
             setAddPopup(false);
         }
+
     }
 
     // Queries the database to delete the selected rows and removes them from the datagrid
     const deleteRows = async (event) => {
         event.preventDefault();
 
-        // Removes each hospital from the blockchain
+        //Removes each hospital from the blockchain
         selectedRows.forEach( removeId => {
-            send2(removeId);
+            for (let row in data) {
+                // if user is interfacility, remove from facility and initiator in blockchain
+                if (removeId === data[row].walletId && data[row].accountType === 'interfacility') {
+                    setDeleteInterfacility(true);
+                    send2(removeId);
+                    send3(removeId);
+                } else {
+                    send2(removeId);
+                }
+            }
         });       
 
         await delay(2000);
@@ -146,6 +160,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
         }
 
         setShowMessage2(false);
+        setDeleteInterfacility(false);
     }
 
     // Helper function for deleteRows to update the datagrid with deletions
@@ -246,7 +261,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                                 </div>
                                 {(function () {
                                     if (showMessage2) {
-                                        if (state2.status === 'Mining') {
+                                        if (state2.status === 'Mining' && !deleteInterfacility) {
                                             return (
                                             <div>
                                                 <Alert severity="warning">Waiting for {Constants.HOSPITAL}(s) to be deleted</Alert>
@@ -255,21 +270,52 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                                                 </Box>
                                             </div>
                                             )
+                                        } else if (state2.status === 'Mining' && state3.status === 'Mining') {
+                                            return (
+                                            <div>
+                                                <Alert severity="warning">Waiting for Interfacility to be deleted</Alert>
+                                                <Box sx={{ display: 'flex' }}>
+                                                    <CircularProgress />
+                                                </Box>
+                                            </div>
+                                            )
                                         }
-                                        if (transactionErrored(state2)) {
+                                        if (transactionErrored(state2) && !deleteInterfacility) {
                                             return (
                                             <div>
                                                 <Alert severity="error">Transaction failed: {state2.errorMessage}</Alert>
                                             </div>
                                             )
+                                        } else if ((transactionErrored(state3) || transactionErrored(state2)) && deleteInterfacility) {
+                                            if (transactionErrored(state3)) {
+                                                return (
+                                                <div>
+                                                    <Alert severity="error">Transaction failed: {state3.errorMessage}</Alert>
+                                                </div>
+                                                )
+                                            } else if (transactionErrored(state2)) {
+                                                return (
+                                                    <div>
+                                                        <Alert severity="error">Transaction failed: {state2.errorMessage}</Alert>
+                                                    </div>
+                                                )
+                                            }
                                         }
-                                        if (state2.status === 'Success' && events2 != undefined) {
+                                        if (state2.status === 'Success' && events2 != undefined && !deleteInterfacility) {
                                             return (
                                             <div>
-                                                <Alert severity="success">Your transaction was successful! Hospital was deleted from the blockchain</Alert>
+                                                <Alert severity="success">Your transaction was successful! {Constants.HOSPITAL} was deleted from the blockchain</Alert>
                                                 <Button color='success' onClick={finalizeDeleteHospital}>Finalize and Exit</Button>
                                             </div>
                                             )
+                                        } else if (state2.status === 'Success' && events2 != undefined &&
+                                                   state3.status === "Success" && events3 != undefined) {
+                                                return (
+                                                    <div>
+                                                        <Alert severity="success">Your transaction was successful! Interfacility account was deleted from the blockchain</Alert>
+                                                        <Button color='success' onClick={finalizeDeleteHospital}>Finalize and Exit</Button>
+                                                    </div>
+                                                );
                                         }
                                     }
                                 })()}
@@ -279,6 +325,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                                 <div className={stylesP.editHospital}>
                                     <h1>Add New {Constants.HOSPITAL}</h1>
                                 </div>
+                                <Alert severity="warning">NOTE: If Wallet ID is already registered as an <br/> {Constants.POLICE} the account will become interfacility</Alert>
                                 <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
                                     <TextField
                                         type="text"

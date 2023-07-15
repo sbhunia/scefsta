@@ -60,7 +60,7 @@ async function getAdmins(req, res) {
 
     let query = "   SELECT  " + Constants.walletId + ", " + Constants.firstName + ", " + Constants.lastName + ", " + Constants.email + ", \
                             " + Constants.address + ", " + Constants.city + ",   \
-                            " + Constants.state + ", " + Constants.licensePlate + ", " + Constants.accountType + "                       \
+                            " + Constants.state + ", " + Constants.licensePlate + ", " + Constants.accountType + ", " + Constants.zipcode + "                       \
                     FROM    " + Constants.Users + "                                                       \
                     WHERE   " + Constants.station + "         IS  NULL         AND                        \
                             " + Constants.policeDept + "      IS  NULL         AND                        \

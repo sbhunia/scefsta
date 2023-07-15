@@ -118,7 +118,7 @@ async function addPolice(req, res) {
         } else if (rows === 1) {
             accountType = 'interfacility';
             const query = 
-                `UPDATE ${Constants.Users} SET ${Constants.accountType} = ${accountType} WHERE ${Constants.walletId} = ${walletId};`;
+                `UPDATE ${Constants.Users} SET ${Constants.accountType} = '${accountType}' WHERE ${Constants.walletId} = '${walletId}';`;
             console.log(query);
             await mysqlLib.executeQuery(query);
         }
@@ -153,7 +153,7 @@ async function getPolice(req, res) {
         FROM
           ${Constants.Users}
         WHERE
-          ${Constants.accountType} = 'initiator';
+          (${Constants.accountType} = 'initiator' OR ${Constants.accountType} = 'interfacility');
       `;
   
       const result = await mysqlLib.executeQuery(query);

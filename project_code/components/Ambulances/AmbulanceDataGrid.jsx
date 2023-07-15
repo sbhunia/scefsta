@@ -29,7 +29,6 @@ const columns = [
  * @param {*} popUpChecked Boolean -if true, allows for adding/deleting ambulances; false otherwise.
  */
 export default function AmbulanceDataGrid({data, popUpChecked}) {
-    console.log("data", data);
     // smart contract API connection for add and remove ambulance users
     const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addAmbulance');
     const { state: state2, send: send2, events: events2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeAmbulance');

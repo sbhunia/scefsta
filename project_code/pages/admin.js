@@ -69,7 +69,6 @@ function AdminPortal( {admins, hospitals, ambulances, police} ) {
     };
 
     if (isAdmin) { 
-        console.log(isAdmin);
         return (
             <div className={styles.collector2}>
                 <TopNavbar />
@@ -150,15 +149,6 @@ export async function getStaticProps(ctx) {
 
     const res4 = await fetch(Constants.getAdmins);
     const data4 = await res4.json();
-
-    // console.log("------- Hospitals -------")
-    // console.log(data1)
-
-    // console.log("------- Ambulances -------")
-    // console.log(data2)
-
-    // console.log("------- Police -------")
-    // console.log(data3)
 
     return {
         props: {

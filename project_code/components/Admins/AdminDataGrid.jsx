@@ -20,7 +20,7 @@ const columns = [
   { field: 'address', headerName: 'Address', width: 175, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
   { field: 'state', headerName: 'State', width: 100, sortable: true},
-  { field: 'zipcode', headerName: 'Zipcode', width: 100, sortable: true},
+  { field: `${Constants.zipcode}`, headerName: 'Zipcode', width: 100, sortable: true},
   { field: 'id', headerName: 'Wallet ID', width: 400, sortable: false},
 ];
 

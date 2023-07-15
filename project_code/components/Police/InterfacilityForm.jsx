@@ -12,6 +12,9 @@ import * as Constants from '../../pages/constants';
 
 export const InterfacililtyForm = ({addPopup, setAddPopup, setDataContacts, dataContacts}) => {
     const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addInitiator');
+    /* Temporary for issues with adding to DB */
+    //const { state, send: send2, events } = useContractFunction(ACCOUNT_INSTANCE, 'removeInitiator');
+
     const [showMessage1, setShowMessage1] = useState(false);
 
     const [addFormData, setAddFormData] = useState({
@@ -52,12 +55,10 @@ export const InterfacililtyForm = ({addPopup, setAddPopup, setDataContacts, data
         setShowMessage1(true);
 
         // temporary delete function for blockchain
-        // send2(addFormData.walletId);
+        //send2(addFormData.walletId);
     }
 
     const finalizeAddInitiator = async () => {
-        event.preventDefault();
-
         const newContact = {
             facilityName: addFormData.facilityName,
             address: addFormData.address,
@@ -82,12 +83,12 @@ export const InterfacililtyForm = ({addPopup, setAddPopup, setDataContacts, data
         let data = await response.json();
         console.log("data", data);
         if (data.success) {
-            //setAddPopup(false);
+            setAddPopup(false);
         } else if (!data.success) {
             alert("Error adding initiator to DB, please contact SuperAdmin");
         }
 
-        // setShowMessage1(false);
+        setShowMessage1(false);
     }
 
     return (
@@ -95,8 +96,9 @@ export const InterfacililtyForm = ({addPopup, setAddPopup, setDataContacts, data
             <div className={stylesP.editHospital}>
                 <h1>Add New {Constants.POLICE}</h1>
             </div>
-            {/* <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}> */}
-            <form className={stylesP.formPadding} onSubmit={finalizeAddInitiator}>
+            <Alert severity="warning">NOTE: If Wallet ID is already registered as an <br/> {Constants.HOSPITAL} the account will become Interfacility</Alert>
+            <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
+            {/* <form className={stylesP.formPadding} onSubmit={finalizeAddInitiator}> FOR TESTING DB PURPOSES*/}
                 <TextField
                     type="text"
                     name="facilityName"

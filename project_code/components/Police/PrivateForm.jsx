@@ -54,12 +54,10 @@ export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContact
         setShowMessage1(true);
 
         // temporary delete function for blockchain
-        // send2(addFormData.walletId);
+        //send2(addFormData.walletId);
     }
 
     const finalizeAddInitiator = async () => {
-        event.preventDefault();
-
         const newContact = {
             firstName: addFormData.firstName,
             lastName: addFormData.lastName,
@@ -98,8 +96,8 @@ export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContact
             <div className={stylesP.editHospital}>
                 <h1>Add New {Constants.POLICE}</h1>
             </div>
-            {/* <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}> */}
-            <form className={stylesP.formPadding} onSubmit={finalizeAddInitiator}>
+            <form className={stylesP.formPadding} onSubmit={handleAddFormSubmit}>
+            {/* <form className={stylesP.formPadding} onSubmit={finalizeAddInitiator}> FOR DB TESTING PURPOSES*/}
                 <TextField
                     type="text"
                     name="firstName"
