@@ -109,12 +109,12 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
 
         newContact['id'] = newContact['walletId'];
 
-        setDataContacts([...dataContacts, newContact,]);
-
         let data = await response.json();
-
         if (data.success) {
+            setDataContacts([...dataContacts, newContact,]);
             setAddPopup(false);
+        } else if (!data.success) {
+            alert(`Error adding ${Constants.AMBULANCE} to DB, please contact SuperAdmin`);
         }
 
         setShowMessage1(false);
@@ -140,14 +140,11 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
         });
 
         let status = await response.json();
-
-        setDataContacts(dataContacts.filter(checkSelected))
-
         if(status.success){
-            
+            setDataContacts(dataContacts.filter(checkSelected))
             setDeletePopup(false);
         } else {
-            alert("Error deleting rows");
+            alert(`Error removing ${Constants.AMBULANCE} from DB, please contact SuperAdmin`);
         }
 
         setShowMessage2(false);
@@ -217,7 +214,7 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
                     if (deleteButton) {
                         return (
                             <div>
-                                <Button onClick={() => setDeletePopup(true)} style={{margin: '10px'}} variant="contained" endIcon={<DeleteIcon />} >
+                                <Button onClick={() => {setDeletePopup(true); setShowMessage1(false)}} style={{margin: '10px'}} variant="contained" endIcon={<DeleteIcon />} >
                                     Delete
                                 </Button>
                             </div>
@@ -225,7 +222,7 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
                     } else {
                         return (
                             <div>
-                                <Button onClick={() => setAddPopup(true)} style={{margin: '10px'}} variant="outlined" startIcon={<AddIcon />} >
+                                <Button onClick={() => {setAddPopup(true); setShowMessage2(false)}} style={{margin: '10px'}} variant="outlined" startIcon={<AddIcon />} >
                                     Add
                                 </Button>
                             </div>
@@ -329,7 +326,8 @@ export default function AmbulanceDataGrid({data, popUpChecked}) {
                                         if (transactionErrored(state1)) {
                                                 return (
                                                 <div>
-                                                <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                                                    <Alert severity="error">Transaction failed: {state1.errorMessage}</Alert>
+                                                    <Alert severity="warning" onClick={finalizeAddAmbulance}>Add to DB anyways</Alert>
                                                 </div>
                                                 )
                                             }
