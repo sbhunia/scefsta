@@ -142,11 +142,11 @@ export default function AdminDataGrid({data, popUpChecked}) {
 
         // Removes each admin from the blockchain
         selectedRows.forEach( removeId => {
-            send2(removeId);
+            send2(removeId).then(handleTransactionComplete);
         });
 
         await delay(2000);
-        send2(removeId).then(handleTransactionComplete); 
+        setShowMessage2(true);
     }
 
     const finalizeDeleteAdmin = async () => {
@@ -231,7 +231,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                     if (deleteButton) {
                         return (
                             <div>
-                                <Button onClick={() => {setDeletePopup(true); setShowMessage1(false)}} style={{margin: '10px'}} variant="contained" endIcon={<DeleteIcon />} >
+                                <Button onClick={() => {setDeletePopup(true); setShowMessage2(false)}} style={{margin: '10px'}} variant="contained" endIcon={<DeleteIcon />} >
                                     Delete
                                 </Button>
                             </div>
@@ -239,7 +239,7 @@ export default function AdminDataGrid({data, popUpChecked}) {
                     } else {
                         return (
                             <div>
-                                <Button onClick={() => {setAddPopup(true); setShowMessage2(false)}} style={{margin: '10px'}} variant="outlined" startIcon={<AddIcon />} >
+                                <Button onClick={() => {setAddPopup(true); setShowMessage1(false)}} style={{margin: '10px'}} variant="outlined" startIcon={<AddIcon />} >
                                     Add
                                 </Button>
                             </div>

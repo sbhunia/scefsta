@@ -104,7 +104,7 @@ const FormAddress = ({ handleAddFormData }) => {
             required
             onChange={handleAddFormData}
         />
-        <br />
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
         <FormControl className={stylesP.formInput}>
             <Autocomplete
                 name="state"
@@ -127,6 +127,7 @@ const FormAddress = ({ handleAddFormData }) => {
             error={!isZipcodeValid}  // Add error state based on the validity
             helperText={!isZipcodeValid && "Please enter a valid US ZIP code"}
         />
+        </div>
         </div>
   );
 };
