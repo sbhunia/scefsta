@@ -9,6 +9,7 @@ import { Button, TextField } from '@mui/material';
 import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
 import * as Constants from '../../pages/constants';
+import FormAddress from "../Address/FormAddress";
 
 export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContacts}) => {
     const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addInitiator');
@@ -44,7 +45,6 @@ export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContact
     // the data will be used in a new object (newContacts) that adds an id, and 
     // that new object gets added to the table.
     const handleAddFormSubmit = async (event) => {
-        event.preventDefault();
         setShowMessage1(false);
 
         // add to blockchain
@@ -142,50 +142,7 @@ export const PrivateForm = ({addPopup, setAddPopup, setDataContacts, dataContact
                     required
                     onChange={handleAddFormData}
                 />
-                <br />
-                <TextField 
-                    type="text" 
-                    name="address" 
-                    label="Street Address" 
-                    variant="standard" 
-                    placeholder="Street Address"
-                    className={stylesP.formInput}
-                    required
-                    onChange={handleAddFormData}
-                />
-                <br />
-                <TextField 
-                    type="text" 
-                    name="city" 
-                    label="City" 
-                    variant="standard" 
-                    placeholder="City"
-                    className={stylesP.formInput}
-                    required
-                    onChange={handleAddFormData}
-                />
-                <br />
-                <TextField 
-                    type="text" 
-                    name="state" 
-                    label="State" 
-                    variant="standard" 
-                    placeholder="Ohio"
-                    className={stylesP.formInput}
-                    required
-                    onChange={handleAddFormData}
-                />
-                <br />
-                <TextField
-                    type="text"
-                    name="zipcode"
-                    label="Zipcode"
-                    variant="standard"
-                    placeholder="Zipcode"
-                    className={stylesP.formInput}
-                    required
-                    onChange={handleAddFormData}
-                />
+                <FormAddress handleAddFormData={handleAddFormData}/>
                 <br />
                 <div className={stylesP.submitButtonDiv}>
                     <button type="submit" className={stylesP.submitButton}>

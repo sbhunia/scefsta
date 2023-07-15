@@ -13,6 +13,7 @@
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
     "@ethersproject/units": "^5.4.0",
+    "@lob/react-address-autocomplete": "^2.2.0",
     "@metamask/onboarding": "^1.0.1",
     "@mui/icons-material": "^5.0.4",
     "@mui/lab": "^5.0.0-alpha.51",

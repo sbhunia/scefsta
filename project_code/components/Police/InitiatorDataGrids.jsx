@@ -111,7 +111,7 @@ export default function InitiatorDataGrids({data, popUpChecked, columns, type}) 
                     if (type === "emergency") {
                         return (
                             <div>
-                                <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup}
+                                <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup} data={data}
                                     selectedRows={selectedRows} dataContacts={dataContacts} setDataContacts={setDataContacts}/>
                                 <EmergencyForm addPopup={addPopup} setAddPopup={setAddPopup} setDataContacts={setDataContacts} dataContacts={dataContacts}/>
                             </div>
@@ -119,7 +119,7 @@ export default function InitiatorDataGrids({data, popUpChecked, columns, type}) 
                     } else if (type === "private") {
                         return (
                             <div>
-                                <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup}
+                                <DeleteForm deletePopup={deletePopup} setDeletePopup={setDeletePopup} data={data}
                                     selectedRows={selectedRows} dataContacts={dataContacts} setDataContacts={setDataContacts}/>
                                 <PrivateForm addPopup={addPopup} setAddPopup={setAddPopup} setDataContacts={setDataContacts} dataContacts={dataContacts}/>
                             </div>
