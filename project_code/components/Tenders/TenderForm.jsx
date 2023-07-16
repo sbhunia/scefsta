@@ -1,6 +1,6 @@
 import React from 'react'
 import { useContractFunction, transactionErrored} from '@usedapp/core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
 import styles from '../../styles/TenderForm.module.css';
@@ -15,76 +15,7 @@ import stylesP from '../../styles/Popup.module.css';
 import { verify } from 'crypto';
 import { AllowedHospitals } from './AllowedHospitals';
 import Popup from '../Popup/Popup';
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
-
-const injuryTypes = [
-    'Broken Bone',
-    'Sprain',
-    'Laceration',
-    'Concussion',
-    'Hemorrhage',
-    'Traumatic Brain Injury',
-    'Skull fracture',
-    'Other'
-];
-
-const mechanismsOfOnjury = [
-    'Vehicular Crash',
-    'Assault',
-    'Battery',
-    'Stab',
-    'Gunshot',
-    'Fall',
-    'Fire',
-    'Other'
-]
-
-function getStyles(name, injuryType, theme) {
-    return {
-      fontWeight:
-        injuryType.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
-    };
-}
-
-/**
- * Handles adding data to the MongoDB data for patients and tenders
- * @param {*} patient 
- * @param {*} tender 
- * @returns 
- */
- async function handlePost(patient, tender) {
-
-    let patients = await fetch('api/patients', {
-        method: 'POST',
-        body: JSON.stringify(patient)
-    });
-    let patientData = await patients.json();
-
-    let tenders = await fetch('api/tenders', {
-        method: 'POST',
-        body: JSON.stringify(tender)
-    });
-
-    let tendersData = await tenders.json();
-
-    if (patientData.success && tendersData.success) {
-        return true;
-    } else {
-        return false;
-    }
-}
+import { FormInjury } from '../FormComponents/FormInjury';
 
 export default function TenderForm(props) {
     const theme = useTheme();
@@ -106,14 +37,25 @@ export default function TenderForm(props) {
     const [isPenaltyValid, setIsPenaltyValid] = useState(true);
     
     const [allowedHospPopup, setAllowedHospPopup] = useState(false);
-    const [allowedHospitals, setAllowedHospital] = useState(["0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80"]);
+    const [allowedHospitals, setAllowedHospitals] = useState([]);
+    const [confirmDisabled, setConfirmDisabled] = useState(true);
+
+    const [type, setType] = useState(null);
 
     // Obtaining React Hooks from postTender smart contract function
     const {state , send: send1, events} = useContractFunction(AUCTION_INSTANCE, 'postTender');
 
-    const handleChangeName = (event) => {
-        setName(event.target.value);
+    const fetchType = async () => {
+        try {
+            const URL = `${Constants.getPolice}?walletId='${props.account}'`;
+            const response = await fetch(URL);
+            const json = await response.json();
+            setType(json[0].initiatorType);
+        } catch (error) {
+            console.error('Error fetching data: ', error);
+        }
     }
+
     const handleChangeInjury = (event) => {
         const {
           target: { value },
@@ -128,15 +70,6 @@ export default function TenderForm(props) {
     };
     const handleSetMechOfInjury = (event) => {
         setMechanismOfInjury(event.target.value);
-    };
-    const handleChangeTender = (event) => {
-        setTenderAmt(event.target.value);
-    };
-    const handleChangePenalty = (event) => {
-        setPenaltyAmt(event.target.value);
-    };
-    const handleChangeAuctionLength = (event) => {
-        setAuctionLength(event.target.value);
     };
 
     const verifyNumber = (number) => {
@@ -171,15 +104,17 @@ export default function TenderForm(props) {
         }
     }
 
-    const getAllowedHospitals = () => {
-        alert("here");
-    }
+    const handleSetAllowedHospitals = (event) => {
+        event.preventDefault();
+        setAllowedHospPopup(true);
+      };
 
     // auctionLength - how long in minutes the ambulnaces have to bid in the auction
     // location - the location of the incident
     // allowed hospitals - hospitals that are near enough to service patient(s)
     // penalty - cost for ambulance if job is not completed
-    const confirm = async () => {
+    const confirm = async (event) => {
+        event.preventDefault();
         // create tender for blockchain
         send1(auctionLength, deliveryTime, location, city, stateIn, zipcode, penaltyAmt, severity, allowedHospitals, {value: tenderAmt});
     }
@@ -203,8 +138,6 @@ export default function TenderForm(props) {
             zipcode: zipcode
         };
 
-        console.log(newPatient);
-
         let response = await fetch('api/patients', {
             method: 'POST',
             body: JSON.stringify(newPatient)
@@ -212,6 +145,18 @@ export default function TenderForm(props) {
 
         props.setTrigger(false);
     }
+
+    useEffect(() => {
+        fetchType();
+    }, []);
+
+    useEffect(() => {
+        if (allowedHospitals.length > 0) {
+            setConfirmDisabled(false);
+        } else {
+            setConfirmDisabled(true);
+        }
+    }, [allowedHospitals]);
 
     return (
         <div className={styles.containerForm}>
@@ -221,73 +166,31 @@ export default function TenderForm(props) {
                     {Constants.POLICE} Tender Form
                 </Typography>
             </div>
-            <form className={styles.tenderForm}>
-                <div>
-                    <h2 className={styles.headingText}>Location</h2>
-                    <FormAddress handleAddFormData={handleAddFormData}/>
+            <h2 className={styles.headingText}>Location</h2>
+                    <form onSubmit={handleSetAllowedHospitals}>
+                        <FormAddress handleAddFormData={handleAddFormData}/>
+                        <ButtonGroup variant="contained" aria-label="outlined button group">
+                            <Button color="success" type="submit">Set Allowed {Constants.HOSPITAL}</Button>
+                        </ButtonGroup>
+                    </form>
                     <br/>
-                    <h2 className={styles.headingText}>Incident Information</h2>
-                    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <div className={styles.injuryDiv}>
-                        <InputLabel id="injuryType">Injury Type</InputLabel>
-                        <Select
-                            labelId="injuryType"
-                            id={styles.injuryType}
-                            multiple
-                            value={injuryType}
-                            onChange={handleChangeInjury}
-                            input={<OutlinedInput label="Name" />}
-                            MenuProps={MenuProps}
-                            >
-                            {injuryTypes.map((name) => (
-                                <MenuItem
-                                key={name}
-                                value={name}
-                                style={getStyles(name, injuryType, theme)}
-                                >
-                                {name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </div>
-                    <div className={styles.injuryDiv}>
-                        <InputLabel id="severity">Severity</InputLabel>
-                        <Select
-                        labelId="severity"
-                        id={styles.severity}
-                        value={severity}
-                        label="Severity Level"
-                        onChange={handleChangeSeverity}
-                        >
-                            <MenuItem value={"Low"}>Low</MenuItem>
-                            <MenuItem value={"Medium"}>Medium</MenuItem>
-                            <MenuItem value={"High"}>High</MenuItem>
-                            <MenuItem value={"Critical"}>Critical</MenuItem>
-                        </Select>
-                    </div>
-                    </div>
-                    <div className={styles.injuryDiv}>
-                        <InputLabel id="severity">Mechanism of Injury</InputLabel>
-                        <Select
-                            labelId="mechanism_of_injury"
-                            id={styles.mechanism}
-                            multiple
-                            value={mechanismofInjury}
-                            label="Mechanism of Injury"
-                            onChange={handleSetMechOfInjury}
-                        >
-                            {mechanismsOfOnjury.map((name) => (
-                                <MenuItem
-                                key={name}
-                                value={name}
-                                style={getStyles(name, mechanismofInjury, theme)}
-                                >
-                                {name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </div>
-                </div>
+            <form className={styles.tenderForm} onSubmit={confirm}>
+                {(function () {
+                    if (type === "emergency") {
+                        return(
+                            <FormInjury injuryType={injuryType} handleChangeInjury={handleChangeInjury} severity={severity} 
+                                handleChangeSeverity={handleChangeSeverity} mechanismofInjury={mechanismofInjury} handleSetMechOfInjury={handleSetMechOfInjury}/>
+                        )
+                    } else if (type === "private") {
+                        return (
+                            <h1>Private</h1>
+                        );
+                    } else if (type === "facility") {
+                        return (
+                            <h1>Facility type</h1>
+                        );
+                    }
+                })()}
                 <br/>
                 <h2 className={styles.headingText}>Auction Information</h2>
                 <div>
@@ -359,8 +262,7 @@ export default function TenderForm(props) {
                     <div className={styles.buttonGroup}>
                         <ButtonGroup variant="contained" aria-label="outlined button group">
                             {/* <Button color="success" onClick={getAllowedHospitals}>Confirm</Button> */}
-                            <Button color="success" onClick={() => {setAllowedHospPopup(true)}}>Set Allowed {Constants.HOSPITAL}s</Button>
-                            
+                            <Button disabled={confirmDisabled} color="success" type="submit">Post Tender</Button>
                         </ButtonGroup>
                     </div>
                 </form>
@@ -369,36 +271,37 @@ export default function TenderForm(props) {
                     if (allowedHospPopup) {
                         return (
                             <div>
-                            <Popup trigger={allowedHospPopup} setTrigger={setAllowedHospPopup} style={{width: "10%"}} >
-                                <AllowedHospitals address={location} city={city} state={stateIn} zipcode={zipcode}/>
+                            <Popup trigger={allowedHospPopup} setTrigger={setAllowedHospPopup} style={{width: "45%"}} >
+                                <AllowedHospitals address={location} city={city} state={stateIn} zipcode={zipcode} 
+                                    setAllowedHospitals={setAllowedHospitals} trigger={allowedHospPopup} setTrigger={setAllowedHospPopup}/>
                             </Popup>
                             </div>
                         );
                     }
-                //     if (state.status === 'Mining') {
-                //         return (
-                //             <label>Waiting for tender to post
-                //             <Box sx={{ display: 'flex' }}>
-                //                 <CircularProgress />
-                //             </Box>
-                //             </label>
-                //         )
-                //     }
-                //     if (transactionErrored(state)) {
-                //         return (
-                //             <div>
-                //                 <Alert severity="error">Transaction failed: {state.errorMessage}</Alert>
-                //             </div>
-                //         )
-                //     }
-                //     if (state.status === 'Success' && events != undefined) {
-                //         return (
-                //             <div>
-                //                 <Alert severity="success">Your transaction was successful! Please click the button to finalize the transaction.</Alert>
-                //                 <Button color='success' onClick={finalizeTransaction}>Finalize and Exit</Button>
-                //             </div>
-                //         )
-                //     }
+                    if (state.status === 'Mining') {
+                        return (
+                            <label>Waiting for tender to post
+                            <Box sx={{ display: 'flex' }}>
+                                <CircularProgress />
+                            </Box>
+                            </label>
+                        )
+                    }
+                    if (transactionErrored(state)) {
+                        return (
+                            <div>
+                                <Alert severity="error">Transaction failed: {state.errorMessage}</Alert>
+                            </div>
+                        )
+                    }
+                    if (state.status === 'Success' && events != undefined) {
+                        return (
+                            <div>
+                                <Alert severity="success">Your transaction was successful! Please click the button to finalize the transaction.</Alert>
+                                <Button color='success' onClick={finalizeTransaction}>Finalize and Exit</Button>
+                            </div>
+                        )
+                    }
                 })()}
             </div>
     )

@@ -6,7 +6,11 @@ export default async function handler(req, res) {
     
     switch (req.method) {
         case 'GET': {
-            return getPolice(req, res)
+            if (req.query.walletId) {
+              return getPoliceType(req, res);
+            } else {
+              return getPolice(req, res);
+            }
         }
         case 'POST': {
             const header = req.headers['x-method'];
@@ -132,37 +136,52 @@ async function addPolice(req, res) {
 
 // Queries the database for police and returns the results
 async function getPolice(req, res) {
-    try {
-      const query = `
-        SELECT
-          ${Constants.walletId},
-          ${Constants.address},
-          ${Constants.city},
-          ${Constants.state},
-          ${Constants.policeDept},
-          ${Constants.station},
-          ${Constants.licensePlate},
-          ${Constants.initiatorType},
-          ${Constants.hospitalSystem},
-          ${Constants.zipcode},
-          ${Constants.initiatorType},
-          ${Constants.accountType},
-          ${Constants.firstName},
-          ${Constants.lastName},
-          ${Constants.email}
-        FROM
-          ${Constants.Users}
-        WHERE
-          (${Constants.accountType} = 'initiator' OR ${Constants.accountType} = 'interfacility');
-      `;
-  
-      const result = await mysqlLib.executeQuery(query);
-      res.status(200).json(result);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ success: false });
-    }
+  try {
+    const query = `
+      SELECT
+        ${Constants.walletId},
+        ${Constants.address},
+        ${Constants.city},
+        ${Constants.state},
+        ${Constants.policeDept},
+        ${Constants.station},
+        ${Constants.licensePlate},
+        ${Constants.initiatorType},
+        ${Constants.hospitalSystem},
+        ${Constants.zipcode},
+        ${Constants.initiatorType},
+        ${Constants.accountType},
+        ${Constants.firstName},
+        ${Constants.lastName},
+        ${Constants.email}
+      FROM
+        ${Constants.Users}
+      WHERE
+        (${Constants.accountType} = 'initiator' OR ${Constants.accountType} = 'interfacility');
+    `;
+
+    const result = await mysqlLib.executeQuery(query);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false });
   }
+}
+
+const getPoliceType = async (req, res) => {
+  try {
+    const walletId = req.query.walletId;
+    const query = `SELECT ${Constants.initiatorType} FROM ${Constants.Users} 
+    WHERE ${Constants.walletId} = ${walletId} AND 
+      (${Constants.accountType} = 'initiator' OR ${Constants.accountType} = 'interfacility');
+    `;
+    const result = await mysqlLib.executeQuery(query);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false })
+  }
+}
 
 // Deletes police from the database
 async function deletePolice(req, res) {

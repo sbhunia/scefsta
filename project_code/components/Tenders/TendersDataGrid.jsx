@@ -28,7 +28,7 @@ const columns = [
    * @param {*} popUpChecked Boolen - if true, table is editable depending on user privileges; false otherwise
    * @param {*} openTenders Boolean - if true, tender entries are biddable.
    */
-export default function TendersDataGrid({data, popUpChecked, openTenders, biddingForm, patients}) {
+export default function TendersDataGrid({data, popUpChecked, openTenders, biddingForm, account}) {
     // Allos popup to be displayed when a row is clicked
     const [rowPopup, setRowPopup] = useState(false);
     
@@ -127,7 +127,7 @@ export default function TendersDataGrid({data, popUpChecked, openTenders, biddin
                                     </div>
                                 </Popup>
                                 <Popup trigger={addPopup} setTrigger={setAddPopup} className={styles.popupWin}>
-                                    <TenderForm setTrigger={setAddPopup}/>
+                                    <TenderForm setTrigger={setAddPopup} account={account}/>
                                 </Popup>
                             </div>
                         );

@@ -151,7 +151,7 @@ export default function Police() {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <TendersPolice data={openTendersArr} popUpChecked={true} />
+                                        <TendersPolice data={openTendersArr} popUpChecked={true} account={account} />
                                     </Grid>
                                 </Grid>
                             </TabPanel>

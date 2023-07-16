@@ -40,7 +40,7 @@ export default function Tenders(tend) {
     
     return (
         <div className={ styles.containerPolice }>
-            {<TendersDataGrid data={searchTerm.length < 1 ? tenders : searchResults} popUpChecked={popUpChecked} openTenders={false}/>}
+            {<TendersDataGrid data={searchTerm.length < 1 ? tenders : searchResults} popUpChecked={popUpChecked} openTenders={false} account={tend.account}/>}
 
         </div>
     );

@@ -15,7 +15,7 @@ import { CircularProgress } from '@mui/material';
 import FormAddress from '../FormComponents/FormAddress';
 import { FormWalletID } from '../FormComponents/FormWalletID';
 
-const columns = [
+let columns = [
   { field: Constants.hospitalSystem, headerName: `${Constants.HOSPITAL} Name`, width: 200, sortable: true},
   { field: 'address', headerName: 'Address', width: 225, sortable: true},
   { field: 'city', headerName: 'City', width: 120, sortable: true},
@@ -30,7 +30,7 @@ const columns = [
  * @param {*} data JSON containing the data.
  * @param {*} popUpChecked Boolean -if true, allows for adding/deleting hospitals; false otherwise.
  */
-export default function HospitalDataGrid({data, popUpChecked}) {
+export default function HospitalDataGrid({data, popUpChecked, isAllowedHosp, setAllowedHospitals, setTrigger}) {
     // add and remove smart contract function API connections
     const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addHospital');
     const { state: state2, send: send2, events: events2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeHospital');
@@ -45,6 +45,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
     
     // Tracks the selected rows, used for deleting
     const [selectedRows, setSelectedRows] = useState([]);
+    const [noneSelected, setNoneSelected] = useState(true);
 
     // Determines whether to show the add or delete button
     const [deleteButton, setDeleteButton] = useState(false);
@@ -66,10 +67,38 @@ export default function HospitalDataGrid({data, popUpChecked}) {
     // Used for delete button popup
     const [deletePopup, setDeletePopup] = useState(false);
     const [completedTransactions, setCompletedTransactions] = useState(0); 
+    let columns;
+    if (isAllowedHosp) {
+        columns = [
+            { field: Constants.hospitalSystem, headerName: `${Constants.HOSPITAL} Name`, width: 200, sortable: true},
+            { field: 'travelTime', headerName: 'Travel Time(Min)', width: 150, sortable: true},
+            { field: 'distance', headerName: 'Distance(Miles)', width: 150, sortable: true},
+            { field: 'address', headerName: 'Address', width: 225, sortable: true},
+            { field: 'city', headerName: 'City', width: 120, sortable: true},
+            { field: 'state', headerName: 'State', width: 100, sortable: true},
+            { field: Constants.zipcode, headerName: 'Zipcode', width: 100, sortable: true},
+            { field: 'id', headerName: 'Wallet ID', width: 400, sortable: false},
+            { field: 'accountType', headerName: 'Account Type', width: 150, sortable: true},
+        ];
+    } else {
+        columns = [
+            { field: Constants.hospitalSystem, headerName: `${Constants.HOSPITAL} Name`, width: 200, sortable: true},
+            { field: 'address', headerName: 'Address', width: 225, sortable: true},
+            { field: 'city', headerName: 'City', width: 120, sortable: true},
+            { field: 'state', headerName: 'State', width: 100, sortable: true},
+            { field: Constants.zipcode, headerName: 'Zipcode', width: 100, sortable: true},
+            { field: 'id', headerName: 'Wallet ID', width: 400, sortable: false},
+            { field: 'accountType', headerName: 'Account Type', width: 150, sortable: true},
+        ];
+    }
 
     const handleTransactionComplete = () => { 
         setCompletedTransactions(prevCount => prevCount + 1); 
     }; 
+
+    useEffect(() => {
+        setDataContacts(data);
+    }, [data]);
 
     useEffect(() => { 
         if (completedTransactions === selectedRows.length) { 
@@ -182,6 +211,11 @@ export default function HospitalDataGrid({data, popUpChecked}) {
         }
     }
 
+    const handleSelectedAllowed = () => {
+       setAllowedHospitals(selectedRows);
+       setTrigger(false);
+    }
+
     return (
         <div style={{ height: 400, width: '100%' }}>
             <DataGrid
@@ -201,11 +235,15 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                 }}
                 onRowSelectionModelChange={(newRowSelectionModel) => {
                     setSelectedRows(newRowSelectionModel);
-                    if (newRowSelectionModel.length > 0) {
+                    if (newRowSelectionModel.length > 0 && !isAllowedHosp) {
                         setDeleteButton(true);
+                    } else if (newRowSelectionModel.length > 0 && isAllowedHosp) {
+                        setNoneSelected(false);
                     } else {
                         setDeleteButton(false);
+                        setNoneSelected(true);
                     }
+                    
                 }}
                 rows={dataContacts}
                 columns={columns}
@@ -234,7 +272,7 @@ export default function HospitalDataGrid({data, popUpChecked}) {
             />
             {(function () {
                 // Displays the delete button if one or more entries are selected, otherwise displays the add button
-                if (popUpChecked){
+                if (popUpChecked && !isAllowedHosp){
                     if (deleteButton) {
                         return (
                             <div>
@@ -252,6 +290,14 @@ export default function HospitalDataGrid({data, popUpChecked}) {
                             </div>
                         ) 
                     }
+                } else if (popUpChecked && isAllowedHosp) {
+                    return (
+                        <div>
+                        <Button onClick={handleSelectedAllowed} style={{margin: '10px'}} disabled={noneSelected} variant="contained">
+                            Set Selected as Allowed
+                        </Button>
+                    </div>
+                    )
                 }
             }())}
             {(function () {
