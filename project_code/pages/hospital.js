@@ -164,12 +164,6 @@ export async function getStaticProps(ctx) {
     return open.status == "incoming";
   });
 
-  // console.log("------- Incoming Patients -------")
-  // console.log(isAccepted)
-
-  // console.log("------- Accepted Patients -------")
-  // console.log(isIncoming)
-
   return {
     props: {
       accepted: isAccepted,

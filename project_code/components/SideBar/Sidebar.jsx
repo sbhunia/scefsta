@@ -24,7 +24,7 @@ export default function Sidebar() {
     setIsPolice(JSON.parse(sessionStorage.getItem("isPolice")));
     setIsAmbulance(JSON.parse(sessionStorage.getItem("isAmbulance")));
   });
-  console.log("side", SidebarAdminDataDashbaord);
+
   useEffect(() => {
     setSidebarAdminDataDashboard(
       getSideBarData(isAdmin, isHospital, isPolice, isAmbulance)

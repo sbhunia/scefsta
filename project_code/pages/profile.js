@@ -13,10 +13,6 @@ function Profile() {
   const [data, setData] = useState([]);
   const balance = useEtherBalance(account);
 
-  if (balance != undefined) {
-    console.log(formatEther(balance));
-  }
-
   useEffect(() => {
     fetch("/api/hospitals")
       .then((res) => {
@@ -39,7 +35,7 @@ function Profile() {
       });
       window.location.href = "/login"; // Redirect to login page after logout
     } catch (error) {
-      console.log(error);
+      console.error(error, "error logging out");
     }
   };
 
@@ -49,7 +45,6 @@ function Profile() {
         console.log(el.walletId == account, el.walletId, account);
         return el.walletId == account;
       }) || {};
-    console.log(my);
     return (
       <div className={styles.entire}>
         <TopNavbar />
