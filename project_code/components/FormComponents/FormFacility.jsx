@@ -2,7 +2,6 @@ import React from "react";
 import * as Constants from "../../pages/constants";
 
 export const FormFacility = ({allowedHospitals, selectedData}) => {
-    console.log(selectedData.facilityName);
     return (
         <div>
         {(function(){

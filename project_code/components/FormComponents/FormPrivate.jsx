@@ -51,7 +51,7 @@ export const FormPrivate = ( props ) => {
             <Box>
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="Emergency Info" className={styles.tabText} {...a11yProps(0)} />
-                    <Tab label="Appointment" className={styles.tabText} {...a11yProps(1)} />
+                    <Tab label="Appointment Details" className={styles.tabText} {...a11yProps(1)} />
                 </Tabs>
                 <TabPanel value={value} index={0}>
                     <FormInjury injuryType={props.injuryType} handleChangeInjury={props.handleChangeInjury} severity={props.severity} 

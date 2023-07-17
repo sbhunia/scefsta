@@ -173,7 +173,7 @@ export default function TenderForm(props) {
                 <h2 className={styles.headingText}>Location</h2>
                     <FormAddress handleAddFormData={handleAddFormData}/>
                     <ButtonGroup variant="contained" aria-label="outlined button group">
-                        <Button color="success" type="submit">Set Allowed {Constants.HOSPITAL}</Button>
+                        <Button style={{marginTop: '.25rem'}}color="success" type="submit">Set Allowed {Constants.HOSPITAL}</Button>
                     </ButtonGroup>
                 </form>
                     <br/>
@@ -260,7 +260,6 @@ export default function TenderForm(props) {
                             onChange={handleAddFormData}
                             error={!isDeliveryValid}
                             helperText={!isDeliveryValid && "Please enter a valid time length in minutes"}
-
                         />
                     </div>
                 </div>
