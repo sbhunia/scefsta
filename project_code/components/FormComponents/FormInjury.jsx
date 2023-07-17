@@ -39,38 +39,10 @@ const mechanismsOfOnjury = [
 function getStyles(name, injuryType, theme) {
     return {
       fontWeight:
-        injuryType.indexOf(name) === -1
+        injuryType && injuryType.indexOf(name) === -1
           ? theme.typography.fontWeightRegular
           : theme.typography.fontWeightMedium,
     };
-}
-
-/**
- * Handles adding data to the MongoDB data for patients and tenders
- * @param {*} patient 
- * @param {*} tender 
- * @returns 
- */
- async function handlePost(patient, tender) {
-
-    let patients = await fetch('api/patients', {
-        method: 'POST',
-        body: JSON.stringify(patient)
-    });
-    let patientData = await patients.json();
-
-    let tenders = await fetch('api/tenders', {
-        method: 'POST',
-        body: JSON.stringify(tender)
-    });
-
-    let tendersData = await tenders.json();
-
-    if (patientData.success && tendersData.success) {
-        return true;
-    } else {
-        return false;
-    }
 }
 
 export const FormInjury = (props) => {
@@ -78,7 +50,13 @@ export const FormInjury = (props) => {
 
     return (
         <div>
-            <h2 className={styles.headingText}>Incident Information</h2>
+            {(function () {
+                if (!props.hideMsg) {
+                    return (
+                        <h2 className={styles.headingText}>Incident Information</h2>
+                    );
+                }
+            })()}
             <div style={{ display: 'flex', justifyContent: 'space-around' }}>
             <div className={styles.injuryDiv}>
                 <InputLabel id="injuryType">Injury Type</InputLabel>

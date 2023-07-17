@@ -15,22 +15,12 @@ import { CircularProgress } from '@mui/material';
 import FormAddress from '../FormComponents/FormAddress';
 import { FormWalletID } from '../FormComponents/FormWalletID';
 
-let columns = [
-  { field: Constants.hospitalSystem, headerName: `${Constants.HOSPITAL} Name`, width: 200, sortable: true},
-  { field: 'address', headerName: 'Address', width: 225, sortable: true},
-  { field: 'city', headerName: 'City', width: 120, sortable: true},
-  { field: 'state', headerName: 'State', width: 100, sortable: true},
-  { field: Constants.zipcode, headerName: 'Zipcode', width: 100, sortable: true},
-  { field: 'id', headerName: 'Wallet ID', width: 400, sortable: false},
-  { field: 'accountType', headerName: 'Account Type', width: 150, sortable: true},
-];
-
 /**
  * Creates the table containing the hospital information and populates it with the data.
  * @param {*} data JSON containing the data.
  * @param {*} popUpChecked Boolean -if true, allows for adding/deleting hospitals; false otherwise.
  */
-export default function HospitalDataGrid({data, popUpChecked, isAllowedHosp, setAllowedHospitals, setTrigger}) {
+export default function HospitalDataGrid({data, popUpChecked, isAllowedHosp, setAllowedHospitals, setTrigger, setSelectedData}) {
     // add and remove smart contract function API connections
     const { state: state1, send: send1, events: events1 } = useContractFunction(ACCOUNT_INSTANCE, 'addHospital');
     const { state: state2, send: send2, events: events2 } = useContractFunction(ACCOUNT_INSTANCE, 'removeHospital');
@@ -105,7 +95,6 @@ export default function HospitalDataGrid({data, popUpChecked, isAllowedHosp, set
         setShowMessage2(true); 
         } 
     }, [completedTransactions, selectedRows]); 
-
 
     // Will read information written inside the add button's 
     // form and store the data in 'setAddFormData'
@@ -206,14 +195,22 @@ export default function HospitalDataGrid({data, popUpChecked, isAllowedHosp, set
     // Helper function for deleteRows to update the datagrid with deletions
     // Returns the rows which are NOT being deleted
     function checkSelected(row) {
+        console.log(row);
         if( !(selectedRows.includes(row.id)) ) {
             return row;
         }
     }
 
     const handleSelectedAllowed = () => {
-       setAllowedHospitals(selectedRows);
-       setTrigger(false);
+        if (selectedRows.length === 1) {
+            for (let i = 0; i < dataContacts.length; i++) {
+                if (dataContacts[i].walletId === selectedRows[0]) {
+                    setSelectedData(dataContacts[i]);
+                }
+            }
+        }
+        setAllowedHospitals(selectedRows);
+        setTrigger(false);
     }
 
     return (

@@ -16,6 +16,8 @@ import { verify } from 'crypto';
 import { AllowedHospitals } from './AllowedHospitals';
 import Popup from '../Popup/Popup';
 import { FormInjury } from '../FormComponents/FormInjury';
+import { FormFacility } from '../FormComponents/FormFacility';
+import { FormPrivate } from '../FormComponents/FormPrivate';
 
 export default function TenderForm(props) {
     const theme = useTheme();
@@ -39,6 +41,7 @@ export default function TenderForm(props) {
     const [allowedHospPopup, setAllowedHospPopup] = useState(false);
     const [allowedHospitals, setAllowedHospitals] = useState([]);
     const [confirmDisabled, setConfirmDisabled] = useState(true);
+    const [selectedData, setSelectedData] = useState({});
 
     const [type, setType] = useState(null);
 
@@ -166,13 +169,13 @@ export default function TenderForm(props) {
                     {Constants.POLICE} Tender Form
                 </Typography>
             </div>
-            <h2 className={styles.headingText}>Location</h2>
-                    <form onSubmit={handleSetAllowedHospitals}>
-                        <FormAddress handleAddFormData={handleAddFormData}/>
-                        <ButtonGroup variant="contained" aria-label="outlined button group">
-                            <Button color="success" type="submit">Set Allowed {Constants.HOSPITAL}</Button>
-                        </ButtonGroup>
-                    </form>
+                <form className={styles.tenderForm} onSubmit={handleSetAllowedHospitals}>
+                <h2 className={styles.headingText}>Location</h2>
+                    <FormAddress handleAddFormData={handleAddFormData}/>
+                    <ButtonGroup variant="contained" aria-label="outlined button group">
+                        <Button color="success" type="submit">Set Allowed {Constants.HOSPITAL}</Button>
+                    </ButtonGroup>
+                </form>
                     <br/>
             <form className={styles.tenderForm} onSubmit={confirm}>
                 {(function () {
@@ -183,11 +186,13 @@ export default function TenderForm(props) {
                         )
                     } else if (type === "private") {
                         return (
-                            <h1>Private</h1>
+                            <FormPrivate injuryType={injuryType} handleChangeInjury={handleChangeInjury} severity={severity} 
+                            handleChangeSeverity={handleChangeSeverity} mechanismofInjury={mechanismofInjury} handleSetMechOfInjury={handleSetMechOfInjury}
+                            allowedHospitals={allowedHospitals} selectedData={selectedData}/>
                         );
                     } else if (type === "facility") {
                         return (
-                            <h1>Facility type</h1>
+                            <FormFacility allowedHOspitals={allowedHospitals} selectedData={selectedData}/>
                         );
                     }
                 })()}
@@ -273,7 +278,7 @@ export default function TenderForm(props) {
                             <div>
                             <Popup trigger={allowedHospPopup} setTrigger={setAllowedHospPopup} style={{width: "45%"}} >
                                 <AllowedHospitals address={location} city={city} state={stateIn} zipcode={zipcode} 
-                                    setAllowedHospitals={setAllowedHospitals} trigger={allowedHospPopup} setTrigger={setAllowedHospPopup}/>
+                                    setAllowedHospitals={setAllowedHospitals} trigger={allowedHospPopup} setTrigger={setAllowedHospPopup} setSelectedData={setSelectedData}/>
                             </Popup>
                             </div>
                         );

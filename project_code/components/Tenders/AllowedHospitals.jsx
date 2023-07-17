@@ -7,7 +7,7 @@ import axios from "axios";
 
 const apiKey = 'f6O9rKeaLXRPkZhRRw0tjQWUn8Tp7Y6s';
 
-export const AllowedHospitals = ({ address, city, state, zipcode, setAllowedHospitals, trigger, setTrigger }) => {
+export const AllowedHospitals = ({ address, city, state, zipcode, setAllowedHospitals, trigger, setTrigger, setSelectedData }) => {
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [distance, setDistance] = useState(null);
@@ -124,7 +124,8 @@ export const AllowedHospitals = ({ address, city, state, zipcode, setAllowedHosp
             <div className={stylesP.editHospital}>
                 <h1>Allowed {Constants.HOSPITAL}s</h1>
             </div>
-            <HospitalDataGrid data={tableData} popUpChecked={true} distances={distance} isAllowedHosp={true} setAllowedHospitals={setAllowedHospitals} setTrigger={setTrigger}/>
+            <HospitalDataGrid data={tableData} popUpChecked={true} distances={distance} isAllowedHosp={true} setAllowedHospitals={setAllowedHospitals} 
+                setTrigger={setTrigger} setSelectedData={setSelectedData}/>
         </div>
     );
 };
