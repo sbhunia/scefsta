@@ -1,192 +1,244 @@
-import React from 'react'
-import PropTypes from 'prop-types';
-import { Tab, Tabs, Typography, Box, CircularProgress } from '@mui/material';
-import TopNavbar from '../components/TopNavbar/TopNavbar';
-import Sidebar from '../components/SideBar/Sidebar';
-import styles from '../styles/Admin.module.css';
-import Patients from '../components/ActivePatient/ActivePatientsLoad';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import { Tab, Tabs, Typography, Box, CircularProgress } from "@mui/material";
+import TopNavbar from "../components/TopNavbar/TopNavbar";
+import Sidebar from "../components/SideBar/Sidebar";
+import styles from "../styles/Admin.module.css";
 import Tenders from "../components/Tenders/Tenders";
-import BiddingForm from "../components/Tenders/BiddingForm";
-import LockIcon from '@mui/icons-material/Lock';
-import { Button } from '@mui/material';
-import { useEthers } from '@usedapp/core'
-import Router from 'next/router';
-import * as Constants from '../pages/constants';
-import { checkAmbulance } from '../solidityCalls';
-import { getAllTenders } from '../solidityCalls';
-import SaltsDataGrid from '../components/Salts/SaltsDataGrid';
-const BigNumber = require('bignumber.js');
-
+import LockIcon from "@mui/icons-material/Lock";
+import { Button } from "@mui/material";
+import { useEthers } from "@usedapp/core";
+import Router from "next/router";
+import * as Constants from "../pages/constants";
+import { getAllTenders, getPageRoute } from "../solidityCalls";
+import SaltsDataGrid from "../components/Salts/SaltsDataGrid";
+import withMetaMask from "../components/WithMetaMask";
+const BigNumber = require("bignumber.js");
 
 function TabPanel(props) {
-    const { children, value, index, ...other } = props;
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-}  
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
 
 TabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
 };
-  
+
 function a11yProps(index) {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
 }
 
 /**
  * The main EMS page. Only viewable by this entity.
  * @param {*} patients JSON containing list of patients.
  * @param {*} tenders JSON containing open tenders.
- * @returns 
+ * @returns
  */
-export default function ambulance({patients}) {
-    const { account } = useEthers();
+function ambulance({ patients }) {
+  const { account } = useEthers();
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isHospital, setIsHospital] = useState(false);
+  const [isPolice, setIsPolice] = useState(false);
+  const [isAmbulance, setIsAmbulance] = useState(false);
 
-    const isAmbulance = checkAmbulance(account);
+  const salts = {
+    walletId: "0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80",
+    patientId: 2,
+    bidId: 0,
+    saltValue: "78757623669420",
+  };
 
-    const salts = {
-        walletId: "0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80",
-        patientId: 2,
-        bidId: 0,
-        saltValue: "78757623669420"
-    }
-    
-    // get all the tenders
-    var valueTend = getAllTenders();
-    var tenders = [];
-    
-    // If an array of tenders is returned, create necessary json fields for the data grid
-    if(valueTend != undefined) {
-        tenders = valueTend[0].map((item) => 
-            Object.assign({}, item, {selected:false})
-        )
-        tenders.forEach( tender => {
-            tender['id'] = new BigNumber(tender['tenderId']['_hex']).toString();
+  // get all the tenders
+  var valueTend = getAllTenders();
+  var tenders = [];
 
-            // tender details
-            tender['walletId'] = tender[0]['tenderPoster'];
-            tender['patientLocation'] = tender[0]['addr'] + ", " + tender[0]['city'] + ", " + tender[0]['state'];
-            tender['penaltyAmount'] = new BigNumber(tender[0]['penalty']['_hex']).toString()
-            
-            // get the dates
-            var postDate = new Date(parseInt(tender[0]['postDate']['_hex'], 16)*1000)
-            var formattedPostDate = postDate.toLocaleDateString() + " " + postDate.toLocaleTimeString();
-            tender['postDate'] = formattedPostDate;
+  // If an array of tenders is returned, create necessary json fields for the data grid
+  if (valueTend != undefined) {
+    tenders = valueTend[0].map((item) =>
+      Object.assign({}, item, { selected: false })
+    );
+    tenders.forEach((tender) => {
+      tender["id"] = new BigNumber(tender["tenderId"]["_hex"]).toString();
 
-            var auctionDate = new Date(parseInt(tender[0]['auctionDate']['_hex'], 16)*1000)
-            var formattedAuctionDate = auctionDate.toLocaleDateString() + " " + auctionDate.toLocaleTimeString();
-            tender['auctionDate'] = formattedAuctionDate;
+      // tender details
+      tender["walletId"] = tender[0]["tenderPoster"];
+      tender["patientLocation"] =
+        tender[0]["addr"] +
+        ", " +
+        tender[0]["city"] +
+        ", " +
+        tender[0]["state"];
+      tender["penaltyAmount"] = new BigNumber(
+        tender[0]["penalty"]["_hex"]
+      ).toString();
 
-            var revealDate = new Date(parseInt(tender[0]['revealDate']['_hex'], 16)*1000)
-            var formattedRevealDate = revealDate.toLocaleDateString() + " " + revealDate.toLocaleTimeString();
-            tender['revealDate'] = formattedRevealDate;
+      // get the dates
+      var postDate = new Date(
+        parseInt(tender[0]["postDate"]["_hex"], 16) * 1000
+      );
+      var formattedPostDate =
+        postDate.toLocaleDateString() + " " + postDate.toLocaleTimeString();
+      tender["postDate"] = formattedPostDate;
 
-            var dueDate = new Date(parseInt(tender[0]['dueDate']['_hex'], 16)*1000)
-            var formattedDueDate = dueDate.toLocaleDateString() + " " + dueDate.toLocaleTimeString();
-            tender['dueDate'] = formattedDueDate;
-        });
-    }
+      var auctionDate = new Date(
+        parseInt(tender[0]["auctionDate"]["_hex"], 16) * 1000
+      );
+      var formattedAuctionDate =
+        auctionDate.toLocaleDateString() +
+        " " +
+        auctionDate.toLocaleTimeString();
+      tender["auctionDate"] = formattedAuctionDate;
 
-    // Filtering so as to only have Open tenders
-    let openTenders = tenders.filter(function(open){
-        return open.status == 2;
+      var revealDate = new Date(
+        parseInt(tender[0]["revealDate"]["_hex"], 16) * 1000
+      );
+      var formattedRevealDate =
+        revealDate.toLocaleDateString() + " " + revealDate.toLocaleTimeString();
+      tender["revealDate"] = formattedRevealDate;
+
+      var dueDate = new Date(parseInt(tender[0]["dueDate"]["_hex"], 16) * 1000);
+      var formattedDueDate =
+        dueDate.toLocaleDateString() + " " + dueDate.toLocaleTimeString();
+      tender["dueDate"] = formattedDueDate;
     });
-    
-    const [value, setValue] = React.useState(0);
+  }
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+  // Filtering so as to only have Open tenders
+  let openTenders = tenders.filter(function (open) {
+    return open.status == 2;
+  });
 
-    if (isAmbulance) {
-        return (
-            <div className={styles.entire}>
-                <TopNavbar />
-                <div className={styles.collector}>
-                    <Sidebar />
-                    <div className={styles.tablesTotalContainer}>
-                        <div className={styles.pageTitle}>
-                            <h2>Ambulance / EMS</h2>
-                        </div>
-                        <Box sx={{ width: '100%' }}>
-                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                                    <Tab label="Available Tenders" className={styles.tabText} {...a11yProps(0)} />
-                                    <Tab label="Open Bids" className={styles.tabText} {...a11yProps(1)} />
-                                    {/* <Tab label="Patient Information" className={styles.tabText} {...a11yProps(2)} /> */}
-                                </Tabs>
-                            </Box>
-                            <TabPanel value={value} index={0}>
-                                <Tenders data={tenders} biddingForm={true} openTenders={true} popUpChecked={true} patients={patients}/>
-                            </TabPanel>
-                            <TabPanel value={value} index={1}>
-                                <SaltsDataGrid data={salts} accountId={account}/>
-                            </TabPanel>
-                            {/* <TabPanel value={value} index={2}>
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  useEffect(() => {
+    setIsAdmin(JSON.parse(sessionStorage.getItem("isAdmin")));
+    setIsHospital(JSON.parse(sessionStorage.getItem("isHospital")));
+    setIsPolice(JSON.parse(sessionStorage.getItem("isPolice")));
+    setIsAmbulance(JSON.parse(sessionStorage.getItem("isAmbulance")));
+  });
+
+  if (isAmbulance) {
+    return (
+      <div className={styles.entire}>
+        <TopNavbar />
+        <div className={styles.collector}>
+          <Sidebar />
+          <div className={styles.tablesTotalContainer}>
+            <div className={styles.pageTitle}>
+              <h2>Ambulance / EMS</h2>
+            </div>
+            <Box sx={{ width: "100%" }}>
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  aria-label="basic tabs example"
+                >
+                  <Tab
+                    label="Available Tenders"
+                    className={styles.tabText}
+                    {...a11yProps(0)}
+                  />
+                  <Tab
+                    label="Open Bids"
+                    className={styles.tabText}
+                    {...a11yProps(1)}
+                  />
+                  {/* <Tab label="Patient Information" className={styles.tabText} {...a11yProps(2)} /> */}
+                </Tabs>
+              </Box>
+              <TabPanel value={value} index={0}>
+                <Tenders
+                  data={tenders}
+                  biddingForm={true}
+                  openTenders={true}
+                  popUpChecked={true}
+                  patients={patients}
+                />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <SaltsDataGrid data={salts} accountId={account} />
+              </TabPanel>
+              {/* <TabPanel value={value} index={2}>
                                 <Patients data={patients} />
                             </TabPanel> */}
-                        </Box>
-                    </div>
-                </div>
-            </div>
-        )
-    } else if (isAmbulance == false || (isAmbulance == undefined && !account)){
-        return (
-            <div className={styles.entire}>
-                <TopNavbar />
-                <div className={styles.collector}>
-                    <Sidebar />
-                    <div className={styles.containerLocked}>
-                        <LockIcon style={{ fontSize: 80, color: '#333' }}></LockIcon>
-                        <h2 className={styles.headingLocked}>You do not have access to this dashboard!</h2>
-                        <Button variant="contained" style={{ backgroundColor: '#1A588C' }} onClick={() => Router.push(Constants.DevHomeURL)}>
-                            &larr; Return to Home Screen
-                        </Button>
-                    </div>
-                </div>
-            </div>
-        )
-    } else {
-        return (
-            <div className={styles.entire}>
-                <TopNavbar />
-                <div className={styles.collector}>
-                    <Sidebar />
-                    <div className={styles.containerLocked}>
-                        <CircularProgress />
-                    </div>
-                </div>
-            </div>
-        )
-    }
+            </Box>
+          </div>
+        </div>
+      </div>
+    );
+  } else if (isAmbulance == false || (isAmbulance == undefined && !account)) {
+    return (
+      <div className={styles.entire}>
+        <TopNavbar />
+        <div className={styles.collector}>
+          <Sidebar />
+          <div className={styles.containerLocked}>
+            <LockIcon style={{ fontSize: 80, color: "#333" }}></LockIcon>
+            <h2 className={styles.headingLocked}>
+              You do not have access to this dashboard!
+            </h2>
+            <Button
+              variant="contained"
+              style={{ backgroundColor: "#1A588C" }}
+              onClick={() => {
+                getPageRoute(isAdmin, isHospital, isPolice, isAmbulance);
+              }}
+            >
+              &larr; Return to User's Home
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  } else {
+    return (
+      <div className={styles.entire}>
+        <TopNavbar />
+        <div className={styles.collector}>
+          <Sidebar />
+          <div className={styles.containerLocked}>
+            <CircularProgress />
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
+export default withMetaMask(ambulance);
+
 export async function getStaticProps(ctx) {
+  const res1 = await fetch(Constants.getPatients);
+  const data1 = await res1.json();
 
-    const res1 = await fetch(Constants.getPatients);
-    const data1 = await res1.json();
-
-    return {
-        props: {
-            patients: data1,
-        },
-    };
+  return {
+    props: {
+      patients: data1,
+    },
+  };
 }
