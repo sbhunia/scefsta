@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useTheme } from '@mui/material/styles';
 import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
 import styles from '../../styles/TenderForm.module.css';
-import { Select, Typography, TextField, Button, ButtonGroup, Input, MenuItem, OutlinedInput, InputLabel, Divider, InputAdornment } from '@mui/material';
+import { Select, Typography, TextField, Button, ButtonGroup, Tab, Tabs, Divider, InputAdornment } from '@mui/material';
 import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
@@ -12,12 +12,48 @@ import { AUCTION_INSTANCE } from '../../pages/_app';
 import * as Constants from '../../pages/constants';
 import FormAddress from '../FormComponents/FormAddress';
 import stylesP from '../../styles/Popup.module.css';
-import { verify } from 'crypto';
 import { AllowedHospitals } from './AllowedHospitals';
 import Popup from '../Popup/Popup';
 import { FormInjury } from '../FormComponents/FormInjury';
 import { FormFacility } from '../FormComponents/FormFacility';
 import { FormPrivate } from '../FormComponents/FormPrivate';
+import { DateTimePicker } from '@mui/x-date-pickers';
+import PropTypes from 'prop-types';
+import dayjs from 'dayjs';
+import { Label } from 'reactstrap';
+
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+  
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+}  
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+  
+function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
 
 export default function TenderForm(props) {
     const theme = useTheme();
@@ -43,7 +79,21 @@ export default function TenderForm(props) {
     const [confirmDisabled, setConfirmDisabled] = useState(true);
     const [selectedData, setSelectedData] = useState({});
 
+    const [dateTime, setDateTime] = useState(dayjs('2022-04-17T15:30'));
+    const [dateTimeIsValid, setDateTimeIsValid] = useState(false);
+
     const [type, setType] = useState(null);
+
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        if (newValue === 0) {
+            setDateTimeIsValid(false);
+        } else if (newValue === 1 ) {
+            setDeliveryTime();
+        }
+        setValue(newValue);
+    };
 
     // Obtaining React Hooks from postTender smart contract function
     const {state , send: send1, events} = useContractFunction(AUCTION_INSTANCE, 'postTender');
@@ -110,7 +160,15 @@ export default function TenderForm(props) {
     const handleSetAllowedHospitals = (event) => {
         event.preventDefault();
         setAllowedHospPopup(true);
-      };
+    };
+
+    const handleDateTime = (newDateTime) => {
+        setDateTime(newDateTime);
+        const currentDateTime = dayjs();
+        const minuteDifference = newDateTime.diff(currentDateTime, 'minute');
+        setDeliveryTime(minuteDifference);
+        setDateTimeIsValid(true); 
+    }
 
     // auctionLength - how long in minutes the ambulnaces have to bid in the auction
     // location - the location of the incident
@@ -119,7 +177,13 @@ export default function TenderForm(props) {
     const confirm = async (event) => {
         event.preventDefault();
         // create tender for blockchain
-        send1(auctionLength, deliveryTime, location, city, stateIn, zipcode, penaltyAmt, severity, allowedHospitals, {value: tenderAmt});
+        if (!dateTimeIsValid && !deliveryTime) {
+            alert("Please select the date and time of delivery, or specify a delivery time in minutes");
+            return;
+        }
+
+        console.log(auctionLength, deliveryTime, location, city, stateIn, zipcode, penaltyAmt, severity, allowedHospitals, tenderAmt)
+        // send1(auctionLength, deliveryTime, location, city, stateIn, zipcode, penaltyAmt, severity, allowedHospitals, {value: tenderAmt});
     }
 
     const finalizeTransaction = async () => {
@@ -151,6 +215,10 @@ export default function TenderForm(props) {
 
     useEffect(() => {
         fetchType();
+        const currentDate = new Date();
+        const options = { timeZone: 'America/New_York', hour12: false };
+        const formattedDate = currentDate.toLocaleString('en-US', options).replace(',','');
+        setDateTime(dayjs(formattedDate));
     }, []);
 
     useEffect(() => {
@@ -247,25 +315,38 @@ export default function TenderForm(props) {
                             helperText={!isAuctionValid && "Please enter a valid time length in minutes"}
                         />
                     </div>
-                    <div className={styles.dropdownDiv}>
-                        <TextField
-                            type="text"
-                            name="delivery"
-                            label="Delivery Time (Minutes)"
-                            variant="standard"
-                            placeholder="30"
-                            className={stylesP.formInput}
-                            required
-                            value={deliveryTime}
-                            onChange={handleAddFormData}
-                            error={!isDeliveryValid}
-                            helperText={!isDeliveryValid && "Please enter a valid time length in minutes"}
-                        />
-                    </div>
+                    <div>
+                    <h3 className={styles.headingText} style={{width: '100%'}}>Delivery Time/Date</h3>
+                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                        <Tab label="Minutes" className={styles.tabText} {...a11yProps(0)} />
+                        <Tab label="DateTime" className={styles.tabText} {...a11yProps(1)} />
+                    </Tabs>
+                    </div>  
+                </div>
+                <div className={styles.dateTimeDiv}>
+                    <TabPanel value={value} index={0}>
+                        <div className={styles.dropdownDiv}>
+                            <TextField
+                                type="text"
+                                name="delivery"
+                                label="Delivery Time (Minutes)"
+                                variant="standard"
+                                placeholder="30"
+                                className={styles.dateTime}
+                                required={value === 0}
+                                value={deliveryTime}
+                                onChange={handleAddFormData}
+                                error={!isDeliveryValid}
+                                helperText={!isDeliveryValid && "Please enter a valid time length in minutes"}
+                            />
+                        </div>
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                        <DateTimePicker required={value !== 0 && !dateTimeIsValid} className={styles.dateTime} value={dateTime} onChange={(newValue => handleDateTime(newValue))}/>
+                    </TabPanel>
                 </div>
                     <div className={styles.buttonGroup}>
                         <ButtonGroup variant="contained" aria-label="outlined button group">
-                            {/* <Button color="success" onClick={getAllowedHospitals}>Confirm</Button> */}
                             <Button disabled={confirmDisabled} color="success" type="submit">Post Tender</Button>
                         </ButtonGroup>
                     </div>

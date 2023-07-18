@@ -98,4 +98,14 @@
     color: black;
     border-bottom: 1px solid black;
     padding-bottom: 0rem;
-  }
+}
+
+.dateTimeDiv {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.dateTime {
+    width: 20rem;
+}

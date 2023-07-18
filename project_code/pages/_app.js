@@ -7,7 +7,8 @@ import {
   auctionsAddress,
 } from "../config";
 import { Contract, utils } from "ethers";
-
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // setup contract instances
@@ -35,7 +36,9 @@ export default function MyApp({ Component, pageProps }) {
     // DAppProvider uses useDapp framework, Web3ReactProvider and MetaMaskProvider
     // support connecting to metamask
     <DAppProvider config={config}>
-      <Component {...pageProps} />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Component {...pageProps} />
+      </LocalizationProvider>
     </DAppProvider>
   );
 }
