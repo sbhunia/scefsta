@@ -127,12 +127,12 @@ export default function BiddingForm({ tenderId, penalty }) {
       {(function () {
         if (state1.status === "Mining") {
           return (
-            <label>
-              Waiting for bid to be placed
+            <div>
+              <Alert severity="warning">Waiting for bid to be placed</Alert>
               <Box sx={{ display: "flex" }}>
                 <CircularProgress />
               </Box>
-            </label>
+            </div>
           );
         }
         if (transactionErrored(state1)) {

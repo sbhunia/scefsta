@@ -234,7 +234,12 @@ export default function TenderForm(props) {
       body: JSON.stringify(newPatient),
     });
 
-    props.setTrigger(false);
+    let status = await response.json();
+    if (status.success) {
+      props.setTrigger(false);
+    } else {
+      alert(`Error adding patient to DB, contact the SuperAdmin`);
+    }
   };
 
   useEffect(() => {
