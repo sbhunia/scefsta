@@ -475,12 +475,12 @@ export default function TenderForm(props) {
         }
         if (state.status === "Mining") {
           return (
-            <label>
-              Waiting for tender to post
+            <div>
+              <Alert severity="warning">Waiting for tender to be posted</Alert>
               <Box sx={{ display: "flex" }}>
                 <CircularProgress />
               </Box>
-            </label>
+            </div>
           );
         }
         if (transactionErrored(state)) {
