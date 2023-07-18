@@ -192,6 +192,11 @@ export default function TenderForm(props) {
       return;
     }
 
+    if (dateTimeIsValid && allowedHospitals.length !== 1) {
+      alert("You can only have one selected facility");
+      return;
+    }
+
     send1(
       auctionLength,
       deliveryTime,
