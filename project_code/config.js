@@ -1,6 +1,6 @@
 // contract addresses for both contracts
-export const accountsAddress = "0xA829D883600ab77289303dE1Edea0e223fF0b521";
-export const auctionsAddress = "0x7A441807BFc945c2168c494e3e10b867BC5A552A";
+export const accountsAddress = "0x98626A71705e3C0c0a66E5b33494e83dc429e8AF";
+export const auctionsAddress = "0x5ba40B0499AeB098Cdde1d43B2ce46dA9D974042";
 
 export const accounts_abi = [
   {
@@ -219,6 +219,25 @@ export const auctions_abi = [
     ],
     stateMutability: "nonpayable",
     type: "constructor",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "tenderId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "bidId",
+        type: "uint256",
+      },
+    ],
+    name: "BidPlaced",
+    type: "event",
   },
   {
     inputs: [

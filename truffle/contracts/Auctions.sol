@@ -128,6 +128,8 @@ contract Auctions {
         return newTender.tenderId;
     }
 
+    event BidPlaced(uint256 tenderId, uint256 bidId);
+
     /*
     * Function places a secret bid by an ambulance. Each ambulance receives only 1 bid
     *
@@ -146,6 +148,7 @@ contract Auctions {
         // add bid to array
         tenderMapping[tenderId].details.bidders.push(msg.sender);
         tenderMapping[tenderId].details.bidHashArray.push(bidHashedAmount);
+        emit BidPlaced(tenderId, tenderMapping[tenderId].details.bidders.length - 1);
         return tenderMapping[tenderId].details.bidders.length - 1;
     }
 
