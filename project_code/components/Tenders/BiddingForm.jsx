@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import styles from "../../styles/Tender.module.css";
@@ -17,19 +17,24 @@ import Web3 from "web3";
 import { AUCTION_INSTANCE } from "../../pages/_app";
 import crypto from "crypto";
 import * as Constants from "../../pages/constants";
-
+const BigNumber = require("bignumber.js");
 const web3 = new Web3();
 
 /**
  * Creates bidding form for ambulances.
  * @returns
  */
-export default function BiddingForm({ tenderId, penalty, setTrigger }) {
+export default function BiddingForm({
+  tenderId,
+  penalty,
+  setTrigger,
+  auctionEnd,
+}) {
   const { account } = useEthers();
 
   const [desiredBid, setDesiredBid] = React.useState("");
-  const [bidID, setBidID] = React.useState(0);
   const [salt, setSalt] = React.useState();
+  const [bidId, setBidId] = useState();
 
   const generateSalt = () => {
     let saltVal = crypto.randomBytes(6).toString("hex");
@@ -39,10 +44,6 @@ export default function BiddingForm({ tenderId, penalty, setTrigger }) {
 
   const handleDesiredBid = (event) => {
     setDesiredBid(event.target.value);
-  };
-
-  const handleBidID = (event) => {
-    setBidID(event.target.value);
   };
 
   // useDapp hook to place a bid
@@ -62,14 +63,15 @@ export default function BiddingForm({ tenderId, penalty, setTrigger }) {
     send1(tenderId, hash, { value: penalty });
   };
 
-  const finalizeTransaction = async () => {
+  const finalizeTransaction = async (bidId) => {
     // add the salt value to a table
     const newSalt = {
-      patientId: parseInt(tenderId) + 1,
+      patientId: parseInt(tenderId),
       walletId: account,
-      bidId: bidID,
       saltVal: salt,
+      bidId: bidId,
       bidVal: parseInt(desiredBid),
+      penalty: penalty,
     };
 
     let response = await fetch(Constants.addSalt, {
@@ -95,7 +97,7 @@ export default function BiddingForm({ tenderId, penalty, setTrigger }) {
           className={styles.givenRewardDiv}
         >
           <InputLabel htmlFor="filled-adornment-amount">
-            Enter your bid value:
+            <b>Enter your bid value:</b>
           </InputLabel>
           <FilledInput
             id="filled-adornment-amount"
@@ -112,12 +114,13 @@ export default function BiddingForm({ tenderId, penalty, setTrigger }) {
           className={styles.givenRewardDiv}
         >
           <InputLabel htmlFor="filled-adornment-amount">
-            Enter your unique bid ID:
+            <b>Auction End Date</b>
           </InputLabel>
           <FilledInput
+            style={{ fontWeight: "bold" }}
             id="filled-adornment-amount"
-            value={bidID}
-            onChange={handleBidID}
+            value={auctionEnd}
+            disabled
           />
         </FormControl>
       </div>
@@ -155,9 +158,18 @@ export default function BiddingForm({ tenderId, penalty, setTrigger }) {
           return (
             <div>
               <Alert severity="success">
-                Your transaction was successful! Your bid ID is: {bidID}
+                Your bid was successfully placed!
               </Alert>
-              <Button color="success" onClick={finalizeTransaction}>
+              <Button
+                color="success"
+                onClick={() => {
+                  finalizeTransaction(
+                    new BigNumber(
+                      state1.receipt.events[0].args["bidId"]["_hex"]
+                    ).toString()
+                  );
+                }}
+              >
                 Finalize and Exit
               </Button>
             </div>

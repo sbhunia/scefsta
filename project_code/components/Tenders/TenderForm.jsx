@@ -185,18 +185,28 @@ export default function TenderForm(props) {
   const confirm = async (event) => {
     event.preventDefault();
     // create tender for blockchain
-    if (!dateTimeIsValid && !deliveryTime) {
-      alert(
-        "Please select the date and time of delivery, or specify a delivery time in minutes"
-      );
-      return;
-    }
+    // if (!dateTimeIsValid && !deliveryTime) {
+    //   alert(
+    //     "Please select the date and time of delivery, or specify a delivery time in minutes"
+    //   );
+    //   return;
+    // }
 
-    if (dateTimeIsValid && allowedHospitals.length !== 1) {
-      alert("You can only have one selected facility");
-      return;
-    }
+    // if (dateTimeIsValid && allowedHospitals.length !== 1) {
+    //   alert("You can only have one selected facility");
+    //   return;
+    // }
 
+    setAuctionLength(600);
+    setDeliveryTime(600);
+    setLocation("here");
+    setCity("there");
+    setStateIn("everywhere");
+    setZipcode("43822");
+    setPenaltyAmt(20);
+    setSeverity("high");
+    setAllowedHospitals(["0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80"]);
+    setTenderAmt(100);
     send1(
       auctionLength,
       deliveryTime,
@@ -450,6 +460,9 @@ export default function TenderForm(props) {
           <ButtonGroup variant="contained" aria-label="outlined button group">
             <Button disabled={confirmDisabled} color="success" type="submit">
               Post Tender
+            </Button>
+            <Button color="success" onClick={confirm}>
+              Post Tender Temp
             </Button>
           </ButtonGroup>
         </div>

@@ -18,21 +18,26 @@ const web3 = new Web3();
 
 /**
  *
- * @param {*} tenderID ID of the tender
+ * @param {*} tenderId ID of the tender
  * @param {*} bidValue value of the ambulance's bid
  * @param {*} penaltyAmt the penalty amount of the tender
  * @returns
  */
-export default function RevealBid({ tenderID, penaltyAmt, saltVal, bidId, proposedBidVal }) {
-  console.log(tenderID, typeof tenderID);
-  console.log(penaltyAmt, typeof penaltyAmt);
-  console.log(saltVal, typeof saltVal);
-  console.log(bidId, typeof bidId);
-
+export default function RevealBid({
+  tenderId,
+  penaltyAmt,
+  saltVal,
+  bidId,
+  proposedBidVal,
+  fullAddress,
+}) {
   const [bidValue, setBidValue] = React.useState(0);
 
   // Obtaining React Hooks from reclaimTender smart contract function
-  const { send, state, events } = useContractFunction(AUCTION_INSTANCE, "revealBid");
+  const { send, state, events } = useContractFunction(
+    AUCTION_INSTANCE,
+    "revealBid"
+  );
 
   const handlebidValue = (event) => {
     setBidValue(event.target.value);
@@ -41,15 +46,15 @@ export default function RevealBid({ tenderID, penaltyAmt, saltVal, bidId, propos
   // When button is clicked, the tender is reclaimed
   const handleRevealBid = async () => {
     /**
-     * revealBid(tenderID, bidValue, salt, bidID)
-     * tenderID - ID of the tender
+     * revealBid(tenderId, bidValue, salt, bidID)
+     * tenderId - ID of the tender
      * bidValue - wei value of bid
      * salt - 10 digit salt (all are 1234567890 for simplicity)
      * bidID - ID of the bid
      * penaltyAmt - msg.value
      *
      */
-    send(web3.utils.toBN(tenderID), web3.utils.toBN(bidValue), web3.utils.toBN(saltVal), web3.utils.toBN(bidId), { value: web3.utils.toBN(penaltyAmt) });
+    send(tenderId, bidValue, saltVal, bidId, { value: penaltyAmt });
   };
 
   return (
@@ -78,9 +83,7 @@ export default function RevealBid({ tenderID, penaltyAmt, saltVal, bidId, propos
           variant="filled"
           className={styles.givenRewardDiv}
         >
-          <InputLabel htmlFor="filled-adornment-amount">
-            Proposed Tender ID:
-          </InputLabel>
+          <InputLabel htmlFor="filled-adornment-amount">Tender ID:</InputLabel>
           <FilledInput
             id="filled-adornment-amount"
             value={bidId}
@@ -112,11 +115,11 @@ export default function RevealBid({ tenderID, penaltyAmt, saltVal, bidId, propos
           className={styles.givenRewardDiv}
         >
           <InputLabel htmlFor="filled-adornment-amount">
-            Your Unique Bid ID:
+            Delivery Address:
           </InputLabel>
           <FilledInput
             id="filled-adornment-amount"
-            value={bidId}
+            value={fullAddress}
             disabled={true}
           />
         </FormControl>
@@ -156,7 +159,10 @@ export default function RevealBid({ tenderID, penaltyAmt, saltVal, bidId, propos
         if (state.status === "Success" && events != undefined) {
           return (
             <div>
-              <Alert severity="success">Your bid has been revealed, wait until reveal period is over to see if you won</Alert>
+              <Alert severity="success">
+                Your bid has been revealed, wait until reveal period is over to
+                see if you won
+              </Alert>
             </div>
           );
         }
