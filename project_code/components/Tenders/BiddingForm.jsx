@@ -24,7 +24,7 @@ const web3 = new Web3();
  * Creates bidding form for ambulances.
  * @returns
  */
-export default function BiddingForm({ tenderId, penalty }) {
+export default function BiddingForm({ tenderId, penalty, setTrigger }) {
   const { account } = useEthers();
 
   const [desiredBid, setDesiredBid] = React.useState("");
@@ -76,6 +76,13 @@ export default function BiddingForm({ tenderId, penalty }) {
       method: "POST",
       body: JSON.stringify(newSalt),
     });
+
+    let status = await response.json();
+    if (status.success) {
+      setTrigger(false);
+    } else {
+      alert(`Error adding bid to DB, contact the SuperAdmin`);
+    }
   };
 
   return (

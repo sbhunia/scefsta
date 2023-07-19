@@ -30,6 +30,7 @@ async function addPatient(req, res) {
     let data = `'${address}', '${city}', '${state}', '${zipcode}', '${status}', '${injuries}', '${mech}'`;
     let query = `INSERT INTO ${Constants.Patients} (${cols}) VALUES(${data});`;
 
+    console.log(query);
     await mysqlLib.executeQuery(query);
     res.status(200).json({ success: true });
   } catch (error) {

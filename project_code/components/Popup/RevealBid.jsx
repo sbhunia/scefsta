@@ -9,9 +9,13 @@ import FormControl from "@mui/material/FormControl";
 import FilledInput from "@mui/material/FilledInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import InputLabel from "@mui/material/InputLabel";
-import { ACCOUNT_INSTANCE } from "../../pages/_app";
+import { AUCTION_INSTANCE } from "../../pages/_app";
 import * as Constants from "../../pages/constants";
 import { useEthers } from "@usedapp/core";
+import Web3 from "web3";
+
+const web3 = new Web3();
+
 /**
  *
  * @param {*} tenderID ID of the tender
@@ -19,14 +23,16 @@ import { useEthers } from "@usedapp/core";
  * @param {*} penaltyAmt the penalty amount of the tender
  * @returns
  */
-export default function RevealBid({ tenderID, penaltyAmt, saltVal, bidId }) {
-  const { account } = useEthers();
+export default function RevealBid({ tenderID, penaltyAmt, saltVal, bidId, proposedBidVal }) {
+  console.log(tenderID, typeof tenderID);
+  console.log(penaltyAmt, typeof penaltyAmt);
+  console.log(saltVal, typeof saltVal);
+  console.log(bidId, typeof bidId);
 
-  //Hooks
   const [bidValue, setBidValue] = React.useState(0);
 
   // Obtaining React Hooks from reclaimTender smart contract function
-  const { send, state } = useContractFunction(ACCOUNT_INSTANCE, "revealBid");
+  const { send, state, events } = useContractFunction(AUCTION_INSTANCE, "revealBid");
 
   const handlebidValue = (event) => {
     setBidValue(event.target.value);
@@ -43,7 +49,7 @@ export default function RevealBid({ tenderID, penaltyAmt, saltVal, bidId }) {
      * penaltyAmt - msg.value
      *
      */
-    send(tenderID, bidValue, saltVal, bidId, { value: penaltyAmt });
+    send(web3.utils.toBN(tenderID), web3.utils.toBN(bidValue), web3.utils.toBN(saltVal), web3.utils.toBN(bidId), { value: web3.utils.toBN(penaltyAmt) });
   };
 
   return (
@@ -60,7 +66,7 @@ export default function RevealBid({ tenderID, penaltyAmt, saltVal, bidId }) {
           </InputLabel>
           <FilledInput
             id="filled-adornment-amount"
-            value={bidValue}
+            value={proposedBidVal}
             startAdornment={
               <InputAdornment position="start">WEI</InputAdornment>
             }
@@ -130,9 +136,12 @@ export default function RevealBid({ tenderID, penaltyAmt, saltVal, bidId }) {
       {(function () {
         if (state.status === "Mining") {
           return (
-            <Box sx={{ display: "flex" }}>
-              <CircularProgress />
-            </Box>
+            <div>
+              <Alert severity="warning">Waiting for bid to be revealed</Alert>
+              <Box sx={{ display: "flex" }}>
+                <CircularProgress />
+              </Box>
+            </div>
           );
         }
         if (transactionErrored(state)) {
@@ -144,10 +153,10 @@ export default function RevealBid({ tenderID, penaltyAmt, saltVal, bidId }) {
             </div>
           );
         }
-        if (state.status === "Success") {
+        if (state.status === "Success" && events != undefined) {
           return (
             <div>
-              <Alert severity="success">Your bid has won!</Alert>
+              <Alert severity="success">Your bid has been revealed, wait until reveal period is over to see if you won</Alert>
             </div>
           );
         }

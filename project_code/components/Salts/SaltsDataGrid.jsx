@@ -18,6 +18,8 @@ export default function SaltsDataGrid({ accountId }) {
   const [rowPopup, setRowPopup] = useState(false);
   const [tenderID, setTenderID] = useState();
   const [penaltyAmt, setPenaltyAmt] = useState();
+  const [saltVal, setSaltVal] = useState();
+  const [proposedBidVal, setProposedBidVal] = useState();
   const [salts, setSalts] = useState();
   const [loading, setLoading] = useState(true);
   const [bidId, setBidId] = useState();
@@ -41,10 +43,7 @@ export default function SaltsDataGrid({ accountId }) {
   }, []);
 
   const performPopup = (index, value, penalty, bidId) => {
-    setRowPopup(true);
-    setTenderID(index);
-    setPenaltyAmt(penalty);
-    setBidId(bidId);
+  
   };
 
   if (loading) {
@@ -68,7 +67,12 @@ export default function SaltsDataGrid({ accountId }) {
           borderColor: '#ff8a80',
         }}
         onRowClick={(row) => {
-          performPopup(row['row']['id'], row['row']['paymentAmount'], row['row']['penaltyAmount'], row['row']['bidId']);
+          setTenderID(row['row'].patientId);
+          setPenaltyAmt(0);
+          setProposedBidVal(0);
+          setBidId(row['row'].bidId);
+          setSaltVal(row['row'].saltVal);
+          setRowPopup(true);
         }}
         rows={salts}
         getRowId={(row) => row.saltId}
@@ -96,7 +100,7 @@ export default function SaltsDataGrid({ accountId }) {
         autoHeight
       />
       <Popup trigger={rowPopup} setTrigger={setRowPopup}>
-        <RevealBid tenderID={tenderID} penaltyAmt={penaltyAmt} bidId={bidId}/>
+        <RevealBid tenderID={tenderID} penaltyAmt={penaltyAmt} bidId={bidId} saltVal={saltVal} proposedBidVal={proposedBidVal}/>
       </Popup>
     </div>
   );

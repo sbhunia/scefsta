@@ -114,7 +114,7 @@ export default function TendersDataGrid({data, popUpChecked, openTenders, biddin
                     } else if (biddingForm) {
                         return(
                             <Popup trigger={rowPopup} setTrigger={setRowPopup}>
-                                <BiddingForm tenderId={tenderID} penalty={penaltyAmt}/>
+                                <BiddingForm tenderId={tenderID} penalty={penaltyAmt} setTrigger={setRowPopup}/>
                             </Popup>
                         )
                     } else {
