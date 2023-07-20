@@ -54,7 +54,8 @@ export default function BiddingForm({
   } = useContractFunction(AUCTION_INSTANCE, "secretBid");
 
   // submit the bid to the blockchain
-  const submitBid = async () => {
+  const submitBid = async (event) => {
+    event.preventDefault();
     // generate random salt value (16 digits)
     let saltVal = generateSalt();
     setSalt(saltVal);
@@ -66,7 +67,7 @@ export default function BiddingForm({
   const finalizeTransaction = async (bidId) => {
     // add the salt value to a table
     const newSalt = {
-      patientId: parseInt(tenderId),
+      patientId: parseInt(tenderId) + 1,
       walletId: account,
       saltVal: salt,
       bidId: bidId,
@@ -91,49 +92,54 @@ export default function BiddingForm({
     <div className={styles.editHospital}>
       <h2>Place a Bid</h2>
       <div>
-        <FormControl
-          fullWidth
-          variant="filled"
-          className={styles.givenRewardDiv}
-        >
-          <InputLabel htmlFor="filled-adornment-amount">
-            <b>Enter your bid value:</b>
-          </InputLabel>
-          <FilledInput
-            id="filled-adornment-amount"
-            value={desiredBid}
-            onChange={handleDesiredBid}
-            startAdornment={
-              <InputAdornment position="start">WEI</InputAdornment>
-            }
-          />
-        </FormControl>
-        <FormControl
-          fullWidth
-          variant="filled"
-          className={styles.givenRewardDiv}
-        >
-          <InputLabel htmlFor="filled-adornment-amount">
-            <b>Auction End Date</b>
-          </InputLabel>
-          <FilledInput
-            style={{ fontWeight: "bold" }}
-            id="filled-adornment-amount"
-            value={auctionEnd}
-            disabled
-          />
-        </FormControl>
+        <form onSubmit={submitBid}>
+          <FormControl
+            fullWidth
+            variant="filled"
+            className={styles.givenRewardDiv}
+            required
+          >
+            <InputLabel htmlFor="filled-adornment-amount">
+              <b>Enter your bid value:</b>
+            </InputLabel>
+            <FilledInput
+              id="filled-adornment-amount"
+              value={desiredBid}
+              onChange={handleDesiredBid}
+              required
+              startAdornment={
+                <InputAdornment position="start">WEI</InputAdornment>
+              }
+            />
+          </FormControl>
+          <FormControl
+            fullWidth
+            variant="filled"
+            className={styles.givenRewardDiv}
+          >
+            <InputLabel htmlFor="filled-adornment-amount">
+              <b>Auction End Date</b>
+            </InputLabel>
+            <FilledInput
+              style={{ fontWeight: "bold" }}
+              id="filled-adornment-amount"
+              value={auctionEnd}
+              disabled
+            />
+          </FormControl>
+          <div className={styles.buttonDiv}>
+            <Button
+              variant="contained"
+              disableElevation
+              className={styles.submitButton}
+              type="submit"
+            >
+              Submit Bid
+            </Button>
+          </div>
+        </form>
       </div>
-      <div className={styles.buttonDiv}>
-        <Button
-          variant="contained"
-          disableElevation
-          className={styles.submitButton}
-          onClick={submitBid}
-        >
-          Submit Bid
-        </Button>
-      </div>
+
       {(function () {
         if (state1.status === "Mining") {
           return (
