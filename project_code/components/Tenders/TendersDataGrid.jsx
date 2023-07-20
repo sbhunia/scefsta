@@ -10,6 +10,8 @@ import RetractTender from "../Popup/RetractTender";
 import styles from "../../styles/Tender.module.css";
 import TenderForm from "../Tenders/TenderForm";
 import BiddingForm from "./BiddingForm";
+import { providers } from "ethers";
+import { getAuctionWinner } from "../../solidityCalls";
 
 const columns = [
   { field: "id", headerName: "Tender ID", width: 100, sortable: false },
@@ -64,6 +66,7 @@ export default function TendersDataGrid({
   openTenders,
   biddingForm,
   account,
+  getWinner,
 }) {
   // Allos popup to be displayed when a row is clicked
   const [rowPopup, setRowPopup] = useState(false);
@@ -84,6 +87,11 @@ export default function TendersDataGrid({
     setAuctionEnd(auctionDate);
   }
 
+  function checkWinner(tenderId) {
+    const provider = new providers.Web3Provider(window.ethereum);
+    getAuctionWinner(tenderId, provider);
+  }
+
   return (
     <div style={{ height: 690, width: "100%" }}>
       <DataGrid
@@ -102,12 +110,16 @@ export default function TendersDataGrid({
           borderColor: "#ff8a80",
         }}
         onRowClick={(row) => {
-          performPopup(
-            row["row"]["id"],
-            row["row"]["paymentAmount"],
-            row["row"]["penaltyAmount"],
-            row["row"]["auctionDate"]
-          );
+          if (getWinner) {
+            checkWinner(row["row"]["id"]);
+          } else {
+            performPopup(
+              row["row"]["id"],
+              row["row"]["paymentAmount"],
+              row["row"]["penaltyAmount"],
+              row["row"]["auctionDate"]
+            );
+          }
         }}
         rows={data}
         columns={columns}

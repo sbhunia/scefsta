@@ -168,7 +168,11 @@ function ambulance({ patients }) {
                     className={styles.tabText}
                     {...a11yProps(1)}
                   />
-                  {/* <Tab label="Patient Information" className={styles.tabText} {...a11yProps(2)} /> */}
+                  <Tab
+                    label="Tenders In Progress"
+                    className={styles.tabText}
+                    {...a11yProps(2)}
+                  />
                 </Tabs>
               </Box>
               <TabPanel value={value} index={0}>
@@ -178,14 +182,22 @@ function ambulance({ patients }) {
                   openTenders={true}
                   popUpChecked={true}
                   patients={patients}
+                  getWinner={false}
                 />
               </TabPanel>
               <TabPanel value={value} index={1}>
                 <SaltsDataGrid data={salts} accountId={account} />
               </TabPanel>
-              {/* <TabPanel value={value} index={2}>
-                                <Patients data={patients} />
-                            </TabPanel> */}
+              <TabPanel value={value} index={2}>
+                <Tenders
+                  data={tenders}
+                  biddingForm={true}
+                  openTenders={true}
+                  popUpChecked={true}
+                  patients={patients}
+                  getWinner={true}
+                />
+              </TabPanel>
             </Box>
           </div>
         </div>

@@ -129,21 +129,20 @@ export const getTender = (tenderId) => {
   return value;
 };
 
-export const getWinner = (tenderId) => {
-  const { value, error } =
-    useCall(
-      auctionsAddress && {
-        contract: AUCTION_INSTANCE,
-        method: "getWinner",
-        args: [tenderId],
-      }
-    ) ?? {};
+export const getAuctionWinner = async (tenderId, provider) => {
+  try {
+    // Create a signer using the provider
+    const signer = provider.getSigner();
 
-  if (error) {
-    console.error(error.message);
-    return undefined;
+    // Connect the contract instance to the signer
+    const connectedAuctionInstance = AUCTION_INSTANCE.connect(signer);
+
+    // Call the desired function on the contract instance
+    const result = await connectedAuctionInstance.getAuctionWinner(tenderId);
+    return result;
+  } catch (error) {
+    console.error("Error:", error);
   }
-  return value;
 };
 
 export const getPageRoute = (isAdmin, isHospital, isPolice, isAmbulance) => {
