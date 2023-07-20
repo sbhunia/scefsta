@@ -192,6 +192,25 @@ contract Auctions {
         // set new info to tender mapping
         tenderMapping[tenderId] = tender;
     }
+    
+    /*
+     * get the winner of an auction
+     *
+     * @param tenderId - given tender ID
+     */
+    function getAuctionWinner(uint256 tenderId) public view returns (address tenderWinner) {
+        require(
+            tenderMapping[tenderId].status != TenderStatus.Open,
+            "no winner for open tender"
+        );
+        require(
+            block.timestamp >
+                tenderMapping[tenderId].details.revealDate,
+                "tender must be past reveal period"
+        );
+
+        return tenderMapping[tenderId].details.tenderAccepter;
+    } 
 
     /*
     * this function is called upon delivery of a patient where the ambulance is then paid for delivery
@@ -256,25 +275,6 @@ contract Auctions {
      function getTender(uint256 tenderId) public view returns (Tender memory) {
         return tenderMapping[tenderId];
      }
-
-    /*
-     * get the winner of an auction
-     *
-     * @param tenderId - given tender ID
-     */
-    function getAuctionWinner(uint256 tenderId) public view returns (address tenderWinner) {
-        require(
-            tenderMapping[tenderId].status != TenderStatus.Open,
-            "no winner for open tender"
-        );
-        require(
-            block.timestamp <
-                tenderMapping[tenderId].details.revealDate,
-                "tender must be past reveal period"
-        );
-
-        return tenderMapping[tenderId].details.tenderAccepter;
-    } 
 
     /*
      * allows police stations to reclaim their funds + the penalty for failed jobs
