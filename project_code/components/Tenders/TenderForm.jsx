@@ -197,6 +197,20 @@ export default function TenderForm(props) {
       return;
     }
 
+    if (dateTimeIsValid) {
+      setDeliveryTime(deliveryTime - auctionLength - 300);
+    }
+    // setAuctionLength(600);
+    // setDeliveryTime(600);
+    // setLocation("here");
+    // setCity("there");
+    // setStateIn("everywhere");
+    // setZipcode("43822");
+    // setPenaltyAmt(20);
+    // setSeverity("high");
+    // setAllowedHospitals(["0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80"]);
+    // setTenderAmt(100);
+
     send1(
       auctionLength,
       deliveryTime,
@@ -209,19 +223,6 @@ export default function TenderForm(props) {
       allowedHospitals,
       { value: tenderAmt }
     );
-
-    // send1(
-    //   600,
-    //   600,
-    //   "here",
-    //   "there",
-    //   "everywhere",
-    //   "43822",
-    //   20,
-    //   "high",
-    //   ["0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80"],
-    //   { value: 100 }
-    // );
   };
 
   const finalizeTransaction = async () => {
