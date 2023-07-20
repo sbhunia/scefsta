@@ -7,8 +7,13 @@ import * as Constants from "../../pages/constants";
 
 const columns = [
   { field: "patientId", headerName: "Tender ID", width: 100, sortable: true },
-  { field: "saltId", headerName: "Bid ID", width: 75, sortable: true },
-  { field: "bidVal", headerName: "Bid Value", width: 125, sortable: true },
+  { field: "bidId", headerName: "Bid ID", width: 75, sortable: true },
+  {
+    field: "bidVal",
+    headerName: "Proposed Bid",
+    width: 125,
+    sortable: true,
+  },
   {
     field: "fullAddress",
     headerName: "Address of Incident",
@@ -50,6 +55,7 @@ export default function SaltsDataGrid({ accountId }) {
           data[i]["address"] + ", " + data[i]["city"] + ", " + data[i]["state"];
       }
       setSalts(data);
+      console.log(data);
       setLoading(false);
     };
 
@@ -83,9 +89,9 @@ export default function SaltsDataGrid({ accountId }) {
           console.log(row["row"].fullAddress);
           setFullAddress(row["row"].fullAddress);
           setTenderID(row["row"].patientId);
-          setPenaltyAmt(0);
-          setProposedBidVal(0);
-          setBidId(row["row"].saltId);
+          setPenaltyAmt(row["row"].penalty);
+          setProposedBidVal(row["row"].bidVal);
+          setBidId(row["row"].bidId);
           setSaltVal(row["row"].saltVal);
           setRowPopup(true);
         }}

@@ -32,7 +32,6 @@ export default function RevealBid({
   fullAddress,
 }) {
   const [bidValue, setBidValue] = React.useState(0);
-
   // Obtaining React Hooks from reclaimTender smart contract function
   const { send, state, events } = useContractFunction(
     AUCTION_INSTANCE,
@@ -83,11 +82,16 @@ export default function RevealBid({
           variant="filled"
           className={styles.givenRewardDiv}
         >
-          <InputLabel htmlFor="filled-adornment-amount">Tender ID:</InputLabel>
+          <InputLabel htmlFor="filled-adornment-amount">
+            Penalty Fee:
+          </InputLabel>
           <FilledInput
             id="filled-adornment-amount"
-            value={bidId}
+            value={penaltyAmt}
             disabled={true}
+            startAdornment={
+              <InputAdornment position="start">WEI</InputAdornment>
+            }
           />
         </FormControl>
       </div>
