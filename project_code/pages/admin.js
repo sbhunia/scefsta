@@ -85,7 +85,7 @@ function AdminPortal({ admins, hospitals, ambulances, police }) {
           <Sidebar />
           <div className={styles.tablesTotalContainer}>
             <div className={styles.pageTitle}>
-              <h2>Contract Administrator</h2>
+              <h2>{Constants.ADMIN} Page</h2>
             </div>
             <Box sx={{ width: "100%" }}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

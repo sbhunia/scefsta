@@ -53,21 +53,6 @@ export default function Sidebar() {
             })}
           </ul>
         </div>
-
-        {/* <div className={styles.sidebarMenu}>
-                    <h3 className={styles.sidebarTitle}>Notifications</h3>
-                    <ul className={styles.sidebarList}>
-                        {SidebarAdminDataNotifications.map((item, index) => {
-                            return (
-                                <li key={index} className={styles.flexListItem}>
-                                    <h6 className={styles.sidebarIcon} > {item.icon} </h6>
-                                    <h6 className={styles.sidebarListItem}>{item.title}</h6>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </div> */}
-
         <div className={styles.sidebarMenu}>
           <h3 className={styles.sidebarTitle}>Settings</h3>
           <ul className={styles.sidebarList}>

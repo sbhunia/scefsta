@@ -79,7 +79,7 @@ function Hospital({ accepted, incoming }) {
           <Sidebar />
           <div className={styles.patientOverflow}>
             <div className={styles.pageTitle}>
-              <h2>Hospitals</h2>
+              <h2>{Constants.HOSPITAL_PLURAL}</h2>
             </div>
             <Box sx={{ width: "100%" }}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

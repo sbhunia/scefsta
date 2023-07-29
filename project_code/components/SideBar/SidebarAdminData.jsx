@@ -15,7 +15,7 @@ export const getSideBarData = (isAdmin, isHospital, isPolice, isAmbulance) => {
   const displayArr = [];
   if (isAdmin) {
     displayArr.push({
-      title: Constants.ADMINISTRATOR,
+      title: Constants.ADMIN,
       path: Constants.DevAdminURL,
       icon: <FaIcons.FaUserCog />,
       cName: "flexListItem",
@@ -50,7 +50,7 @@ export const getSideBarData = (isAdmin, isHospital, isPolice, isAmbulance) => {
 
 export const SidebarAdminDataDashbaord = [
   {
-    title: Constants.ADMINISTRATOR,
+    title: Constants.ADMIN,
     path: Constants.DevAdminURL,
     icon: <FaIcons.FaUserCog />,
     cName: "flexListItem",

@@ -17,12 +17,6 @@ export default function TopNavbar() {
             <h3 className={styles.topbarUser}>{Constants.PROJECT_ABR}</h3>
           </span>
         </div>
-        <div className={styles.topbarRight}>
-          <div className={styles.topbarIconContainer}>
-            <IoIcons.IoNotifications className={styles.topbarRightIcon} />
-            <span className={styles.topIconBadge}>2</span>
-          </div>
-        </div>
       </div>
     </div>
   );

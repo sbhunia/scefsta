@@ -74,13 +74,18 @@ export const deleteSalt = "api/salts";
 
 // Page titles
 export const DASHBOARD = "Dashboard";
-export const ADMIN = "test";
-export const ADMIN_PLURAL = "testss";
-export const HOSPITAL = "Facility";
-export const HOSPITAL_PLURAL = "Facilities";
-export const POLICE = "Initiator";
-export const POLICE_PLURAL = "Initiators";
-export const AMBULANCE = "Transport";
-export const AMBULANCE_PLURAL = "Transports";
+export const ADMIN = "Admin Test";
+export const ADMIN_PLURAL = "Admins Tests";
+export const HOSPITAL = "Facility test";
+export const HOSPITAL_PLURAL = "Facilities test";
+export const POLICE = "Initiator test";
+export const POLICE_PLURAL = "Initiators test";
+export const AMBULANCE = "Transport test";
+export const AMBULANCE_PLURAL = "Transports test";
+export const PATIENT = "Patient test";
+export const PATIENT_PLURAL = "Patients test";
+export const TENDER = "Tender";
+export const TENDER_PLURAL = "Tenders";
+
 export const PROFILE = "Profile";
 export const ABOUT = "About " + PROJECT_ABR;

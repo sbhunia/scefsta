@@ -149,7 +149,7 @@ function ambulance({ patients }) {
           <Sidebar />
           <div className={styles.tablesTotalContainer}>
             <div className={styles.pageTitle}>
-              <h2>Ambulance / EMS</h2>
+              <h2>{Constants.AMBULANCE_PLURAL} / EMS</h2>
             </div>
             <Box sx={{ width: "100%" }}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
