@@ -1,3 +1,7 @@
+// Project naming
+export const PROJECT_ABR = "SCEFSTA";
+export const PROJECT_NAME = "Title";
+
 // Page URLs
 export const DevHomeURL = "/home";
 export const DevAdminURL = "/admin";
@@ -70,10 +74,13 @@ export const deleteSalt = "api/salts";
 
 // Page titles
 export const DASHBOARD = "Dashboard";
-export const ADMINISTRATOR = "Administrator";
-export const ADMIN = "Admin";
+export const ADMIN = "test";
+export const ADMIN_PLURAL = "testss";
 export const HOSPITAL = "Facility";
+export const HOSPITAL_PLURAL = "Facilities";
 export const POLICE = "Initiator";
+export const POLICE_PLURAL = "Initiators";
 export const AMBULANCE = "Transport";
+export const AMBULANCE_PLURAL = "Transports";
 export const PROFILE = "Profile";
-export const ABOUT = "About AIS";
+export const ABOUT = "About " + PROJECT_ABR;

@@ -95,22 +95,22 @@ function AdminPortal({ admins, hospitals, ambulances, police }) {
                   aria-label="basic tabs example"
                 >
                   <Tab
-                    label="Admins"
+                    label={Constants.ADMIN_PLURAL}
                     className={styles.tabText}
                     {...a11yProps(0)}
                   />
                   <Tab
-                    label="Hospitals"
+                    label={Constants.HOSPITAL_PLURAL}
                     className={styles.tabText}
                     {...a11yProps(1)}
                   />
                   <Tab
-                    label={Constants.POLICE}
+                    label={Constants.POLICE_PLURAL}
                     className={styles.tabText}
                     {...a11yProps(2)}
                   />
                   <Tab
-                    label="Ambulances"
+                    label={Constants.AMBULANCE_PLURAL}
                     className={styles.tabText}
                     {...a11yProps(3)}
                   />
