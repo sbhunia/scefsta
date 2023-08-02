@@ -141,7 +141,7 @@ contract Auctions {
         Tender memory tender = tenderMapping[tenderId];
         require(accountsContract.isAmbulance(msg.sender), "sender must be an ambulance");
         require(tender.status == TenderStatus.Open, "tender must be open");
-        require (block.timestamp < tender.details.dueDate, "auction period has passed");
+        require (block.timestamp < tender.details.auctionDate, "auction period has passed");
         require(msg.value == tender.details.penalty, "sent penalty amount does not match tender");
         require(!contains(tender.details.bidders, msg.sender), "can only bid once");
 
