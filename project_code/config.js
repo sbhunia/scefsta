@@ -1,6 +1,7 @@
 // contract addresses for both contracts
-export const accountsAddress = "0x7Cb35E925b383647C626865a5BdED31d8901F85E";
-export const auctionsAddress = "0x15d27b5a9A29354847F954118fD4E3FB7c677FCC";
+export const accountsAddress = "0x04b7444ee06DD7019e4E26195B83248e93B51f59";
+export const auctionsAddress = "0x3f211E6B7b8CB56b91424c6c8e932229A45Ee8b4";
+
 export const accounts_abi = [
   {
     inputs: [],
@@ -614,6 +615,26 @@ export const auctions_abi = [
         type: "uint256",
       },
     ],
+    name: "getAuctionWinner",
+    outputs: [
+      {
+        internalType: "address",
+        name: "tenderWinner",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tenderId",
+        type: "uint256",
+      },
+    ],
     name: "verifyDelivery",
     outputs: [],
     stateMutability: "nonpayable",
@@ -855,26 +876,6 @@ export const auctions_abi = [
         internalType: "struct Auctions.Tender",
         name: "",
         type: "tuple",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "tenderId",
-        type: "uint256",
-      },
-    ],
-    name: "getAuctionWinner",
-    outputs: [
-      {
-        internalType: "address",
-        name: "tenderWinner",
-        type: "address",
       },
     ],
     stateMutability: "view",
