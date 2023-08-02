@@ -142,7 +142,7 @@ export default function TendersDataGrid({
           },
         }}
         pageSize={10}
-        // pageSizeOptions={[5, 10, 25]}
+        pageSizeOptions={[10, 25, 50]}
         checkboxSelection={false}
         autoHeight
       />
