@@ -141,7 +141,7 @@ export const getAuctionWinner = async (tenderId, provider) => {
     const result = await connectedAuctionInstance.getAuctionWinner(tenderId);
     return result;
   } catch (error) {
-    console.error("Error:", error);
+    return false;
   }
 };
 

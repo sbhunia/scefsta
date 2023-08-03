@@ -171,7 +171,6 @@ contract Auctions {
         require(block.timestamp > tender.details.auctionDate, "tender still under auction");
         require(block.timestamp < tender.details.revealDate, "tender is past reveal period");
         require(tender.status == TenderStatus.Open, "tender is not open");
-        //require(bidVal < tender.details.finalBid, "bid was not below winning bid");
         require(bidVal < tender.details.maxBid, "bid was not below max bid amount");
         require(msg.sender == tender.details.bidders[index], "wrong bid ID");
         require(tender.details.penalty == msg.value, "did not send correct penalty amount");

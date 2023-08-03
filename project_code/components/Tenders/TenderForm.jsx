@@ -197,32 +197,44 @@ export default function TenderForm(props) {
       return;
     }
 
-    if (dateTimeIsValid) {
-      setDeliveryTime(deliveryTime - auctionLength - 300);
-    }
-    // setAuctionLength(600);
-    // setDeliveryTime(600);
-    // setLocation("here");
-    // setCity("there");
-    // setStateIn("everywhere");
-    // setZipcode("43822");
-    // setPenaltyAmt(20);
-    // setSeverity("high");
-    // setAllowedHospitals(["0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80"]);
-    // setTenderAmt(100);
+    let auctionSec = auctionLength * 60;
+    let deliverySec = deliveryTime * 60;
 
-    send1(
-      auctionLength,
-      deliveryTime,
-      location,
-      city,
-      stateIn,
-      zipcode,
-      penaltyAmt,
-      severity,
-      allowedHospitals,
-      { value: tenderAmt }
-    );
+    // if the selection is date time perform check, if not run smart contract call
+    if (dateTimeIsValid) {
+      let inputDeliveryTime = deliverySec - auctionSec - 300;
+
+      if (inputDeliveryTime <= 600) {
+        alert("Delivery time is not far enough from the end auction date");
+        return;
+      }
+
+      send1(
+        auctionSec,
+        inputDeliveryTime,
+        location,
+        city,
+        stateIn,
+        zipcode,
+        penaltyAmt,
+        severity,
+        allowedHospitals,
+        { value: tenderAmt }
+      );
+    } else {
+      send1(
+        auctionSec,
+        deliverySec,
+        location,
+        city,
+        stateIn,
+        zipcode,
+        penaltyAmt,
+        severity,
+        allowedHospitals,
+        { value: tenderAmt }
+      );
+    }
   };
 
   const finalizeTransaction = async () => {

@@ -87,10 +87,18 @@ export default function TendersDataGrid({
     setAuctionEnd(auctionDate);
   }
 
-  function checkWinner(tenderId) {
+  const checkWinner = async (tenderId) => {
     const provider = new providers.Web3Provider(window.ethereum);
-    getAuctionWinner(tenderId, provider);
-  }
+    let result = await getAuctionWinner(tenderId, provider);
+    console.log(result);
+    if (!result) {
+      alert("Tender must not be open, and must be past reveal period");
+    } else if (result === sessionStorage.getItem("accountId")) {
+      alert("You won the auction! Proceed to pickup patient");
+    } else {
+      alert("You did not win the auction");
+    }
+  };
 
   return (
     <div style={{ height: 690, width: "100%" }}>

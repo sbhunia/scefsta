@@ -104,7 +104,7 @@ export default function TopNavbar() {
     sessionStorage.setItem("isHospital", isHospital);
     sessionStorage.setItem("isPolice", isPolice);
     sessionStorage.setItem("isAmbulance", isAmbulance);
-
+    sessionStorage.setItem("accountId", account);
     getPageRoute(isAdmin, isHospital, isPolice, isAmbulance);
   };
 

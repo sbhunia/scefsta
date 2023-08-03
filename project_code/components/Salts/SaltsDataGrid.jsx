@@ -51,6 +51,7 @@ export default function SaltsDataGrid({ accountId }) {
       const res = await fetch(Constants.getSalt + "?walletId=" + accountId);
       const data = await res.json();
       for (var i = 0; i < data.length; i++) {
+        data[i]["patientId"]--;
         data[i]["fullAddress"] =
           data[i]["address"] + ", " + data[i]["city"] + ", " + data[i]["state"];
       }
