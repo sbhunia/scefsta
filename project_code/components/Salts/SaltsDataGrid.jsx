@@ -22,15 +22,9 @@ const columns = [
     resizable: true,
   },
   {
-    field: "injuries",
-    headerName: "Patient Injuries",
-    width: 200,
-    sortable: false,
-  },
-  {
-    field: "mechanismOfInjury",
-    headerName: "Mechanism of Injury",
-    width: 200,
+    field: "penalty",
+    headerName: "Penalty Amount",
+    width: 125,
     sortable: false,
   },
 ];

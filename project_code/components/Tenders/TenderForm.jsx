@@ -347,7 +347,7 @@ export default function TenderForm(props) {
               <TextField
                 type="text"
                 name="payment"
-                label="Payment Amount (USD)"
+                label="Payment Amount (WEI)"
                 variant="standard"
                 className={stylesP.formInput}
                 required
@@ -363,7 +363,7 @@ export default function TenderForm(props) {
               <TextField
                 type="text"
                 name="penalty"
-                label="Penalty Amount (USD)"
+                label="Penalty Amount (WEI)"
                 variant="standard"
                 placeholder="5"
                 className={stylesP.formInput}

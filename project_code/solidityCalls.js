@@ -155,7 +155,6 @@ export const getAllTenders = async (provider) => {
       updatedTender["strStatus"] = TENDER_STATUS[tender["status"]];
       return updatedTender;
     });
-    tenders[2]["strStatus"] = "closed";
     return tenders;
   } catch (error) {
     console.error("Error:", error);
