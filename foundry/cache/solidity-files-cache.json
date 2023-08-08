@@ -491,8 +491,8 @@
       }
     },
     "test/Auctions.t.sol": {
-      "lastModificationDate": 1691459096849,
-      "contentHash": "7b3c36186eb51c4831869eeaae143f08",
+      "lastModificationDate": 1691509694521,
+      "contentHash": "6be802bac922b279989a3306e6040821",
       "sourceName": "test/Auctions.t.sol",
       "solcConfig": {
         "settings": {

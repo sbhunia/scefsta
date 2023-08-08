@@ -2,6 +2,7 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
+import "forge-std/Time.sol";
 
 import "../src/Auctions.sol";
 import "../src/Accounts.sol";
@@ -118,6 +119,8 @@ contract AuctionsTest is Test {
         uint bidID = auc.secretBid{value: penalty}(tender, hashVal);
         assertEq(0, bidID);
 
+        Time time;
+        time.sleep(10);
         hoax(ambulance, 1000 ether);
         auc.revealBid{value: penalty}(tender, bidVal, saltVal, bidID);
     }
