@@ -43,7 +43,13 @@ const columns = [
   {
     field: "penaltyAmount",
     headerName: "Penalty Amount",
-    width: 175,
+    width: 125,
+    sortable: true,
+  },
+  {
+    field: "strStatus",
+    headerName: "Status",
+    width: 100,
     sortable: true,
   },
   {
@@ -90,7 +96,7 @@ export default function TendersDataGrid({
   const checkWinner = async (tenderId) => {
     const provider = new providers.Web3Provider(window.ethereum);
     let result = await getAuctionWinner(tenderId, provider);
-    console.log(result);
+
     if (!result) {
       alert("Tender must not be open, and must be past reveal period");
     } else if (result === sessionStorage.getItem("accountId")) {

@@ -16,7 +16,7 @@ import * as Constants from "../pages/constants";
 import { getAllTenders } from "../solidityCalls";
 import withMetaMask from "../components/WithMetaMask";
 import { getPageRoute } from "../solidityCalls";
-const BigNumber = require("bignumber.js");
+import { providers } from "ethers";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,94 +60,45 @@ function Police() {
   const [isHospital, setIsHospital] = useState(false);
   const [isPolice, setIsPolice] = useState(false);
   const [isAmbulance, setIsAmbulance] = useState(false);
-  var valueTend = getAllTenders();
-  var tenders = [];
+  const [tenders, setTenders] = useState([]);
+  const [openTenders, setOpenTenders] = useState([]);
+  const [openTenderCnt, setOpenTenderCnt] = useState(0);
+  const [totalTenderCnt, setTotalTenderCnt] = useState(0);
+  const [value, setValue] = useState(0);
 
-  if (valueTend != undefined) {
-    tenders = valueTend[0].map((item) =>
-      Object.assign({}, item, { selected: false })
-    );
-    tenders.forEach((tender) => {
-      tender["id"] = new BigNumber(tender["tenderId"]["_hex"]).toString();
-
-      // tender details
-      tender["walletId"] = tender[0]["tenderPoster"];
-      tender["patientLocation"] =
-        tender[0]["addr"] +
-        ", " +
-        tender[0]["city"] +
-        ", " +
-        tender[0]["state"];
-      tender["penaltyAmount"] = new BigNumber(
-        tender[0]["penalty"]["_hex"]
-      ).toString();
-
-      // get the dates
-      var postDate = new Date(
-        parseInt(tender[0]["postDate"]["_hex"], 16) * 1000
-      );
-      var formattedPostDate =
-        postDate.toLocaleDateString() + " " + postDate.toLocaleTimeString();
-      tender["postDate"] = formattedPostDate;
-
-      var auctionDate = new Date(
-        parseInt(tender[0]["auctionDate"]["_hex"], 16) * 1000
-      );
-      var formattedAuctionDate =
-        auctionDate.toLocaleDateString() +
-        " " +
-        auctionDate.toLocaleTimeString();
-      tender["auctionDate"] = formattedAuctionDate;
-
-      var revealDate = new Date(
-        parseInt(tender[0]["revealDate"]["_hex"], 16) * 1000
-      );
-      var formattedRevealDate =
-        revealDate.toLocaleDateString() + " " + revealDate.toLocaleTimeString();
-      tender["revealDate"] = formattedRevealDate;
-
-      var dueDate = new Date(parseInt(tender[0]["dueDate"]["_hex"], 16) * 1000);
-      var formattedDueDate =
-        dueDate.toLocaleDateString() + " " + dueDate.toLocaleTimeString();
-      tender["dueDate"] = formattedDueDate;
-    });
-  }
-
-  // Filtering so as to only have Open tenders
-  let openTendersArr = tenders.filter(function (open) {
-    return open.status == 2;
-  });
-
-  let totalTenders = 0;
-  let openTenders = 0;
   const { account } = useEthers();
-
-  // if tenders has not yet been allocated
-  if (tenders != undefined) {
-    totalTenders = tenders.length;
-
-    // loop through tenders
-    for (let i = 0; i < totalTenders; i++) {
-      // if the tender is open iterate tender acount
-      let status = tenders[i].status;
-      if (status == 2) {
-        openTenders++;
-      }
-    }
-  }
-
-  const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     setIsAdmin(JSON.parse(sessionStorage.getItem("isAdmin")));
     setIsHospital(JSON.parse(sessionStorage.getItem("isHospital")));
     setIsPolice(JSON.parse(sessionStorage.getItem("isPolice")));
     setIsAmbulance(JSON.parse(sessionStorage.getItem("isAmbulance")));
-  });
+
+    const provider = new providers.Web3Provider(window.ethereum);
+    let tempTenders = await getAllTenders(provider);
+    setTotalTenderCnt(tempTenders.length);
+    setTenders(tempTenders);
+
+    // Filtering so as to only have Open tenders
+    let tempOpenTendersArr = tempTenders.filter(function (open) {
+      return open.strStatus === "Open";
+    });
+    setOpenTenders(tempOpenTendersArr);
+    setOpenTenderCnt(tempOpenTendersArr.length);
+
+    // loop through tenders
+    for (let i = 0; i < tempTenders; i++) {
+      // if the tender is open iterate tender acount
+      let status = tempTenders[i].strStatus;
+      if (status === "Open") {
+        openTenders++;
+      }
+    }
+  }, []);
 
   if (isPolice) {
     return (
@@ -178,16 +129,16 @@ function Police() {
                   <Grid item xs={12}>
                     <Grid container spacing={2}>
                       <Grid item xs={6}>
-                        <Open number={openTenders} />
+                        <Open number={openTenderCnt} />
                       </Grid>
                       <Grid item xs={6}>
-                        <Total number={totalTenders} />
+                        <Total number={totalTenderCnt} />
                       </Grid>
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
                     <TendersPolice
-                      data={openTendersArr}
+                      data={openTenders}
                       popUpChecked={true}
                       account={account}
                     />

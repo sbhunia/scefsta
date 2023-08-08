@@ -89,3 +89,11 @@ export const TENDER_PLURAL = "Tenders";
 
 export const PROFILE = "Profile";
 export const ABOUT = "About " + PROJECT_ABR;
+
+export const TENDER_STATUS = {
+  0: "Closed",
+  1: "InProgress",
+  2: "Open",
+  3: "Retracted",
+  4: "Reclaimed",
+};

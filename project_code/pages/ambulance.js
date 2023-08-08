@@ -8,12 +8,11 @@ import Tenders from "../components/Tenders/Tenders";
 import LockIcon from "@mui/icons-material/Lock";
 import { Button } from "@mui/material";
 import { useEthers } from "@usedapp/core";
-import Router from "next/router";
 import * as Constants from "../pages/constants";
 import { getAllTenders, getPageRoute } from "../solidityCalls";
 import SaltsDataGrid from "../components/Salts/SaltsDataGrid";
 import withMetaMask from "../components/WithMetaMask";
-const BigNumber = require("bignumber.js");
+import { providers } from "ethers";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,6 +59,8 @@ function ambulance({ patients }) {
   const [isHospital, setIsHospital] = useState(false);
   const [isPolice, setIsPolice] = useState(false);
   const [isAmbulance, setIsAmbulance] = useState(false);
+  const [tenders, setTenders] = useState([]);
+  const [openTenders, setOpenTenders] = useState([]);
 
   const salts = {
     walletId: "0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80",
@@ -68,78 +69,28 @@ function ambulance({ patients }) {
     saltValue: "78757623669420",
   };
 
-  // get all the tenders
-  var valueTend = getAllTenders();
-  var tenders = [];
-
-  // If an array of tenders is returned, create necessary json fields for the data grid
-  if (valueTend != undefined) {
-    tenders = valueTend[0].map((item) =>
-      Object.assign({}, item, { selected: false })
-    );
-    tenders.forEach((tender) => {
-      tender["id"] = new BigNumber(tender["tenderId"]["_hex"]).toString();
-
-      // tender details
-      tender["walletId"] = tender[0]["tenderPoster"];
-      tender["patientLocation"] =
-        tender[0]["addr"] +
-        ", " +
-        tender[0]["city"] +
-        ", " +
-        tender[0]["state"];
-      tender["penaltyAmount"] = new BigNumber(
-        tender[0]["penalty"]["_hex"]
-      ).toString();
-
-      // get the dates
-      var postDate = new Date(
-        parseInt(tender[0]["postDate"]["_hex"], 16) * 1000
-      );
-      var formattedPostDate =
-        postDate.toLocaleDateString() + " " + postDate.toLocaleTimeString();
-      tender["postDate"] = formattedPostDate;
-
-      var auctionDate = new Date(
-        parseInt(tender[0]["auctionDate"]["_hex"], 16) * 1000
-      );
-      var formattedAuctionDate =
-        auctionDate.toLocaleDateString() +
-        " " +
-        auctionDate.toLocaleTimeString();
-      tender["auctionDate"] = formattedAuctionDate;
-
-      var revealDate = new Date(
-        parseInt(tender[0]["revealDate"]["_hex"], 16) * 1000
-      );
-      var formattedRevealDate =
-        revealDate.toLocaleDateString() + " " + revealDate.toLocaleTimeString();
-      tender["revealDate"] = formattedRevealDate;
-
-      var dueDate = new Date(parseInt(tender[0]["dueDate"]["_hex"], 16) * 1000);
-      var formattedDueDate =
-        dueDate.toLocaleDateString() + " " + dueDate.toLocaleTimeString();
-      tender["dueDate"] = formattedDueDate;
-    });
-  }
-
-  // Filtering so as to only have Open tenders
-  let openTenders = tenders.filter(function (open) {
-    return open.status == 2;
-  });
-
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     setIsAdmin(JSON.parse(sessionStorage.getItem("isAdmin")));
     setIsHospital(JSON.parse(sessionStorage.getItem("isHospital")));
     setIsPolice(JSON.parse(sessionStorage.getItem("isPolice")));
     setIsAmbulance(JSON.parse(sessionStorage.getItem("isAmbulance")));
-  });
+
+    const provider = new providers.Web3Provider(window.ethereum);
+    let tempTenders = await getAllTenders(provider);
+    setTenders(tempTenders);
+
+    // Filtering so as to only have Open tenders
+    let tempOpenTendersArr = tempTenders.filter(function (open) {
+      return open.strStatus === "Open";
+    });
+    setOpenTenders(tempOpenTendersArr);
+  }, []);
 
   if (isAmbulance) {
     return (
@@ -164,7 +115,7 @@ function ambulance({ patients }) {
                     {...a11yProps(0)}
                   />
                   <Tab
-                    label="Open Bids"
+                    label="Placed Bids"
                     className={styles.tabText}
                     {...a11yProps(1)}
                   />
@@ -177,7 +128,7 @@ function ambulance({ patients }) {
               </Box>
               <TabPanel value={value} index={0}>
                 <Tenders
-                  data={tenders}
+                  data={openTenders}
                   biddingForm={true}
                   openTenders={true}
                   popUpChecked={true}
