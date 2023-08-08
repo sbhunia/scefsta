@@ -61,6 +61,7 @@ function ambulance({ patients }) {
   const [isAmbulance, setIsAmbulance] = useState(false);
   const [tenders, setTenders] = useState([]);
   const [openTenders, setOpenTenders] = useState([]);
+  const [inProgressTenders, setInProgressTenders] = useState([]);
 
   const salts = {
     walletId: "0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80",
@@ -90,6 +91,12 @@ function ambulance({ patients }) {
       return open.strStatus === "Open";
     });
     setOpenTenders(tempOpenTendersArr);
+
+    // Filtering so as to only have Open tenders
+    let tempProgressTendersArr = tempTenders.filter(function (inProgress) {
+      return inProgress.strStatus === "In Progress";
+    });
+    setInProgressTenders(tempProgressTendersArr);
   }, []);
 
   if (isAmbulance) {
@@ -141,7 +148,7 @@ function ambulance({ patients }) {
               </TabPanel>
               <TabPanel value={value} index={2}>
                 <Tenders
-                  data={tenders}
+                  data={inProgressTenders}
                   biddingForm={true}
                   openTenders={true}
                   popUpChecked={true}
