@@ -112,7 +112,7 @@ contract AuctionGasTest is Test {
         for (uint256 i = 0; i < 100; i++) {
             // auction functions
             hoax(initiator, 100000 ether);
-            tender = auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", penalty, "High", allowedHospitals);
+            tender = auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", "45056", penalty, "High", allowedHospitals);
 
             
             /* Do this independenlty of all auction functions below */
@@ -124,7 +124,7 @@ contract AuctionGasTest is Test {
             //auction functions
             auc.getAllTenders();
             
-            hashVal = auc.hashVal(bidVal, saltVal);
+            hashVal = 110;
             hoax(ambulance, 10000 ether);
             uint bidID = auc.secretBid{value: penalty}(tender, hashVal);
 

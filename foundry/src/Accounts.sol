@@ -28,8 +28,9 @@ contract Accounts {
      // Allows the admin to add verified ambulances
     function addAmbulance(address addr) public {
         // verify account does not already have another role
-        require(ambulances[addr] == false, "sender is already ambulance");
-        require(initiators[addr] == false, "sender is already initiator");
+        require(hospitals[addr] == false, "already a facility");
+        require(ambulances[addr] == false, "already an ambulance");
+        require(initiators[addr] == false, "already an initiator");
         require(admins[addr] == false, "sender is already admin");
 
         // verify the sender is an admin
@@ -55,7 +56,6 @@ contract Accounts {
     function addInitiator(address addr) public {
         // verify account does not already have another role
         require(ambulances[addr] == false, "user already ambulance");
-        require(hospitals[addr] == false, "user is already hospital");
         require(initiators[addr] == false, "user is already initiator");
         require(admins[addr] == false, "user is already admin");
 
@@ -80,9 +80,9 @@ contract Accounts {
 
     // Allows the admin to add verified hospitals
     function addHospital(address addr) public {
-         // verify account does not already have another role
+        // verify account does not already have another role
+        require(hospitals[addr] == false, "already a hospital");
         require(ambulances[addr] == false, "already an ambulance");
-        require(initiators[addr] == false, "already a police");
         require(admins[addr] == false, "already an admin");
 
         // verify the sender is an admin
@@ -108,7 +108,7 @@ contract Accounts {
     function addAdmin(address addr) public {
         require(ambulances[addr] == false, "already an ambulance");
         require(hospitals[addr] == false, "already a hospital");
-        require(initiators[addr] == false, "already a police");
+        require(initiators[addr] == false, "already an initiator");
         require(admins[addr] == false, "already an admin");
         require(addr != superAdmin, "superAdmin is already an admin");
         require(msg.sender == superAdmin, "must be a superAdmin");
