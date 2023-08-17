@@ -9,7 +9,6 @@ import styles from "../styles/Patients.module.css";
 import { useEthers } from "@usedapp/core";
 import LockIcon from "@mui/icons-material/Lock";
 import { Button } from "@mui/material";
-import Router from "next/router";
 import * as Constants from "../pages/constants";
 import withMetaMask from "../components/WithMetaMask";
 import { getPageRoute } from "../solidityCalls";
@@ -51,8 +50,9 @@ function a11yProps(index) {
  * The main Hospital/Healthcare Institution page. Only viewable by this entity.
  * @param {*} accepted JSON object composed of data of accepted patients.
  * @param {*} incoming JSON object composed of data of incoming patients.
+ * @param {*} pending JSON object composed of patients that are pending transit.
  */
-function Hospital({ accepted, incoming }) {
+function Hospital({ accepted, incoming, pending }) {
   const { account } = useEthers();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isHospital, setIsHospital] = useState(false);
@@ -89,22 +89,30 @@ function Hospital({ accepted, incoming }) {
                   aria-label="basic tabs example"
                 >
                   <Tab
-                    label="Incoming Patients"
+                    label="Pending Patients"
                     className={styles.tabText}
                     {...a11yProps(0)}
                   />
                   <Tab
-                    label="Accepted Patients"
+                    label="Incoming Patients"
                     className={styles.tabText}
                     {...a11yProps(1)}
+                  />
+                    <Tab
+                    label="Accepted Patients"
+                    className={styles.tabText}
+                    {...a11yProps(2)}
                   />
                 </Tabs>
               </Box>
               <TabPanel value={value} index={0}>
-                <Patients data={incoming} arrival={false} />
+                <Patients data={pending} arrival={false}/>
               </TabPanel>
               <TabPanel value={value} index={1}>
-                <Patients data={accepted} arrival={true} />
+                <Patients data={incoming} arrival={true} />
+              </TabPanel>
+              <TabPanel value={value} index={2}>
+                <Patients data={accepted} arrival={false} />
               </TabPanel>
             </Box>
           </div>
@@ -157,17 +165,22 @@ export async function getStaticProps(ctx) {
   const data = await res.json();
 
   let isAccepted = data.filter(function (open) {
-    return open.status == "accepted";
+    return open.status === "accepted";
   });
 
   let isIncoming = data.filter(function (open) {
-    return open.status == "incoming";
+    return open.status === "incoming";
+  });
+
+  let isPending = data.filter(function (open) {
+    return open.status === "pending"
   });
 
   return {
     props: {
       accepted: isAccepted,
       incoming: isIncoming,
+      pending: isPending,
     },
   };
 }

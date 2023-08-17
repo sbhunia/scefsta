@@ -5,8 +5,8 @@ import Alert from '@mui/material/Alert';
 import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import stylesP from '../../styles/Popup.module.css'
-import { Input, Typography } from '@mui/material';
-import { ACCOUNT_INSTANCE } from '../../pages/_app';
+import { Typography } from '@mui/material';
+import { AUCTION_INSTANCE } from '../../pages/_app';
 
 /**
  * 
@@ -16,10 +16,10 @@ import { ACCOUNT_INSTANCE } from '../../pages/_app';
  */
 export default function VerifyDelivery( { tenderID, row } ) {
     // Obtaining React Hooks from reclaimTender smart contract function
-    const {send, state} = useContractFunction(ACCOUNT_INSTANCE, 'verifyDelivery');
+    const {send, state} = useContractFunction(AUCTION_INSTANCE, 'verifyDelivery');
 
     const handleVerifyDelivery = () => {
-        send(tenderID);
+        send(row['row']['id'] - 1);
     }
 
     return (
@@ -29,15 +29,16 @@ export default function VerifyDelivery( { tenderID, row } ) {
             </div>
 
             <div className={stylesP.centerContents}>
-                <p> <strong>Name: </strong> <text className={stylesP.floatRightElement} >{row['row']['name']}</text> </p>
+                <p> <strong>Patient ID: </strong> <text className={stylesP.floatRightElement} >{row['row']['id']}</text> </p>
+                {/* <p> <strong>Name: </strong> <text className={stylesP.floatRightElement} >{row['row']['name']}</text> </p>
                 <p> <strong>Gender: </strong> <text className={stylesP.floatRightElement} >{row['row']['gender']}</text> </p>
-                <p> <strong>Age: </strong> <text className={stylesP.floatRightElement} >{row['row']['age']}</text> </p>
-                <p> <strong>Injury/Injuries: </strong> <text className={stylesP.floatRightElement} >{row['row']['injuries']}</text>
+                <p> <strong>Age: </strong> <text className={stylesP.floatRightElement} >{row['row']['age']}</text> </p> */}
+                {/* <p> <strong>Injury/Injuries: </strong> <text className={stylesP.floatRightElement} >{row['row']['injuries']}</text>
                 </p>
-                <p> <strong>Mechanism of Injury: </strong> <text className={stylesP.floatRightElement} >{row['row']['mechanismOfInjury']}</text></p>
-                <p> <strong>Location: </strong> <text className={stylesP.floatRightElement} >{row['row']['address']}, {row['row']['city']}, {row['row']['state']}</text> </p>
+                <p> <strong>Mechanism of Injury: </strong> <text className={stylesP.floatRightElement} >{row['row']['mechanismOfInjury']}</text></p> */}
+                {/* <p> <strong>Location: </strong> <text className={stylesP.floatRightElement} >{row['row']['address']}, {row['row']['city']}, {row['row']['state']}</text> </p>
                 <p> <strong>Time of Arrival: </strong> <text className={stylesP.floatRightElement} ><Input type="time" id="fname" name="fname" />
-                    <Input type="date" id="fname" name="fname" /> </text> </p>
+                    <Input type="date" id="fname" name="fname" /> </text> </p> */}
             </div>
 
             <div className={stylesP.submitButtonDiv}>

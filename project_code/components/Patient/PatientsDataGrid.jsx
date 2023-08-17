@@ -1,14 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Popup from '../Popup/Popup';
 import VerifyDelivery from "../Popup/VerifyDelivery";
 
 const columns = [
-    { field: 'name', headerName: 'Patient Name', width: 175, sortable: true},
-    { field: 'address', headerName: 'Address', width: 175, sortable: true},
-    { field: 'city', headerName: 'City', width: 120, sortable: true},
-    { field: 'state', headerName: 'State', width: 100, sortable: true},
+    { field: 'patientId', headerName: 'Patient ID #', width: 175, sortable: true},
+    { field: 'injuries', headerName: 'Injuries', width: 200, sortable: true},
+    { field: 'mechanismOfInjury', headerName: 'Mechanism', width: 200, sortable: true},
+    { field: 'severity', headerName: 'Severity', width: 100, sortable: true},
+    { field: "delivery", headerName: 'Delivery Due', width: 125, sortable: true}
   ];
 
 /**
@@ -17,21 +18,10 @@ const columns = [
  * @param {*} arrival Boolean -if false, a patient has not arrived and the option to confirm their arrival is given
  */
 export default function PatientsDataGrid({data, arrival}) {
-
-
     // allows for the data in the table to be updated (Add/Remove)
     const [dataContacts, setDataContacts] = useState(data);
-    
-    // Renames the 'patientId' field to 'id'. DataGrid requires an id field
-    dataContacts.map(x => x['id'] = x['patientId'])
-
-        // TenderID hook
     const [tenderID, setTenderID] = useState(0);
-
-    // const below are for the table row select popup/view
     const [rowPopup, setRowPopup] = useState(false);
-
-    // records the row clicked
     const [row, setRow] = useState(0);
 
     function performPopup(row, tenderIndex) {
@@ -39,6 +29,12 @@ export default function PatientsDataGrid({data, arrival}) {
         setRow(row);
         setTenderID(tenderIndex)
     }
+
+    useEffect(() => {
+        // Renames the 'patientId' field to 'id'. DataGrid requires an id field
+        console.log(data, dataContacts)
+        dataContacts.map(x => x['id'] = x['patientId'])
+    }, [])
 
     return (
         <div style={{ height: 400, width: '100%' }}>
@@ -86,7 +82,7 @@ export default function PatientsDataGrid({data, arrival}) {
                 autoHeight
             />
             {(function () {
-                if (!arrival) {
+                if (arrival) {
                     return (
                         <div>
                             <Popup trigger={rowPopup} setTrigger={setRowPopup}>
