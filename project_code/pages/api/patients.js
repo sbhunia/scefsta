@@ -3,12 +3,18 @@ const mysqlLib = require("../../config_database/mysqlLib");
 import * as Constants from "../constants";
 
 export default async function handler(req, res) {
+  const header = req.headers['x-method'];
+
   switch (req.method) {
     case "GET": {
       return getPatients(req, res);
     }
     case "POST": {
-      return addPatient(req, res);
+      if (header === "insert") {
+        return addPatient(req, res);
+      } else if (header === "update") {
+        return updatePatient(req, res);
+      }
     }
     case "DELETE": {
       return deletePatient(req, res);
@@ -29,6 +35,21 @@ async function addPatient(req, res) {
     let cols = `${Constants.address}, ${Constants.city}, ${Constants.state}, ${Constants.zipcode}, ${Constants.status}, ${Constants.injuries}, ${Constants.mech}`;
     let data = `'${address}', '${city}', '${state}', '${zipcode}', '${status}', '${injuries}', '${mech}'`;
     let query = `INSERT INTO ${Constants.Patients} (${cols}) VALUES(${data});`;
+
+    console.log(query);
+    await mysqlLib.executeQuery(query);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false });
+  }
+}
+
+async function updatePatient(req, res) {
+  try {
+    let patientId = JSON.parse(req.body)["patientId"];
+    let status = JSON.parse(req.body)["status"];
+    let query = `UPDATE ${Constants.Patients} SET ${Constants.status} = '${status}' WHERE ${Constants.patientId} = '${patientId}'`;
 
     console.log(query);
     await mysqlLib.executeQuery(query);

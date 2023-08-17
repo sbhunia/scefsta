@@ -123,6 +123,7 @@ export default function SaltsDataGrid({ accountId }) {
           saltVal={saltVal}
           proposedBidVal={proposedBidVal}
           fullAddress={fullAddress}
+          setTrigger={setRowPopup}
         />
       </Popup>
     </div>

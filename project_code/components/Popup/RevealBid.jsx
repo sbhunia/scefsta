@@ -10,8 +10,6 @@ import FilledInput from "@mui/material/FilledInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import InputLabel from "@mui/material/InputLabel";
 import { AUCTION_INSTANCE } from "../../pages/_app";
-import * as Constants from "../../pages/constants";
-import { useEthers } from "@usedapp/core";
 import Web3 from "web3";
 
 const web3 = new Web3();
@@ -30,6 +28,7 @@ export default function RevealBid({
   bidId,
   proposedBidVal,
   fullAddress,
+  setTrigger
 }) {
   const [bidValue, setBidValue] = React.useState(0);
   // Obtaining React Hooks from reclaimTender smart contract function
@@ -55,6 +54,26 @@ export default function RevealBid({
      */
     send(tenderId, bidValue, saltVal, bidId, { value: penaltyAmt });
   };
+
+  const finalizeTransaction = async () => {
+    const updatePatient = {
+      patientId: tenderId + 1,
+      status: "incoming"
+    }
+
+    let response = await fetch("api/patients", {
+      headers: {'x-method': 'update'},
+      method: "POST",
+      body: JSON.stringify(updatePatient),
+    });
+
+    let status = await response.json();
+    if (status.success) {
+      setTrigger(false);
+    } else {
+      alert(`Error adding patient to DB, contact the SuperAdmin`);
+    }
+  }
 
   return (
     <div className={styles.editHospital}>
@@ -167,6 +186,9 @@ export default function RevealBid({
                 Your bid has been revealed, wait until reveal period is over to
                 see if you won
               </Alert>
+              <Button color="success" onClick={finalizeTransaction}>
+                Finalize and Exit
+              </Button>
             </div>
           );
         }

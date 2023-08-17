@@ -250,12 +250,13 @@ export default function TenderForm(props) {
       address: location,
       city: city,
       state: stateIn,
-      status: "posted",
+      status: "pending",
       isAccepted: false,
       zipcode: zipcode,
     };
 
     let response = await fetch("api/patients", {
+      headers: {'x-method': 'insert'},
       method: "POST",
       body: JSON.stringify(newPatient),
     });
