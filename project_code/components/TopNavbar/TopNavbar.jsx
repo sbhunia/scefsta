@@ -32,7 +32,7 @@ export default function TopNavbar() {
             </p>
           </div>
         )}
-\      </div>
+     </div>
       </div>
     </div>
   );
