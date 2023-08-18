@@ -35,7 +35,7 @@ export default function TopNavbar() {
     } else {
       return (
         <div>
-          <Button onClick={() => activateBrowserWallet()}>Connect</Button>
+          <Button color="success" onClick={() => activateBrowserWallet()}>Connect</Button>
         </div>
       );
     }
@@ -124,7 +124,7 @@ export default function TopNavbar() {
           {metaInstalled ? (
             connectMeta()
           ) : (
-            <Button onClick={installMeta} variant="primary">
+            <Button onClick={installMeta} color="success">
               Install MetaMask
             </Button>
           )}
