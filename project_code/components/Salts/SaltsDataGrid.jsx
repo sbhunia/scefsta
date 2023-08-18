@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import Popup from "../Popup/Popup";
 import RevealBid from "../Popup/RevealBid";
 import * as Constants from "../../pages/constants";
+import { getAllTenders } from "../../solidityCalls";
+import { providers } from "ethers";
+const BigNumber = require("bignumber.js");
 
 const columns = [
   { field: "patientId", headerName: "Tender ID", width: 100, sortable: true },
@@ -27,6 +30,18 @@ const columns = [
     width: 125,
     sortable: false,
   },
+  {
+    field: "revealDate",
+    headerName: "Reveal Date",
+    width: 175,
+    sortable: false,
+  },
+  {
+    field: "dueDate",
+    headerName: "Due Date",
+    width: 175,
+    sortable: false,
+  },
 ];
 
 export default function SaltsDataGrid({ accountId }) {
@@ -44,16 +59,35 @@ export default function SaltsDataGrid({ accountId }) {
     const getSalts = async () => {
       const res = await fetch(Constants.getSalt + "?walletId=" + accountId);
       const data = await res.json();
+
+      // get all the tenders
+      const provider = new providers.Web3Provider(window.ethereum);
+      const tenderData = await getAllTenders(provider);
+
+      // loop through table data
       for (var i = 0; i < data.length; i++) {
+        // loop through tenders
+        for (let tender in tenderData) {
+          let tendId = new BigNumber(
+            tenderData[tender]["tenderId"]["_hex"]);
+
+          // if the tenderID matches corresponding patientID get the due date
+          if (tendId.c[0] + 1 === data[i].patientId) {
+            data[i]["revealDate"] = tenderData[tender]["revealDate"];
+            data[i]["dueDate"] = tenderData[tender]["dueDate"]
+          }
+        }
+
+        // change patientId to match tenderId
         data[i]["patientId"]--;
-        data[i]["fullAddress"] =
-          data[i]["address"] + ", " + data[i]["city"] + ", " + data[i]["state"];
+        data[i]["fullAddress"] = data[i]["address"] + ", " + data[i]["city"] + ", " + data[i]["state"];
       }
+
       setSalts(data);
-      console.log(data);
       setLoading(false);
     };
 
+    // if there is no data loaded then get the data
     if (!salts) {
       getSalts();
     }
