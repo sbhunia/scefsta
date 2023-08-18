@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import stylesP from '../../styles/Popup.module.css'
 import { Typography } from '@mui/material';
 import { AUCTION_INSTANCE } from '../../pages/_app';
-import Button from "@mui/material/Button";
+import { Button } from "reactstrap";
 
 /**
  * 
@@ -45,24 +45,16 @@ export default function VerifyDelivery( { tenderID, row } ) {
 
     return (
         <div className={styles.editHospital}>
-            <div style={{ display: 'flex' }}>
+            <div className={stylesP.center}>
                 <Typography variant="h4" component="div" gutterBottom className={stylesP.editHospital}>Confirm Patient Arrival</Typography>
             </div>
-
-            <div className={stylesP.centerContents}>
-                <p> <strong>Patient ID: </strong> <text className={stylesP.floatRightElement} >{row['row']['id']}</text> </p>
-                {/* <p> <strong>Injury/Injuries: </strong> <text className={stylesP.floatRightElement} >{row['row']['injuries']}</text>
-                </p>
-                <p> <strong>Mechanism of Injury: </strong> <text className={stylesP.floatRightElement} >{row['row']['mechanismOfInjury']}</text></p> */}
-                {/* <p> <strong>Location: </strong> <text className={stylesP.floatRightElement} >{row['row']['address']}, {row['row']['city']}, {row['row']['state']}</text> </p>
-                <p> <strong>Time of Arrival: </strong> <text className={stylesP.floatRightElement} ><Input type="time" id="fname" name="fname" />
-                    <Input type="date" id="fname" name="fname" /> </text> </p> */}
+            <div className={stylesP.center}>
+                <p> <strong>Patient ID: </strong> {row['row']['id']}</p>
             </div>
-
             <div className={stylesP.submitButtonDiv}>
-                <button type="submit" className={stylesP.submitButton} onClick={handleVerifyDelivery}>
+                <Button type="submit" color="success" onClick={handleVerifyDelivery}>
                     Confirm Arrival
-                </button>
+                </Button>
             </div>
             {(function () {
                 if (state.status === 'Mining') {
