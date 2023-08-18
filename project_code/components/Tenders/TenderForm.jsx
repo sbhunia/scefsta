@@ -238,22 +238,35 @@ export default function TenderForm(props) {
   };
 
   const finalizeTransaction = async () => {
-    /**
-     * Patient name, type of injury, location, isAccepted
-     * Missing: age, gender, mechanism of injury, city, state
-     */
+    let newPatient = {}
 
-    // create patient in database
-    const newPatient = {
-      injury: injuryType,
-      mechanism_of_injury: mechanismofInjury,
-      address: location,
-      city: city,
-      state: stateIn,
-      status: "pending",
-      isAccepted: false,
-      zipcode: zipcode,
-    };
+    if (!severity || severity === "") {
+      newPatient = {
+        injury: "N/A",
+        mechanism_of_injury: "N/A",
+        address: location,
+        city: city,
+        state: stateIn,
+        status: "pending",
+        isAccepted: false,
+        zipcode: zipcode,
+        severity: "Appt",
+      };      
+      
+      setSeverity("Appt");
+    } else  {
+      newPatient = {
+        injury: injuryType,
+        mechanism_of_injury: mechanismofInjury,
+        address: location,
+        city: city,
+        state: stateIn,
+        status: "pending",
+        isAccepted: false,
+        zipcode: zipcode,
+        severity: severity,
+      };
+    }
 
     let response = await fetch("api/patients", {
       headers: {'x-method': 'insert'},

@@ -36,6 +36,7 @@ export const initiatorType = "initiatorType";
 export const accountType = "accountType";
 export const transportCompany = "transportCompany";
 export const penalty = "penalty";
+export const severity = "severity";
 
 // patient table variables
 export const patientId = "patientId";

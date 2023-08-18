@@ -30,10 +30,11 @@ async function addPatient(req, res) {
     let zipcode = JSON.parse(req.body)["zipcode"];
     let injuries = JSON.parse(req.body)["injury"];
     let mech = JSON.parse(req.body)["mechanism_of_injury"];
+    let severity = JSON.parse(req.body)["severity"];
     let status = "pending";
 
-    let cols = `${Constants.address}, ${Constants.city}, ${Constants.state}, ${Constants.zipcode}, ${Constants.status}, ${Constants.injuries}, ${Constants.mech}`;
-    let data = `'${address}', '${city}', '${state}', '${zipcode}', '${status}', '${injuries}', '${mech}'`;
+    let cols = `${Constants.address}, ${Constants.city}, ${Constants.state}, ${Constants.zipcode}, ${Constants.status}, ${Constants.injuries}, ${Constants.mech}, ${Constants.severity}`;
+    let data = `'${address}', '${city}', '${state}', '${zipcode}', '${status}', '${injuries}', '${mech}', '${severity}'`;
     let query = `INSERT INTO ${Constants.Patients} (${cols}) VALUES(${data});`;
 
     console.log(query);
