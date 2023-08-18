@@ -15,8 +15,6 @@ export default function Hero() {
         <img
           src="/service-banner.png"
           className={styles.headerImg}
-          width="927"
-          sizes="(max-width: 767px) 85vw, (max-width: 991px) 66vw, 85vw"
         ></img>
       </div>
     </div>

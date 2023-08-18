@@ -9,7 +9,6 @@ export default function Hero() {
   return (
     <div className={styles.footer}>
       <div className={styles.containerFooter}>
-        <div className={styles.grid}>
           <div className={styles.footerLogo}>
             <Link href="/">
               <a>
@@ -22,26 +21,7 @@ export default function Hero() {
               </a>
             </Link>
           </div>
-          <div>
             <div className={styles.footerTitle}>{Constants.PROJECT_ABR}</div>
-            <div className={styles.footerItem}>
-              <Link href={Constants.DevAmbulanceURL}>
-                <a>{Constants.AMBULANCE_PLURAL}</a>
-              </Link>
-            </div>
-            <div className={styles.footerItem}>
-              <Link href={Constants.DevPoliceURL}>
-                <a>{Constants.POLICE_PLURAL}</a>
-              </Link>
-            </div>
-            <div className={styles.footerItem}>
-              <Link href={Constants.DevHospitalURL}>
-                <a>{Constants.HOSPITAL_PLURAL}</a>
-              </Link>
-            </div>
-          </div>
-          <div>
-            <div className={styles.footerTitle}>Project</div>
             <div className={styles.footerItem}>
               <Link href={Constants.DevAboutURL}>
                 <a>About</a>
@@ -57,7 +37,6 @@ export default function Hero() {
                 <a>Contact</a>
               </Link>
             </div>
-          </div>
         </div>
         <div className={styles.socialwrap}>
           <a href="/" className={styles.socialLink}>
@@ -90,7 +69,6 @@ export default function Hero() {
         <div className={styles.copyright}>
           &copy; {Constants.PROJECT_NAME} - Miami University
         </div>
-      </div>
     </div>
   );
 }
