@@ -27,11 +27,14 @@
     color: white;
     cursor: pointer;
     padding-left: 1vw;
-    margin-top: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
     height: 40px;
 }
 
 .topbarUser {
+    margin-top: auto;
+    margin-bottom: auto;
     margin-left: 30px;
     color: white;
 }
@@ -92,6 +95,19 @@
     color: #1A588C;
     border: 0;
     cursor: pointer;
+}
+
+.tab {
+    padding-left: 1.5rem;
+}
+
+.halfTab {
+    padding-left: .5rem;
+}
+
+.leftButton {
+    padding-right: .75rem;
+    padding-left: .75rem;
 }
 
 .settings:hover {

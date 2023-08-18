@@ -27,8 +27,9 @@ export default function TopNavbar() {
     if (account) {
       return (
         <div>
-          <Button onClick={() => deactivate()}>Disconnect</Button>
-          <Button onClick={login}>Login</Button>
+          <Button color="warning" className={styles.leftButton} onClick={() => deactivate()}>Disconnect</Button>
+          <span className={styles.halfTab}></span>
+          <Button color="success" onClick={login}>Login</Button>
         </div>
       );
     } else {
@@ -76,9 +77,9 @@ export default function TopNavbar() {
               Address:{" "}
               {account.substring(0, 5) +
                 "..." +
-                account.substring(account.length - 4, account.length - 1) +
-                "\t"}
-              Balance: {formatEther(etherBalance)}
+                account.substring(account.length - 4, account.length - 1)} 
+                <span className={styles.tab}></span>
+              Balance: {formatEther(etherBalance).substring(0, 8)}
             </p>
           </div>
         )}
