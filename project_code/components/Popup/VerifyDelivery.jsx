@@ -7,6 +7,7 @@ import Box from '@mui/material/Box';
 import stylesP from '../../styles/Popup.module.css'
 import { Typography } from '@mui/material';
 import { AUCTION_INSTANCE } from '../../pages/_app';
+import Button from "@mui/material/Button";
 
 /**
  * 
@@ -20,6 +21,26 @@ export default function VerifyDelivery( { tenderID, row } ) {
 
     const handleVerifyDelivery = () => {
         send(row['row']['id'] - 1);
+    }
+
+    const finalizeTransaction = async () => {
+        const updatePatient = {
+            patientId: row['row'][id],
+            status: "accepted"
+          }
+      
+          let response = await fetch("api/patients", {
+            headers: {'x-method': 'update'},
+            method: "POST",
+            body: JSON.stringify(updatePatient),
+          });
+      
+          let status = await response.json();
+          if (status.success) {
+            setTrigger(false);
+          } else {
+            alert(`Error updating patient in DB, contact the SuperAdmin`);
+          }
     }
 
     return (
@@ -62,6 +83,9 @@ export default function VerifyDelivery( { tenderID, row } ) {
                     return (
                         <div>
                             <Alert severity="success">Patient successfully verified! Funds have been transferred!</Alert>
+                            <Button color="successs" onClick={finalizeTransaction}>
+                                Finalize and Exit
+                            </Button>
                         </div>
                     )
                 }

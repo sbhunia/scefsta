@@ -71,7 +71,7 @@ export default function RevealBid({
     if (status.success) {
       setTrigger(false);
     } else {
-      alert(`Error adding patient to DB, contact the SuperAdmin`);
+      alert(`Error updating patient in DB, contact the SuperAdmin`);
     }
   }
 
