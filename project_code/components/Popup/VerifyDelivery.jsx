@@ -30,9 +30,6 @@ export default function VerifyDelivery( { tenderID, row } ) {
 
             <div className={stylesP.centerContents}>
                 <p> <strong>Patient ID: </strong> <text className={stylesP.floatRightElement} >{row['row']['id']}</text> </p>
-                {/* <p> <strong>Name: </strong> <text className={stylesP.floatRightElement} >{row['row']['name']}</text> </p>
-                <p> <strong>Gender: </strong> <text className={stylesP.floatRightElement} >{row['row']['gender']}</text> </p>
-                <p> <strong>Age: </strong> <text className={stylesP.floatRightElement} >{row['row']['age']}</text> </p> */}
                 {/* <p> <strong>Injury/Injuries: </strong> <text className={stylesP.floatRightElement} >{row['row']['injuries']}</text>
                 </p>
                 <p> <strong>Mechanism of Injury: </strong> <text className={stylesP.floatRightElement} >{row['row']['mechanismOfInjury']}</text></p> */}

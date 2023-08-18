@@ -3,13 +3,16 @@ import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import Popup from '../Popup/Popup';
 import VerifyDelivery from "../Popup/VerifyDelivery";
+import { getAllTenders } from "../../solidityCalls";
+import { providers } from "ethers";
+const BigNumber = require("bignumber.js");
 
 const columns = [
     { field: 'patientId', headerName: 'Patient ID #', width: 175, sortable: true},
     { field: 'injuries', headerName: 'Injuries', width: 200, sortable: true},
     { field: 'mechanismOfInjury', headerName: 'Mechanism', width: 200, sortable: true},
     { field: 'severity', headerName: 'Severity', width: 100, sortable: true},
-    { field: "delivery", headerName: 'Delivery Due', width: 125, sortable: true}
+    { field: "dueDate", headerName: 'Delivery Due', width: 175, sortable: true}
   ];
 
 /**
@@ -20,20 +23,45 @@ const columns = [
 export default function PatientsDataGrid({data, arrival}) {
     // allows for the data in the table to be updated (Add/Remove)
     const [dataContacts, setDataContacts] = useState(data);
-    const [tenderID, setTenderID] = useState(0);
     const [rowPopup, setRowPopup] = useState(false);
     const [row, setRow] = useState(0);
-
-    function performPopup(row, tenderIndex) {
+    console.log(data);
+    dataContacts.map(x => x['id'] = x['patientId'])
+ 
+    function performPopup(row) {
         setRowPopup(true);
         setRow(row);
-        setTenderID(tenderIndex)
     }
 
-    useEffect(() => {
+    useEffect(async () => {
         // Renames the 'patientId' field to 'id'. DataGrid requires an id field
-        console.log(data, dataContacts)
-        dataContacts.map(x => x['id'] = x['patientId'])
+        let tempData = dataContacts;
+
+        const provider = new providers.Web3Provider(window.ethereum);
+        let tempTenders = await getAllTenders(provider);
+
+        // get data from tenders
+        const mergedPatients = tempData.map((patient) => {
+            if (!patient.injuries || patient.injuries === "N/A") {
+                patient.injuries = "N/A";
+                patient.mechanismOfInjury = "N/A";
+            }
+            for (let tender in tempTenders) {
+                let tendId = new BigNumber(
+                    tempTenders[tender]["tenderId"]["_hex"]);
+                    
+                // if the tenderID matches corresponding patientID get the due date
+                if (tendId.c[0] + 1 === patient.patientId) {
+                    console.log(tempTenders[tender]);
+                    patient.dueDate = tempTenders[tender].dueDate;
+                }
+            }
+
+            console.log(patient);
+            return patient;
+        });
+
+        setDataContacts(mergedPatients)
     }, [])
 
     return (
@@ -54,7 +82,7 @@ export default function PatientsDataGrid({data, arrival}) {
                 borderColor: '#ffc400',
                 }}
                 onRowClick={(row) =>{
-                    performPopup(row, "TEMP TENDER ID");
+                    performPopup(row);
                 }}
                 rows={dataContacts}
                 columns={columns}
@@ -86,7 +114,7 @@ export default function PatientsDataGrid({data, arrival}) {
                     return (
                         <div>
                             <Popup trigger={rowPopup} setTrigger={setRowPopup}>
-                                <VerifyDelivery tenderID={tenderID} row={row}></VerifyDelivery>
+                                <VerifyDelivery row={row}></VerifyDelivery>
                             </Popup>
                         </div>
                     )
