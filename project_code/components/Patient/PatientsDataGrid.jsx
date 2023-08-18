@@ -25,39 +25,40 @@ export default function PatientsDataGrid({data, arrival}) {
     const [dataContacts, setDataContacts] = useState(data);
     const [rowPopup, setRowPopup] = useState(false);
     const [row, setRow] = useState(0);
-    console.log(data);
+   
+    // Renames the 'patientId' field to 'id'. DataGrid requires an id field
     dataContacts.map(x => x['id'] = x['patientId'])
  
+    // change the popup status
     function performPopup(row) {
         setRowPopup(true);
         setRow(row);
     }
 
     useEffect(async () => {
-        // Renames the 'patientId' field to 'id'. DataGrid requires an id field
         let tempData = dataContacts;
-
         const provider = new providers.Web3Provider(window.ethereum);
         let tempTenders = await getAllTenders(provider);
 
-        // get data from tenders
+        // get data from tenders and map new data
         const mergedPatients = tempData.map((patient) => {
+            // if there is no injuries listed set mechanism and injury to N/A
             if (!patient.injuries || patient.injuries === "N/A") {
                 patient.injuries = "N/A";
                 patient.mechanismOfInjury = "N/A";
             }
+
+            // loop through tenders array
             for (let tender in tempTenders) {
                 let tendId = new BigNumber(
                     tempTenders[tender]["tenderId"]["_hex"]);
                     
                 // if the tenderID matches corresponding patientID get the due date
                 if (tendId.c[0] + 1 === patient.patientId) {
-                    console.log(tempTenders[tender]);
                     patient.dueDate = tempTenders[tender].dueDate;
                 }
             }
 
-            console.log(patient);
             return patient;
         });
 
