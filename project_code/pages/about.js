@@ -3,8 +3,6 @@ import React from "react";
 import {
   Box,
   Card,
-  CardHeader,
-  CardMedia,
   CardContent,
   Typography,
   Chip,
