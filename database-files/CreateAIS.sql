@@ -69,7 +69,7 @@ INSERT INTO Users (walletId, firstName, lastName, email, address, city, state, z
     '112 S Poplar St Apt 4', 'Oxford', 'Ohio', 45056, 'private', 'initiator');
 
 INSERT INTO Users (walletId, address, city, state, zipcode, facilityName, initiatorType, accountType)
-    VALUES ('0x37b17D21569C2cA6c7A078f2283D06BC222F554C', '110 N Poplar St', 'Oxford', 
+    VALUES ('0xb153eDE174EDC76EA00D706ce678b3aF28379887', '110 N Poplar St', 'Oxford', 
     'Ohio', 45056, 'McCullough-Hyde Memorial Hospital', 'facility', 'interfacility');
 
 INSERT INTO Users(walletId, address, city, state, zipcode, transportCompany, licensePlate, accountType)
