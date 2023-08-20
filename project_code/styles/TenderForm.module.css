@@ -30,9 +30,12 @@
   width: 65%;
 }
 
-#injuryType,
+#injuryType {
+  width: 11rem;
+}
+
 #severity {
-  width: 10rem;
+  width: 11rem;
 }
 
 #mechanism {
@@ -40,6 +43,19 @@
 }
 
 .injuryDiv {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  text-align: center;
+}
+
+.severityDiv {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  text-align: center;
+  margin-right: 0rem;
+}
+
+.mechanismDiv {
   margin-top: 2%;
   margin-bottom: 2%;
   text-align: center;
@@ -78,6 +94,7 @@
 
 .buttonGroup {
   text-align: center;
+  margin-top: 1rem;
 }
 
 .divider {
@@ -113,6 +130,8 @@
 
 .dateTimeFacility {
   width: 14rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .auctionFacility {
@@ -124,3 +143,26 @@
   justify-content: "space-around";
   width: 100%;
 }
+
+.incidentDiv {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.incidentTop {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.paddingTop {
+  margin-top: 1rem;
+  margin-bottom: auto;
+  padding: 20rem;
+}
+
+.tabInput {
+  width: 100%;
+}
+

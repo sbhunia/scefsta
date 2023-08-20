@@ -1,6 +1,6 @@
 import React from "react";
 import styles from '../../styles/TenderForm.module.css';
-import { Select, Typography, TextField, Button, ButtonGroup, Input, MenuItem, OutlinedInput, InputLabel, Divider, InputAdornment } from '@mui/material';
+import { Select, MenuItem, OutlinedInput, InputLabel } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 const ITEM_HEIGHT = 48;
@@ -57,47 +57,49 @@ export const FormInjury = (props) => {
                     );
                 }
             })()}
-            <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-            <div className={styles.injuryDiv}>
-                <InputLabel id="injuryType">Injury Type</InputLabel>
-                <Select
-                    labelId="injuryType"
-                    id={styles.injuryType}
-                    multiple
-                    value={props.injuryType}
-                    onChange={props.handleChangeInjury}
-                    input={<OutlinedInput label="Name" />}
-                    MenuProps={MenuProps}
-                    >
-                    {injuryTypes.map((name) => (
-                        <MenuItem
-                        key={name}
-                        value={name}
-                        style={getStyles(name, props.injuryType, theme)}
+            <div className={styles.incidentDiv}>
+                <div className={styles.incidentTop}>            
+                    <div className={styles.injuryDiv}>
+                    <InputLabel id="injuryType">Injury Type</InputLabel>
+                    <Select
+                        labelId="injuryType"
+                        id={styles.injuryType}
+                        multiple
+                        value={props.injuryType}
+                        onChange={props.handleChangeInjury}
+                        input={<OutlinedInput label="Name" />}
+                        MenuProps={MenuProps}
                         >
-                        {name}
-                        </MenuItem>
-                    ))}
-                </Select>
+                        {injuryTypes.map((name) => (
+                            <MenuItem
+                            key={name}
+                            value={name}
+                            style={getStyles(name, props.injuryType, theme)}
+                            >
+                            {name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </div>
+                <div className={styles.severityDiv}>
+                    <InputLabel id="severity">Severity</InputLabel>
+                    <Select
+                    labelId="severity"
+                    id={styles.severity}
+                    value={props.severity}
+                    label="Severity Level"
+                    required
+                    onChange={props.handleChangeSeverity}
+                    >
+                        <MenuItem value={"Low"}>Low</MenuItem>
+                        <MenuItem value={"Medium"}>Medium</MenuItem>
+                        <MenuItem value={"High"}>High</MenuItem>
+                        <MenuItem value={"Critical"}>Critical</MenuItem>
+                    </Select>
+                </div>
             </div>
-            <div className={styles.injuryDiv}>
-                <InputLabel id="severity">Severity</InputLabel>
-                <Select
-                labelId="severity"
-                id={styles.severity}
-                value={props.severity}
-                label="Severity Level"
-                required
-                onChange={props.handleChangeSeverity}
-                >
-                    <MenuItem value={"Low"}>Low</MenuItem>
-                    <MenuItem value={"Medium"}>Medium</MenuItem>
-                    <MenuItem value={"High"}>High</MenuItem>
-                    <MenuItem value={"Critical"}>Critical</MenuItem>
-                </Select>
             </div>
-            </div>
-            <div className={styles.injuryDiv}>
+            <div className={styles.mechanismDiv}>
                 <InputLabel id="severity">Mechanism of Injury</InputLabel>
                 <Select
                     labelId="mechanism_of_injury"

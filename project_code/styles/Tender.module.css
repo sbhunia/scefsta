@@ -101,6 +101,7 @@
     flex: 4;
     max-height: 93vh;
     overflow-y: scroll;
+    padding-bottom: 5rem;
 }
 
 @media only screen and (max-width: 769px) {

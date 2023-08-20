@@ -40,7 +40,7 @@ export default function ReclaimTender({ tenderID }) {
   };
 
   return (
-    <div className={styles.editHospital}>
+    <div className={styles.reclaimRetractDiv}>
       <h2>Reclaim Tender?</h2>
       <Alert severity="info">
         <i>Remember</i>: reclaim a tender once a job expires without being

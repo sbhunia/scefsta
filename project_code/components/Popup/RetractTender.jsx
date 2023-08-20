@@ -37,7 +37,7 @@ export default function RetractTender( { tenderID } ) {
     }
 
     return (
-        <div className={styles.editHospital}>
+        <div className={styles.reclaimRetractDiv}>
             <h2>Retract Tender?</h2>
             <Alert severity="info"><i>Remember</i>: retracting a tender will allow for the recovery of the funds, and will
             remove the tender from being viewed. </Alert>

@@ -59,13 +59,13 @@ function a11yProps(index) {
 }
 
 export default function TenderForm(props) {
-  const [injuryType, setInjuryType] = React.useState([]);
-  const [severity, setSeverity] = React.useState("");
-  const [mechanismofInjury, setMechanismOfInjury] = React.useState([]);
-  const [tenderAmt, setTenderAmt] = React.useState();
-  const [penaltyAmt, setPenaltyAmt] = React.useState();
-  const [auctionLength, setAuctionLength] = React.useState();
-  const [deliveryTime, setDeliveryTime] = React.useState();
+  const [injuryType, setInjuryType] = useState([]);
+  const [severity, setSeverity] = useState("");
+  const [mechanismofInjury, setMechanismOfInjury] = useState([]);
+  const [tenderAmt, setTenderAmt] = useState();
+  const [penaltyAmt, setPenaltyAmt] = useState();
+  const [auctionLength, setAuctionLength] = useState();
+  const [deliveryTime, setDeliveryTime] = useState();
   const [location, setLocation] = useState("");
   const [stateIn, setStateIn] = useState("");
   const [city, setCity] = useState("");
@@ -82,16 +82,20 @@ export default function TenderForm(props) {
 
   const [dateTime, setDateTime] = useState(dayjs("2022-04-17T15:30"));
   const [dateTimeIsValid, setDateTimeIsValid] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [timeFieldHidden, setTimeFieldHidden] = useState(false);
 
   const [type, setType] = useState(null);
 
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     if (newValue === 0) {
       setDateTimeIsValid(false);
+      setTimeFieldHidden(true);
     } else if (newValue === 1) {
       setDeliveryTime();
+      setTimeFieldHidden(false);
     }
     setValue(newValue);
   };
@@ -112,6 +116,7 @@ export default function TenderForm(props) {
       if (json[0].initiatorType === "facility") {
         setValue(1);
       }
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data: ", error);
     }
@@ -300,6 +305,154 @@ export default function TenderForm(props) {
     }
   }, [allowedHospitals]);
 
+  const Amount = () => {
+    return (
+      <div style={{ display: "flex", justifyContent: "space-around" }}>
+        <div className={styles.dropdownDiv}>
+          <TextField
+            type="text"
+            name="payment"
+            label="Payment Amount (WEI)"
+            variant="standard"
+            className={stylesP.formInput}
+            required
+            value={tenderAmt}
+            onChange={handleAddFormData}
+            error={!isPaymentValid}
+            helperText={
+              !isPaymentValid && "Please enter a valid amount in WEI"
+            }
+          />
+        </div>
+        <div className={styles.dropdownDiv}>
+          <TextField
+            type="text"
+            name="penalty"
+            label="Penalty Amount (WEI)"
+            variant="standard"
+            placeholder="5"
+            className={stylesP.formInput}
+            required
+            value={penaltyAmt}
+            onChange={handleAddFormData}
+            error={!isPenaltyValid}
+            helperText={
+              !isPenaltyValid && "Please enter a valid amount in WEI"
+            }
+          />
+        </div>
+      </div>
+    );
+  }
+
+  const FormInput = () => {
+    if (type === "emergency") {
+      return (
+        <FormInjury
+          injuryType={injuryType}
+          handleChangeInjury={handleChangeInjury}
+          severity={severity}
+          handleChangeSeverity={handleChangeSeverity}
+          mechanismofInjury={mechanismofInjury}
+          handleSetMechOfInjury={handleSetMechOfInjury}
+        />
+      );
+    } else if (type === "private" || type === "facility") {
+      return (
+        <FormPrivate
+          injuryType={injuryType}
+          handleChangeInjury={handleChangeInjury}
+          severity={severity}
+          handleChangeSeverity={handleChangeSeverity}
+          mechanismofInjury={mechanismofInjury}
+          handleSetMechOfInjury={handleSetMechOfInjury}
+          allowedHospitals={allowedHospitals}
+          selectedData={selectedData}
+          handleChange={handleChange}
+          value={value}
+        />
+      );
+    }
+  }
+
+  const AuctionLength = () => {
+    return (
+      <div className={styles.dropdownDiv}>
+        <TextField
+          type="text"
+          name="auction"
+          label="Auction Length (Minutes)"
+          variant="standard"
+          placeholder="5"
+          className={stylesP.formInput}
+          required
+          value={auctionLength}
+          onChange={handleAddFormData}
+          error={!isAuctionValid}
+          helperText={
+            !isAuctionValid &&
+            "Please enter a valid time length in minutes"
+          }
+        />
+      </div>
+    );
+  }
+
+  const DeliveryTime = () => {
+    return (
+      <div className={styles.dropdownDiv}>
+        <TextField
+          type="text"
+          name="delivery"
+          label="Delivery Time (min)"
+          variant="standard"
+          placeholder="30"
+          className={stylesP.formInput}
+          required={value === 0}
+          value={deliveryTime}
+          onChange={handleAddFormData}
+          error={!isDeliveryValid}
+          helperText={
+            !isDeliveryValid &&
+            "Please enter a valid time length in minutes"
+          }
+        />
+      </div>
+    );
+  }
+
+  const AuctionTimes = () => {
+    if (type === "emergency") {
+      return (
+        <div style={{ display: "flex", justifyContent: "space-around" }}>
+          <AuctionLength/>
+          {value === 0 && (
+            <DeliveryTime/>
+          )}
+        </div>
+      );
+    } else if (type === "private" || type === "facility") {
+      return (
+        <div style={{ display: "flex", justifyContent: "space-around" }}>
+          <AuctionLength/>
+          {value === 0 ? (
+            <DeliveryTime/>
+          ) : (
+            <DateTimePicker
+              className={styles.dateTimeFacility}
+              value={dateTime}
+              onChange={(newValue) => handleDateTime(newValue)}
+            />
+          )}
+        </div>
+      );
+    }
+  };  
+
+  if (loading) {
+    return <div>Loading...</div>;
+  } else {
+
   return (
     <div className={styles.containerForm}>
       <div style={{ display: "flex" }}>
@@ -324,176 +477,15 @@ export default function TenderForm(props) {
       </form>
       <br />
       <form className={styles.tenderForm} onSubmit={confirm}>
-        {(function () {
-          if (type === "emergency") {
-            return (
-              <FormInjury
-                injuryType={injuryType}
-                handleChangeInjury={handleChangeInjury}
-                severity={severity}
-                handleChangeSeverity={handleChangeSeverity}
-                mechanismofInjury={mechanismofInjury}
-                handleSetMechOfInjury={handleSetMechOfInjury}
-              />
-            );
-          } else if (type === "private" || type === "facility") {
-            return (
-              <FormPrivate
-                injuryType={injuryType}
-                handleChangeInjury={handleChangeInjury}
-                severity={severity}
-                handleChangeSeverity={handleChangeSeverity}
-                mechanismofInjury={mechanismofInjury}
-                handleSetMechOfInjury={handleSetMechOfInjury}
-                allowedHospitals={allowedHospitals}
-                selectedData={selectedData}
-                handleChange={handleChange}
-                value={value}
-              />
-            );
-          }
-        })()}
-        <br />
+        <FormInput/>
         <h2 className={styles.headingText}>Auction Information</h2>
-        <div>
-          <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <div className={styles.dropdownDiv}>
-              <TextField
-                type="text"
-                name="payment"
-                label="Payment Amount (WEI)"
-                variant="standard"
-                className={stylesP.formInput}
-                required
-                value={tenderAmt}
-                onChange={handleAddFormData}
-                error={!isPaymentValid}
-                helperText={
-                  !isPaymentValid && "Please enter a valid amount in WEI"
-                }
-              />
-            </div>
-            <div className={styles.dropdownDiv}>
-              <TextField
-                type="text"
-                name="penalty"
-                label="Penalty Amount (WEI)"
-                variant="standard"
-                placeholder="5"
-                className={stylesP.formInput}
-                required
-                value={penaltyAmt}
-                onChange={handleAddFormData}
-                error={!isPenaltyValid}
-                helperText={
-                  !isPenaltyValid && "Please enter a valid amount in WEI"
-                }
-              />
-            </div>
-          </div>
-        </div>
-        <div>
-          {(function () {
-            if (type === "emergency") {
-              return (
-                <jsx>
-                  <div className={styles.timeDiv}>
-                    <TextField
-                      type="text"
-                      name="auction"
-                      label="Auction Length (Minutes)"
-                      variant="standard"
-                      placeholder="5"
-                      className={stylesP.formInput}
-                      required
-                      value={auctionLength}
-                      onChange={handleAddFormData}
-                      error={!isAuctionValid}
-                      helperText={
-                        !isAuctionValid &&
-                        "Please enter a valid time length in minutes"
-                      }
-                    />
-                    <TextField
-                      type="text"
-                      name="delivery"
-                      label="Delivery Time (min)"
-                      variant="standard"
-                      placeholder="30"
-                      className={stylesP.formInput}
-                      required={value === 0}
-                      value={deliveryTime}
-                      onChange={handleAddFormData}
-                      error={!isDeliveryValid}
-                      helperText={
-                        !isDeliveryValid &&
-                        "Please enter a valid time length in minutes"
-                      }
-                    />
-                  </div>
-                </jsx>
-              );
-            } else if (type === "private" || type === "facility") {
-              return (
-                <jsx>
-                  <div className={styles.timeDiv}>
-                    <TabPanel>
-                      <TextField
-                        type="text"
-                        name="auction"
-                        label="Auction Length (min)"
-                        variant="standard"
-                        placeholder="5"
-                        className={styles.auctionFacility}
-                        required
-                        value={auctionLength}
-                        onChange={handleAddFormData}
-                        error={!isAuctionValid}
-                        helperText={
-                          !isAuctionValid &&
-                          "Please enter a valid time length in minutes"
-                        }
-                      />
-                    </TabPanel>
-                    <TabPanel value={value} index={0}>
-                      <TextField
-                        type="text"
-                        name="delivery"
-                        label="Delivery Time (min)"
-                        variant="standard"
-                        placeholder="30"
-                        className={styles.dateTimeFacility}
-                        required={value === 0}
-                        value={deliveryTime}
-                        onChange={handleAddFormData}
-                        error={!isDeliveryValid}
-                        helperText={
-                          !isDeliveryValid &&
-                          "Please enter a valid time length in minutes"
-                        }
-                      />
-                    </TabPanel>
-                    <TabPanel value={value} index={1}>
-                      <DateTimePicker
-                        className={styles.dateTimeFacility}
-                        value={dateTime}
-                        onChange={(newValue) => handleDateTime(newValue)}
-                      />
-                    </TabPanel>
-                  </div>
-                </jsx>
-              );
-            }
-          })()}
-        </div>
+         <Amount/>
+         <AuctionTimes/>
         <div className={styles.buttonGroup}>
           <ButtonGroup variant="contained" aria-label="outlined button group">
             <Button disabled={confirmDisabled} color="success" type="submit">
               Post Tender
             </Button>
-            {/* <Button color="success" onClick={confirm}>
-              Post Tender Temp
-            </Button> */}
           </ButtonGroup>
         </div>
       </form>
@@ -556,4 +548,5 @@ export default function TenderForm(props) {
       })()}
     </div>
   );
+  }
 }

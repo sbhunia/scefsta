@@ -36,7 +36,15 @@
 
 .editHospital {
   color: #3f88c5;
+}
 
+.reclaimRetractDiv {
+  color: #3f88c5;
+  font-size: 1.5rem;
+  padding: 2% 0;
+  width: 100%;
+  padding-left: 2%;
+  font-weight: bold;
 }
 
 .deleteEntry {
