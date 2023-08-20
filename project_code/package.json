@@ -1,5 +1,6 @@
 {
   "name": "ambulance-incentive-system",
+  "homepage": "http://ambulance-blockchain.sec.csi.miamioh.edu/",
   "version": "0.1.0",
   "private": true,
   "scripts": {
