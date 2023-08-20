@@ -8,21 +8,6 @@ import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import { AUCTION_INSTANCE } from '../../pages/_app';
 
-async function deleteTenderPatient(tenderID) {
-    try {
-        await fetch('api/patients', {
-            method: 'DELETE',
-            body: tenderID
-        })
-        await fetch('api/tenders', {
-            method: 'DELETE',
-            body: tenderID
-        })
-    } catch (error) {
-        console.log('Fail')
-    }
-}
-
 export default function RetractTender( { tenderID } ) {
     // Obtaining React Hooks from reclaimTender smart contract function
     const {send, state} = useContractFunction(AUCTION_INSTANCE, 'retractTender');
@@ -32,9 +17,25 @@ export default function RetractTender( { tenderID } ) {
         send(tenderID);
     }
 
-    const finalizeTransaction = () => {
-        deleteTenderPatient(tenderID);
-    }
+    const finalizeTransaction = async () => {
+        const updatePatient = {
+          patientId: tenderID + 1,
+          status: "retracted"
+        }
+    
+        let response = await fetch("api/patients", {
+          headers: {'x-method': 'update'},
+          method: "POST",
+          body: JSON.stringify(updatePatient),
+        });
+    
+        let status = await response.json();
+        if (status.success) {
+          setTrigger(false);
+        } else {
+          alert(`Error updating patient in DB, contact the SuperAdmin`);
+        }
+      };
 
     return (
         <div className={styles.reclaimRetractDiv}>

@@ -34,7 +34,7 @@ CREATE TABLE Patients (
             injuries            VARCHAR(200),
             mechanismOfInjury   VARCHAR(50),
             severity            VARCHAR(50),
-            status              ENUM('pending', 'incoming', 'accepted')     NOT NULL,
+            status              ENUM('pending', 'incoming', 'accepted', 'reclaimed', 'retracted')     NOT NULL,
             PRIMARY KEY (patientId)
 );
 
