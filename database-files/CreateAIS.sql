@@ -51,6 +51,31 @@ CREATE TABLE Salts (
             FOREIGN KEY (patientId) REFERENCES Patients(patientId)
 );
 
+/*** Default Data ***/
+INSERT INTO Users (walletId, firstName, lastName, email, address, city, state, zipcode, accountType)
+    VALUES ('0xEE8fb1E70B2Cd462cC0eE0ABb12B36db6D0932B2', 'Liberty', 'Oliver', 'admin@gmail.com', 
+    '107 E Spring St', 'Oxford', 'Ohio', 45056, 'admin');
+
+INSERT INTO Users (walletId, address, city, state, zipcode, facilityName, accountType)
+    VALUES ('0x37b17D21569C2cA6c7A078f2283D06BC222F554C', '14W Park Place, Suite C', 'Oxford', 
+    'Ohio', 45056, 'Oxford Urgent Care', 'facility');
+
+INSERT INTO Users (walletId, address, city, state, zipcode, policeDept, stationNumber, initiatorType, accountType)
+    VALUES ('0xcdF98E3f41A0160360884f67BF8FfF35D92d4E2f', '101 E High St', 'Oxford', 'Ohio', 45056,
+     'Oxford Police Dept', '1', 'emergency', 'initiator');
+
+INSERT INTO Users (walletId, firstName, lastName, email, address, city, state, initiatorType, accountType)
+    VALUES ('0xC53762A6D1E4557Ab363eE38042828fcfBF064bE', 'Sharon', 'Mihalis', 'private@gmail.com', 
+    '112 S Poplar St Apt 4', 'Oxford', 'Ohio', 45056, 'private', 'initiator');
+
+INSERT INTO Users (walletId, address, city, state, zipcode, facilityName, initiatorType, accountType)
+    VALUES ('0x37b17D21569C2cA6c7A078f2283D06BC222F554C', '110 N Poplar St', 'Oxford', 
+    'Ohio', 45056, 'McCullough-Hyde Memorial Hospital', 'facility', 'interfacility');
+
+INSERT INTO Users(walletId, address, city, state, zipcode, transportCompany, licensePlate, accountType)
+    VALUES ('0x9f8d25e9e3261d328e1Bef34CdbadB9310E451Fc', '311 Thatcher Loop', 'Oxford', 'Ohio', 45056,
+    'GoodHealth Transport', 'HHA 6982', 'transport')
+
 /******* Test Data ******/
 
 -- /* Hospitals */
