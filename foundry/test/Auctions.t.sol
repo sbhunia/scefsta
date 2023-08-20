@@ -2,7 +2,6 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
-import "forge-std/Time.sol";
 
 import "../src/Auctions.sol";
 import "../src/Accounts.sol";
@@ -61,6 +60,7 @@ contract AuctionsTest is Test {
         // set bid variables
         bidVal = 100;
         saltVal = 10;
+        hashVal = uint(keccak256(abi.encodePacked(bidVal + saltVal)));
 
         // add new admin
         vm.startPrank(superAdmin);
@@ -109,22 +109,27 @@ contract AuctionsTest is Test {
         assertEq(1, bidID2);
     }
 
-    function testRevealBid() public {  
+   function testRevealBid() public {  
         hoax(initiator, 10000 ether);
-        tender = auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", "45056", penalty, "High", allowedHospitals);
-        assertEq(tender, 0);
+        uint256 tenderId = auc.postTender{value: 10000}(
+            timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", "45056", penalty, "High", allowedHospitals
+        );
+        assertEq(tenderId, 0);
         
-        hashVal = 110;
         hoax(ambulance, 10000 ether);
-        uint bidID = auc.secretBid{value: penalty}(tender, hashVal);
+        uint256 bidID = auc.secretBid{value: penalty}(tenderId, hashVal);
         assertEq(0, bidID);
 
-        Time time;
-        time.sleep(10);
+        skip(timeLimit + 5);
         hoax(ambulance, 1000 ether);
-        auc.revealBid{value: penalty}(tender, bidVal, saltVal, bidID);
-    }
+        auc.revealBid{value: penalty}(tenderId, bidVal, saltVal, bidID);
 
+        Auctions.Tender memory newTender = auc.getTender(tenderId);
+        assertTrue(newTender.status == Auctions.TenderStatus.InProgress);
+        assertTrue(newTender.details.finalBid == bidVal);
+        assertTrue(newTender.details.tenderAccepter == ambulance);
+    }
+ 
     function testVerifyDelivery() public {
         hoax(initiator, 10000 ether);
         tender = auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", "45056", penalty, "High", allowedHospitals);

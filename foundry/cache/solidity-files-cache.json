@@ -12,8 +12,8 @@
   },
   "files": {
     "lib/forge-std/lib/ds-test/src/test.sol": {
-      "lastModificationDate": 1688083692721,
-      "contentHash": "a85cb92e605e48103a5375f81c8233f2",
+      "lastModificationDate": 1683474241125,
+      "contentHash": "962996f0e05d5218857a538a62d7c47e",
       "sourceName": "lib/forge-std/lib/ds-test/src/test.sol",
       "solcConfig": {
         "settings": {
@@ -22,8 +22,7 @@
             "runs": 200
           },
           "metadata": {
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
+            "bytecodeHash": "ipfs"
           },
           "outputSelection": {
             "*": {
@@ -34,12 +33,11 @@
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
+                "evm.methodIdentifiers"
               ]
             }
           },
-          "evmVersion": "paris",
+          "evmVersion": "london",
           "libraries": {}
         }
       },
@@ -47,13 +45,13 @@
       "versionRequirement": ">=0.5.0",
       "artifacts": {
         "DSTest": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "test.sol\\DSTest.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "test.sol/DSTest.json"
         }
       }
     },
     "lib/forge-std/src/Test.sol": {
-      "lastModificationDate": 1688083692722,
-      "contentHash": "4c7d859eb2d661ec7dcb3017875664b2",
+      "lastModificationDate": 1683474241127,
+      "contentHash": "c74d8c43e00c9e8cfa4ba8cccc87143c",
       "sourceName": "lib/forge-std/src/Test.sol",
       "solcConfig": {
         "settings": {
@@ -62,8 +60,7 @@
             "runs": 200
           },
           "metadata": {
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
+            "bytecodeHash": "ipfs"
           },
           "outputSelection": {
             "*": {
@@ -74,40 +71,39 @@
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
+                "evm.methodIdentifiers"
               ]
             }
           },
-          "evmVersion": "paris",
+          "evmVersion": "london",
           "libraries": {}
         }
       },
       "imports": [
-        "lib/forge-std/lib/ds-test/src\\test.sol",
-        "lib/forge-std/src\\Vm.sol",
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Vm.sol",
         "lib/forge-std/src/console.sol",
         "lib/forge-std/src/console2.sol"
       ],
       "versionRequirement": ">=0.6.0, <0.9.0",
       "artifacts": {
         "Test": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "Test.sol\\Test.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Test.sol/Test.json"
         },
         "stdError": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "Test.sol\\stdError.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Test.sol/stdError.json"
         },
         "stdMath": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "Test.sol\\stdMath.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Test.sol/stdMath.json"
         },
         "stdStorage": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "Test.sol\\stdStorage.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Test.sol/stdStorage.json"
         }
       }
     },
     "lib/forge-std/src/Vm.sol": {
-      "lastModificationDate": 1688083692723,
-      "contentHash": "da372a004f695445b09c69c351174f3b",
+      "lastModificationDate": 1683474241127,
+      "contentHash": "1af1970835110fd1d828d9570c720bdb",
       "sourceName": "lib/forge-std/src/Vm.sol",
       "solcConfig": {
         "settings": {
@@ -116,8 +112,7 @@
             "runs": 200
           },
           "metadata": {
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
+            "bytecodeHash": "ipfs"
           },
           "outputSelection": {
             "*": {
@@ -128,12 +123,11 @@
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
+                "evm.methodIdentifiers"
               ]
             }
           },
-          "evmVersion": "paris",
+          "evmVersion": "london",
           "libraries": {}
         }
       },
@@ -141,13 +135,13 @@
       "versionRequirement": ">=0.6.0",
       "artifacts": {
         "Vm": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "Vm.sol\\Vm.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Vm.sol/Vm.json"
         }
       }
     },
     "lib/forge-std/src/console.sol": {
-      "lastModificationDate": 1688083692724,
-      "contentHash": "c8cf989d04bc2e3069e3d91facf3b69c",
+      "lastModificationDate": 1683474241128,
+      "contentHash": "100b8a33b917da1147740d7ab8b0ded3",
       "sourceName": "lib/forge-std/src/console.sol",
       "solcConfig": {
         "settings": {
@@ -156,8 +150,7 @@
             "runs": 200
           },
           "metadata": {
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
+            "bytecodeHash": "ipfs"
           },
           "outputSelection": {
             "*": {
@@ -168,12 +161,11 @@
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
+                "evm.methodIdentifiers"
               ]
             }
           },
-          "evmVersion": "paris",
+          "evmVersion": "london",
           "libraries": {}
         }
       },
@@ -181,13 +173,13 @@
       "versionRequirement": ">=0.4.22, <0.9.0",
       "artifacts": {
         "console": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "console.sol\\console.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "console.sol/console.json"
         }
       }
     },
     "lib/forge-std/src/console2.sol": {
-      "lastModificationDate": 1688083692725,
-      "contentHash": "84e14285f3171a14073d0f81363094ac",
+      "lastModificationDate": 1683474241127,
+      "contentHash": "5df91f8e93efbfcccf68973dc1b74a70",
       "sourceName": "lib/forge-std/src/console2.sol",
       "solcConfig": {
         "settings": {
@@ -196,8 +188,7 @@
             "runs": 200
           },
           "metadata": {
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
+            "bytecodeHash": "ipfs"
           },
           "outputSelection": {
             "*": {
@@ -208,12 +199,11 @@
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
+                "evm.methodIdentifiers"
               ]
             }
           },
-          "evmVersion": "paris",
+          "evmVersion": "london",
           "libraries": {}
         }
       },
@@ -221,13 +211,13 @@
       "versionRequirement": ">=0.4.22, <0.9.0",
       "artifacts": {
         "console2": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "console2.sol\\console2.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "console2.sol/console2.json"
         }
       }
     },
     "src/Accounts.sol": {
-      "lastModificationDate": 1691458507000,
-      "contentHash": "a6b04f1e605eb47aa2920f6463729537",
+      "lastModificationDate": 1692287727450,
+      "contentHash": "1771021cb2eafa4090b33edc44a17033",
       "sourceName": "src/Accounts.sol",
       "solcConfig": {
         "settings": {
@@ -236,8 +226,7 @@
             "runs": 200
           },
           "metadata": {
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
+            "bytecodeHash": "ipfs"
           },
           "outputSelection": {
             "*": {
@@ -248,12 +237,11 @@
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
+                "evm.methodIdentifiers"
               ]
             }
           },
-          "evmVersion": "paris",
+          "evmVersion": "london",
           "libraries": {}
         }
       },
@@ -261,13 +249,13 @@
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "Accounts": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "Accounts.sol\\Accounts.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Accounts.sol/Accounts.json"
         }
       }
     },
     "src/Auctions.sol": {
-      "lastModificationDate": 1691458517381,
-      "contentHash": "b7bbbdc3b04329f3108e9da317b46f66",
+      "lastModificationDate": 1692287727451,
+      "contentHash": "80499692d557449e5ddc1cca22ee3f18",
       "sourceName": "src/Auctions.sol",
       "solcConfig": {
         "settings": {
@@ -276,8 +264,7 @@
             "runs": 200
           },
           "metadata": {
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
+            "bytecodeHash": "ipfs"
           },
           "outputSelection": {
             "*": {
@@ -288,28 +275,27 @@
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
+                "evm.methodIdentifiers"
               ]
             }
           },
-          "evmVersion": "paris",
+          "evmVersion": "london",
           "libraries": {}
         }
       },
       "imports": [
-        "src\\Accounts.sol"
+        "src/Accounts.sol"
       ],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "Auctions": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "Auctions.sol\\Auctions.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Auctions.sol/Auctions.json"
         }
       }
     },
     "src/Migrations.sol": {
-      "lastModificationDate": 1688083692879,
-      "contentHash": "bc5d2a325acfd4a12ab9dec54e57b59e",
+      "lastModificationDate": 1683474241129,
+      "contentHash": "50b3b1dc92806dc8f604fc8c5c65518f",
       "sourceName": "src/Migrations.sol",
       "solcConfig": {
         "settings": {
@@ -318,8 +304,7 @@
             "runs": 200
           },
           "metadata": {
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
+            "bytecodeHash": "ipfs"
           },
           "outputSelection": {
             "*": {
@@ -330,12 +315,11 @@
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
+                "evm.methodIdentifiers"
               ]
             }
           },
-          "evmVersion": "paris",
+          "evmVersion": "london",
           "libraries": {}
         }
       },
@@ -343,13 +327,13 @@
       "versionRequirement": ">=0.4.22, <0.9.0",
       "artifacts": {
         "Migrations": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "Migrations.sol\\Migrations.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Migrations.sol/Migrations.json"
         }
       }
     },
     "test/AccountGas.t.sol": {
-      "lastModificationDate": 1688337373816,
-      "contentHash": "50c43dd9528d2bf29ec9fe3926d3dab6",
+      "lastModificationDate": 1688434883597,
+      "contentHash": "445fb3be5d78139885cb55afe74d868d",
       "sourceName": "test/AccountGas.t.sol",
       "solcConfig": {
         "settings": {
@@ -358,8 +342,7 @@
             "runs": 200
           },
           "metadata": {
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
+            "bytecodeHash": "ipfs"
           },
           "outputSelection": {
             "*": {
@@ -370,34 +353,33 @@
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
+                "evm.methodIdentifiers"
               ]
             }
           },
-          "evmVersion": "paris",
+          "evmVersion": "london",
           "libraries": {}
         }
       },
       "imports": [
-        "lib/forge-std/lib/ds-test/src\\test.sol",
-        "lib/forge-std/src\\Test.sol",
-        "lib/forge-std/src\\Vm.sol",
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
         "lib/forge-std/src/console.sol",
         "lib/forge-std/src/console2.sol",
-        "src\\Accounts.sol",
-        "src\\Auctions.sol"
+        "src/Accounts.sol",
+        "src/Auctions.sol"
       ],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "AuctionGasTest": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "AccountGas.t.sol\\AuctionGasTest.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "AccountGas.t.sol/AuctionGasTest.json"
         }
       }
     },
     "test/Accounts.t.sol": {
-      "lastModificationDate": 1688337372389,
-      "contentHash": "063a7d031884292700c624a427c8250b",
+      "lastModificationDate": 1688434883598,
+      "contentHash": "e8e66d1fb071d0aaf8bd629d6624d138",
       "sourceName": "test/Accounts.t.sol",
       "solcConfig": {
         "settings": {
@@ -406,8 +388,7 @@
             "runs": 200
           },
           "metadata": {
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
+            "bytecodeHash": "ipfs"
           },
           "outputSelection": {
             "*": {
@@ -418,33 +399,32 @@
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
+                "evm.methodIdentifiers"
               ]
             }
           },
-          "evmVersion": "paris",
+          "evmVersion": "london",
           "libraries": {}
         }
       },
       "imports": [
-        "lib/forge-std/lib/ds-test/src\\test.sol",
-        "lib/forge-std/src\\Test.sol",
-        "lib/forge-std/src\\Vm.sol",
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
         "lib/forge-std/src/console.sol",
         "lib/forge-std/src/console2.sol",
-        "src\\Accounts.sol"
+        "src/Accounts.sol"
       ],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "AccountsTest": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "Accounts.t.sol\\AccountsTest.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Accounts.t.sol/AccountsTest.json"
         }
       }
     },
     "test/AuctionGas.t.sol": {
-      "lastModificationDate": 1691458798990,
-      "contentHash": "676f84613a3f2ae717e443436ab4aa4f",
+      "lastModificationDate": 1692287727451,
+      "contentHash": "5ffef5a427129742e634a140d6530690",
       "sourceName": "test/AuctionGas.t.sol",
       "solcConfig": {
         "settings": {
@@ -453,8 +433,7 @@
             "runs": 200
           },
           "metadata": {
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
+            "bytecodeHash": "ipfs"
           },
           "outputSelection": {
             "*": {
@@ -465,34 +444,33 @@
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
+                "evm.methodIdentifiers"
               ]
             }
           },
-          "evmVersion": "paris",
+          "evmVersion": "london",
           "libraries": {}
         }
       },
       "imports": [
-        "lib/forge-std/lib/ds-test/src\\test.sol",
-        "lib/forge-std/src\\Test.sol",
-        "lib/forge-std/src\\Vm.sol",
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
         "lib/forge-std/src/console.sol",
         "lib/forge-std/src/console2.sol",
-        "src\\Accounts.sol",
-        "src\\Auctions.sol"
+        "src/Accounts.sol",
+        "src/Auctions.sol"
       ],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "AuctionGasTest": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "AuctionGas.t.sol\\AuctionGasTest.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "AuctionGas.t.sol/AuctionGasTest.json"
         }
       }
     },
     "test/Auctions.t.sol": {
-      "lastModificationDate": 1691509694521,
-      "contentHash": "6be802bac922b279989a3306e6040821",
+      "lastModificationDate": 1692540407914,
+      "contentHash": "c52c0fce0d7254df5fcab1098c17f150",
       "sourceName": "test/Auctions.t.sol",
       "solcConfig": {
         "settings": {
@@ -501,8 +479,7 @@
             "runs": 200
           },
           "metadata": {
-            "bytecodeHash": "ipfs",
-            "appendCBOR": true
+            "bytecodeHash": "ipfs"
           },
           "outputSelection": {
             "*": {
@@ -513,28 +490,27 @@
                 "abi",
                 "evm.bytecode",
                 "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
+                "evm.methodIdentifiers"
               ]
             }
           },
-          "evmVersion": "paris",
+          "evmVersion": "london",
           "libraries": {}
         }
       },
       "imports": [
-        "lib/forge-std/lib/ds-test/src\\test.sol",
-        "lib/forge-std/src\\Test.sol",
-        "lib/forge-std/src\\Vm.sol",
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
         "lib/forge-std/src/console.sol",
         "lib/forge-std/src/console2.sol",
-        "src\\Accounts.sol",
-        "src\\Auctions.sol"
+        "src/Accounts.sol",
+        "src/Auctions.sol"
       ],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "AuctionsTest": {
-          "0.8.15+commit.e14f2714.Windows.msvc": "Auctions.t.sol\\AuctionsTest.json"
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Auctions.t.sol/AuctionsTest.json"
         }
       }
     }
