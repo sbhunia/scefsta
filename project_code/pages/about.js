@@ -41,6 +41,55 @@ export default function about() {
             # {Constants.PROJECT_NAME}
           </ReactMarkdown>
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            ### MVP V3 built by: Owen Campbell
+          </ReactMarkdown>
+          <List
+            sx={{ width: "50%", margin: "auto", bgcolor: "background.paper" }}
+            className={styles.mobileFull}
+          >
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <Avatar alt="Suman Bhunia" src="/static/images/avatar/1.jpg" />
+              </ListItemAvatar>
+              <ListItemText
+                primary="Suman Bhunia"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      Product Customer
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider variant="inset" component="li" />
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <Avatar alt="Owen Campbell" src="/static/images/avatar/1.jpg" />
+              </ListItemAvatar>
+              <ListItemText
+                primary="Owen Campbell"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      sx={{ display: "inline" }}
+                      component="span"
+                      variant="body2"
+                      color="text.primary"
+                    >
+                     Altered and polished the existing project to adapt for a thesis project. Updated all solidity code, added new functionalities in front end, and improved CSS design.
+                    </Typography>
+                  </React.Fragment>
+                }
+              />
+              </ListItem>
+              </List>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
             ### MVP V2 built by: Owen Campbell, Will Klaus, and Dalong Wang
           </ReactMarkdown>
           <List
