@@ -228,18 +228,18 @@ contract Auctions {
             "Tender is not ready to be claimed yet"
         );
 
-        /* remove after implementing late charge */
-        require(
-            block.timestamp < tenderMapping[tenderId].details.dueDate,
-            "Tender has expired"
-        );
-        require(contains(tenderMapping[tenderId].details.allowedHospitals, msg.sender), "sender not an allowed hospitals");
+        require(contains(tenderMapping[tenderId].details.allowedHospitals, msg.sender), "sender not an allowed hospital");
 
-        /* potentially add paying without penalty amount if late */ 
-        // transfer agreed upon funds to the tender accepter
-        tenderMapping[tenderId].details.tenderAccepter.transfer(
+        // if the tender was not delivered on time, do not send penalty amount back, else return all funds
+        if ( block.timestamp < tenderMapping[tenderId].details.dueDate) {
+            tenderMapping[tenderId].details.tenderAccepter.transfer(
+            tenderMapping[tenderId].details.finalBid);
+        } else {
+            // transfer agreed upon funds to the tender accepter
+            tenderMapping[tenderId].details.tenderAccepter.transfer(
             tenderMapping[tenderId].details.finalBid + tenderMapping[tenderId].details.penalty
-        );
+            );
+        }        
 
         // transfer funds back to the tender poster
         if (tenderMapping[tenderId].details.maxBid - tenderMapping[tenderId].details.finalBid > 0) {
