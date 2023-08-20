@@ -48,13 +48,13 @@ contract Accounts {
      // Allows the admin to add verified ambulances
     function addAmbulance(address addr) public {
         // verify account does not already have another role
-        require(hospitals[addr] == false, "already a facility");
-        require(ambulances[addr] == false, "already an ambulance");
-        require(initiators[addr] == false, "already an initiator");
-        require(admins[addr] == false, "sender is already admin");
+        require(hospitals[addr] == false, "Already facility");
+        require(ambulances[addr] == false, "Already a transport");
+        require(initiators[addr] == false, "Already initiator");
+        require(admins[addr] == false, "Already admin");
 
         // verify the sender is an admin
-        require(admins[msg.sender] == true, "sender must be admin");
+        require(admins[msg.sender] == true, "Sender must be admin");
 
         // if passes all requires add account to ambulances
         ambulances[addr] = true;
@@ -62,8 +62,8 @@ contract Accounts {
 
     // Allows the admin to remove verified ambulances
     function removeAmbulance(address addr) public {
-        require(admins[msg.sender] == true, "must be an admin");
-        require(ambulances[addr] == true, "must already be an ambulance");
+        require(admins[msg.sender] == true, "Must be admin");
+        require(ambulances[addr] == true, "Must be a transport");
         ambulances[addr] = false;
     }
 
@@ -75,12 +75,12 @@ contract Accounts {
     // Allows the admin to add verified police stations
     function addInitiator(address addr) public {
         // verify account does not already have another role
-        require(ambulances[addr] == false, "user already ambulance");
-        require(initiators[addr] == false, "user is already initiator");
-        require(admins[addr] == false, "user is already admin");
+        require(ambulances[addr] == false, "User already transport");
+        require(initiators[addr] == false, "User already initiator");
+        require(admins[addr] == false, "User already admin");
 
         // verify sender is an admin
-        require(admins[msg.sender] == true, "sender must be an admin");
+        require(admins[msg.sender] == true, "Sender must be an admin");
 
         // if passes all requires add the address as police
         initiators[addr] = true;
@@ -88,8 +88,8 @@ contract Accounts {
 
     // Allows the admin to remove verified police stations
     function removeInitiator(address addr) public {
-        require(admins[msg.sender] == true, "sender must be an admin");
-        require(initiators[addr] != false, "sender must already be an initator");
+        require(admins[msg.sender] == true, "Sender must be an admin");
+        require(initiators[addr] != false, "Must be initator");
         initiators[addr] = false;
     }
 
@@ -101,12 +101,12 @@ contract Accounts {
     // Allows the admin to add verified hospitals
     function addHospital(address addr) public {
         // verify account does not already have another role
-        require(hospitals[addr] == false, "already a hospital");
-        require(ambulances[addr] == false, "already an ambulance");
-        require(admins[addr] == false, "already an admin");
+        require(hospitals[addr] == false, "Already facility");
+        require(ambulances[addr] == false, "Already transport");
+        require(admins[addr] == false, "Already admin");
 
         // verify the sender is an admin
-        require(admins[msg.sender] == true, "sender is not an admin");
+        require(admins[msg.sender] == true, "Sender must be admin");
 
         // if passes all requires add account to hospitals
         hospitals[addr] = true;
@@ -114,8 +114,8 @@ contract Accounts {
 
     // Allows the admin to remove verified hospitals
     function removeHospital(address addr) public {
-        require(admins[msg.sender] == true, "must be an admin");
-        require(hospitals[addr] != false, "must already be a hospital");
+        require(admins[msg.sender] == true, "Sender must be an admin");
+        require(hospitals[addr] != false, "Not already a facility");
         hospitals[addr] = false;
     }
 
@@ -126,20 +126,20 @@ contract Accounts {
 
     // add a new admin
     function addAdmin(address addr) public {
-        require(ambulances[addr] == false, "already an ambulance");
-        require(hospitals[addr] == false, "already a hospital");
-        require(initiators[addr] == false, "already an initiator");
-        require(admins[addr] == false, "already an admin");
+        require(ambulances[addr] == false, "Already transport");
+        require(hospitals[addr] == false, "Already facility");
+        require(initiators[addr] == false, "Already initiator");
+        require(admins[addr] == false, "Already an admin");
         require(addr != superAdmin, "superAdmin is already an admin");
-        require(msg.sender == superAdmin, "must be a superAdmin");
+        require(msg.sender == superAdmin, "Sender must be superAdmin");
         admins[addr] = true;
     }
 
     // remove an existing admin
     function removeAdmin(address addr) public {
-        require(msg.sender == superAdmin, "must be a superAdmin");
-        require(admins[addr] == true, "must already be an admin");
-        require(addr != msg.sender, "cannot remove yourself as admin");
+        require(msg.sender == superAdmin, "Sender must be a superAdmin");
+        require(admins[addr] == true, "Not an admin");
+        require(addr != msg.sender, "Cannot remove yourself as admin");
         admins[addr] = false;
     }
 }
