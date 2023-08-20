@@ -190,6 +190,7 @@ contract Auctions {
 
         // set new info to tender mapping
         tenderMapping[tenderId] = tender;
+        tenders[tenderId] = tender;
     }
     
     /*
@@ -253,6 +254,7 @@ contract Auctions {
         Tender storage referencedTender = tenderMapping[tenderId];
         referencedTender.status = TenderStatus.Closed;
         tenderMapping[tenderId] = referencedTender;
+        tenders[tenderId] = referencedTender;
     }
 
     /*
@@ -301,6 +303,7 @@ contract Auctions {
 
         // update status of the tender
         tenderMapping[tenderId].status = TenderStatus.Reclaimed;
+        tenders[tenderId].status = TenderStatus.Reclaimed;
     }
 
     /*
@@ -325,6 +328,7 @@ contract Auctions {
 
         // update status of the tender
         tenderMapping[tenderId].status = TenderStatus.Retracted;
+        tenders[tenderId].status = TenderStatus.Retracted;
     }
 
     // This sucks, but it's one of the consequences of storing everything on the blockchain

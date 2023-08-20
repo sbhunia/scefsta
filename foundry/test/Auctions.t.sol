@@ -128,6 +128,10 @@ contract AuctionsTest is Test {
         assertTrue(newTender.status == Auctions.TenderStatus.InProgress);
         assertTrue(newTender.details.finalBid == bidVal);
         assertTrue(newTender.details.tenderAccepter == ambulance);
+
+        Auctions.Tender[] memory tenders = auc.getAllTenders();
+        assertTrue(tenders[tenderId].status == Auctions.TenderStatus.InProgress, "Tender is not in progress");
+
     }
  
     function testVerifyDelivery() public {
