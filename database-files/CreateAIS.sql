@@ -64,7 +64,7 @@ INSERT INTO Users (walletId, address, city, state, zipcode, policeDept, stationN
     VALUES ('0xcdF98E3f41A0160360884f67BF8FfF35D92d4E2f', '101 E High St', 'Oxford', 'Ohio', 45056,
      'Oxford Police Dept', '1', 'emergency', 'initiator');
 
-INSERT INTO Users (walletId, firstName, lastName, email, address, city, state, initiatorType, accountType)
+INSERT INTO Users (walletId, firstName, lastName, email, address, city, state, zipcode, initiatorType, accountType)
     VALUES ('0xC53762A6D1E4557Ab363eE38042828fcfBF064bE', 'Sharon', 'Mihalis', 'private@gmail.com', 
     '112 S Poplar St Apt 4', 'Oxford', 'Ohio', 45056, 'private', 'initiator');
 
