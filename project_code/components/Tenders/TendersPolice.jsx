@@ -28,15 +28,6 @@ export default function Tenders(tend) {
             setSearchResults(tenders);
         }
     };
-
-    const getSearchTerm = () => {
-        searchHandler(inputEl.current.value);
-    };
-
-    const getLocation = () => {
-        const location = useLocation();
-        return location.pathname;
-    };
     
     return (
         <div className={ styles.containerPolice }>

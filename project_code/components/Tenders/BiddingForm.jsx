@@ -16,7 +16,7 @@ import Alert from "@mui/material/Alert";
 import Web3 from "web3";
 import { AUCTION_INSTANCE } from "../../pages/_app";
 import crypto from "crypto";
-import * as Constants from "../../pages/constants";
+import * as Constants from "../../constants";
 const BigNumber = require("bignumber.js");
 const web3 = new Web3();
 

@@ -1,6 +1,6 @@
 "use strict";
 const mysqlLib = require("../../config_database/mysqlLib");
-import * as Constants from "../constants";
+import * as Constants from "../../constants";
 
 export default async function handler(req, res) {
   switch (req.method) {

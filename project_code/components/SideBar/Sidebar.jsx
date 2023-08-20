@@ -43,8 +43,8 @@ export default function Sidebar() {
           <ul className={styles.sidebarList}>
             {sidebarAdminDataDashboard.map((item, index) => {
               return (
-                <Link href={item.path}>
-                  <li key={index} className={styles.flexListItem}>
+                <Link href={item.path} key={index}>
+                  <li className={styles.flexListItem}>
                     <h6 className={styles.sidebarIcon}> {item.icon} </h6>
                     <h6 className={styles.sidebarListItem}>{item.title}</h6>
                   </li>
@@ -58,8 +58,8 @@ export default function Sidebar() {
           <ul className={styles.sidebarList}>
             {SidebarAdminDataSettings.map((item, index) => {
               return (
-                <Link href={item.path}>
-                  <li key={index} className={styles.flexListItem}>
+                <Link href={item.path} key={index}>
+                  <li className={styles.flexListItem}>
                     <h6 className={styles.sidebarIcon}> {item.icon} </h6>
                     <h6 className={styles.sidebarListItem}>{item.title}</h6>
                   </li>

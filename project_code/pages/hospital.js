@@ -9,7 +9,7 @@ import styles from "../styles/Patients.module.css";
 import { useEthers } from "@usedapp/core";
 import LockIcon from "@mui/icons-material/Lock";
 import { Button } from "@mui/material";
-import * as Constants from "../pages/constants";
+import * as Constants from "../constants";
 import withMetaMask from "../components/WithMetaMask";
 import { getPageRoute } from "../solidityCalls";
 
@@ -69,7 +69,7 @@ function Hospital({ accepted, incoming, pending }) {
     setIsHospital(JSON.parse(sessionStorage.getItem("isHospital")));
     setIsPolice(JSON.parse(sessionStorage.getItem("isPolice")));
     setIsAmbulance(JSON.parse(sessionStorage.getItem("isAmbulance")));
-  });
+  }, []);
 
   if (isHospital) {
     return (
@@ -137,7 +137,7 @@ function Hospital({ accepted, incoming, pending }) {
                 getPageRoute(isAdmin, isHospital, isPolice, isAmbulance);
               }}
             >
-              &larr; Return to User's Home
+              &larr; Return to User{"'"}s Home
             </Button>
           </div>
         </div>

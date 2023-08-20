@@ -13,7 +13,8 @@ import {
   getPageRoute,
 } from "../../solidityCalls";
 import { providers } from "ethers";
-import * as Constants from "../../pages/constants";
+import * as Constants from "../../constants";
+import Link from "next/link";
 
 export default function TopNavbar() {
   const [metaInstalled, setMetaInstalled] = useState(false);
@@ -114,9 +115,9 @@ export default function TopNavbar() {
       <div className={styles.topbarWrapper}>
         <div>
           <span className={styles.topbarLeft}>
-            <a href="/">
+            <Link href="/">
               <img src="logo_P_1.png" className={styles.topbarLogo}></img>
-            </a>
+            </Link>
             <h3 className={styles.topbarUser}>{Constants.PROJECT_ABR}</h3>
           </span>
         </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../../styles/Landing.module.css";
-import * as Constants from "../../pages/constants";
+import * as Constants from "../../constants";
 
 export default function Hero() {
   return (

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as Constants from '../../pages/constants';
+import * as Constants from '../../constants';
 import stylesP from '../../styles/Popup.module.css';
 import HospitalDataGrid from "../Hospitals/HospitalDataGrid";
 import { getDistance } from 'geolib';

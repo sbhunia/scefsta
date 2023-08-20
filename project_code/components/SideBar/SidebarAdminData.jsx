@@ -3,7 +3,7 @@ import * as MdIcons from "react-icons/md";
 import * as FaIcons from "react-icons/fa";
 import * as BiIcons from "react-icons/bi";
 import * as CgIcons from "react-icons/cg";
-import * as Constants from "../../pages/constants";
+import * as Constants from "../../constants";
 
 // 'title' provides text for each tab
 // 'path' provides a link/reference to a page

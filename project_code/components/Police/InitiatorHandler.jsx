@@ -1,6 +1,6 @@
 import * as React from 'react';
 import stylesP from '../../styles/Popup.module.css';
-import * as Constants from '../../pages/constants';
+import * as Constants from '../../constants';
 import InitiatorDataGrids from './InitiatorDataGrids';
 
 /**

@@ -1,6 +1,6 @@
 "use strict";
 
-import * as Constants from "../constants";
+import * as Constants from "../../constants";
 import { resolve } from "path";
 
 import mysqlLib from "../../config_database/mysqlLib";

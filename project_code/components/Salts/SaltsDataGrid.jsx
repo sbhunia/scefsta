@@ -3,7 +3,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 import Popup from "../Popup/Popup";
 import RevealBid from "../Popup/RevealBid";
-import * as Constants from "../../pages/constants";
+import * as Constants from "../../constants";
 import { getAllTenders } from "../../solidityCalls";
 import { providers } from "ethers";
 const BigNumber = require("bignumber.js");

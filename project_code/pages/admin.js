@@ -13,7 +13,7 @@ import { useEthers } from "@usedapp/core";
 import { Button } from "@mui/material";
 import { CircularProgress } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
-import * as Constants from "../pages/constants";
+import * as Constants from "../constants";
 import withMetaMask from "../components/WithMetaMask";
 import { getPageRoute } from "../solidityCalls";
 
@@ -75,7 +75,7 @@ function AdminPortal({ admins, hospitals, ambulances, police }) {
     setIsHospital(JSON.parse(sessionStorage.getItem("isHospital")));
     setIsPolice(JSON.parse(sessionStorage.getItem("isPolice")));
     setIsAmbulance(JSON.parse(sessionStorage.getItem("isAmbulance")));
-  });
+  }, []);
 
   if (isAdmin) {
     return (
@@ -166,9 +166,7 @@ function AdminPortal({ admins, hospitals, ambulances, police }) {
               onClick={() => {
                 getPageRoute(isAdmin, isHospital, isPolice, isAmbulance);
               }}
-            >
-              &larr; Return to User's Home
-            </Button>
+            >&larr; Return to User{"'"}s Home</Button>
           </div>
         </div>
       </div>

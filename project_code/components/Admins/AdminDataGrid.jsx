@@ -6,7 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Popup from '../Popup/Popup';
 import stylesP from '../../styles/Popup.module.css'
-import * as Constants from '../../pages/constants';
+import * as Constants from '../../constants';
 import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
 import Box from '@mui/material/Box';

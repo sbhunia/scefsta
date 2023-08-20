@@ -8,7 +8,7 @@ import Tenders from "../components/Tenders/Tenders";
 import LockIcon from "@mui/icons-material/Lock";
 import { Button } from "@mui/material";
 import { useEthers } from "@usedapp/core";
-import * as Constants from "../pages/constants";
+import * as Constants from "../constants";
 import { getAllTenders, getPageRoute } from "../solidityCalls";
 import SaltsDataGrid from "../components/Salts/SaltsDataGrid";
 import withMetaMask from "../components/WithMetaMask";
@@ -53,7 +53,7 @@ function a11yProps(index) {
  * @param {*} tenders JSON containing open tenders.
  * @returns
  */
-function ambulance({ patients }) {
+function Ambulance({ patients }) {
   const { account } = useEthers();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isHospital, setIsHospital] = useState(false);
@@ -179,7 +179,7 @@ function ambulance({ patients }) {
                 getPageRoute(isAdmin, isHospital, isPolice, isAmbulance);
               }}
             >
-              &larr; Return to User's Home
+              &larr; Return to User{"'"}s Home
             </Button>
           </div>
         </div>
@@ -200,7 +200,7 @@ function ambulance({ patients }) {
   }
 }
 
-export default withMetaMask(ambulance);
+export default withMetaMask(Ambulance);
 
 export async function getStaticProps(ctx) {
   const res1 = await fetch(Constants.getPatients);

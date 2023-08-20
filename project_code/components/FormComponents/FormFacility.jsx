@@ -1,5 +1,5 @@
 import React from "react";
-import * as Constants from "../../pages/constants";
+import * as Constants from "../../constants";
 
 export const FormFacility = ({ allowedHospitals, selectedData }) => {
   return (

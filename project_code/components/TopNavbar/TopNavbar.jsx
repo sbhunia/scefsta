@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../../styles/TopNavbar.module.css";
 import "../../public/logo_P_1.png";
-import * as Constants from "../../pages/constants";
+import * as Constants from "../../constants";
 import { useEtherBalance, useEthers } from "@usedapp/core";
 import { formatEther } from "@ethersproject/units";
 

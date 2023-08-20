@@ -12,7 +12,7 @@ import Grid from "@mui/material/Grid";
 import PropTypes from "prop-types";
 import { Open } from "../components/Dashboard/Open";
 import { Total } from "../components/Dashboard/Total";
-import * as Constants from "../pages/constants";
+import * as Constants from "../constants";
 import { getAllTenders } from "../solidityCalls";
 import withMetaMask from "../components/WithMetaMask";
 import { getPageRoute } from "../solidityCalls";
@@ -168,7 +168,7 @@ function Police() {
                 getPageRoute(isAdmin, isHospital, isPolice, isAmbulance);
               }}
             >
-              &larr; Return to User's Home
+              &larr; Return to User{"'"}s Home
             </Button>
           </div>
         </div>

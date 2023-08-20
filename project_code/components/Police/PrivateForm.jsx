@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { Button, TextField } from '@mui/material';
 import { useContractFunction, transactionErrored } from '@usedapp/core';
 import { ACCOUNT_INSTANCE } from '../../pages/_app';
-import * as Constants from '../../pages/constants';
+import * as Constants from '../../constants';
 import FormAddress from "../FormComponents/FormAddress";
 import { FormWalletID } from "../FormComponents/FormWalletID";
 
