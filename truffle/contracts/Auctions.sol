@@ -301,6 +301,7 @@ contract Auctions {
 
         // update status of the tender
         tenderMapping[tenderId].status = TenderStatus.Reclaimed;
+        tenders[tenderId].status = TenderStatus.Reclaimed;
     }
 
     /*
@@ -325,6 +326,7 @@ contract Auctions {
 
         // update status of the tender
         tenderMapping[tenderId].status = TenderStatus.Retracted;
+        tenders[tenderId].status = TenderStatus.Retracted;
     }
 
     // This sucks, but it's one of the consequences of storing everything on the blockchain
