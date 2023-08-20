@@ -88,12 +88,12 @@ contract Auctions {
         string memory severity,
         address[] memory allowedHospitals
     ) public payable returns (uint256) {
-        require(accountsContract.isInitiator(msg.sender), "sender must be tender initiator");
-        require(msg.value > 0, "maxval must be greater than 0");
+        require(accountsContract.isInitiator(msg.sender), "Sender is not initiator");
+        require(msg.value > 0, "Max value not greater than 0");
 
         // validate allowed hospitals given are valid hospitals
         for (uint256 i = 0; i < allowedHospitals.length; i++) {
-            require(accountsContract.isHospital(allowedHospitals[i]), "given hospital list invalid");
+            require(accountsContract.isHospital(allowedHospitals[i]), "Given hospital list invalid");
         }
 
         // initalize new tender information
@@ -139,11 +139,11 @@ contract Auctions {
     */
     function secretBid(uint256 tenderId, uint256 bidHashedAmount) public payable returns(uint256 index) {
         Tender memory tender = tenderMapping[tenderId];
-        require(accountsContract.isAmbulance(msg.sender), "sender must be an ambulance");
-        require(tender.status == TenderStatus.Open, "tender must be open");
-        require (block.timestamp < tender.details.auctionDate, "auction period has passed");
-        require(msg.value == tender.details.penalty, "sent penalty amount does not match tender");
-        require(!contains(tender.details.bidders, msg.sender), "can only bid once");
+        require(accountsContract.isAmbulance(msg.sender), "Sender must be an ambulance");
+        require(tender.status == TenderStatus.Open, "Tender not open");
+        require (block.timestamp < tender.details.auctionDate, "Auction has passed");
+        require(msg.value == tender.details.penalty, "Incorrect penalty amount");
+        require(!contains(tender.details.bidders, msg.sender), "Can only bid once");
 
         // add bid to array
         tenderMapping[tenderId].details.bidders.push(msg.sender);
@@ -167,14 +167,14 @@ contract Auctions {
         uint256 index
     ) public payable {
         Tender storage tender = tenderMapping[tenderId];
-        require(accountsContract.isAmbulance(msg.sender), "sender must be ambulance");
-        require(block.timestamp > tender.details.auctionDate, "tender still under auction");
-        require(block.timestamp < tender.details.revealDate, "tender is past reveal period");
-        require(tender.status == TenderStatus.Open, "tender is not open");
-        require(bidVal < tender.details.maxBid, "bid was not below max bid amount");
-        require(msg.sender == tender.details.bidders[index], "wrong bid ID");
-        require(tender.details.penalty == msg.value, "did not send correct penalty amount");
-        require(tender.details.bidHashArray[index] == uint256(keccak256(abi.encodePacked(bidVal + salt))), "bid value does not match hashed value");
+        require(accountsContract.isAmbulance(msg.sender), "Sender must be ambulance");
+        require(block.timestamp > tender.details.auctionDate, "Tender under auction");
+        require(block.timestamp < tender.details.revealDate, "Tender past reveal period");
+        require(tender.status == TenderStatus.Open, "Tender not open");
+        require(bidVal < tender.details.maxBid, "Bid was not below max bid amount");
+        require(msg.sender == tender.details.bidders[index], "Wrong bid ID");
+        require(tender.details.penalty == msg.value, "Incorrect penalty amount");
+        require(tender.details.bidHashArray[index] == uint256(keccak256(abi.encodePacked(bidVal + salt))), "Bid value does not match hashed value");
 
         // if job was already assigned, refund 
         if (tender.details.tenderAccepter != address(0)) {
@@ -199,13 +199,13 @@ contract Auctions {
      */
     function getAuctionWinner(uint256 tenderId) public view returns (address tenderWinner) {
         require(
-            tenderMapping[tenderId].status != TenderStatus.Open,
-            "no winner for open tender"
-        );
-        require(
             block.timestamp >
                 tenderMapping[tenderId].details.revealDate,
                 "tender must be past reveal period"
+        );
+
+        require(
+            tenderMapping[tenderId].status != TenderStatus.Open, "Tender is open"
         );
 
         return tenderMapping[tenderId].details.tenderAccepter;
@@ -225,10 +225,10 @@ contract Auctions {
         require(
             block.timestamp >
                 tenderMapping[tenderId].details.revealDate,
-            "Tender is not ready to be claimed yet"
+            "Tender is not past reveal date"
         );
 
-        require(contains(tenderMapping[tenderId].details.allowedHospitals, msg.sender), "sender not an allowed hospital");
+        require(contains(tenderMapping[tenderId].details.allowedHospitals, msg.sender), "Sender not an allowed hospital");
 
         // if the tender was not delivered on time, do not send penalty amount back, else return all funds
         if ( block.timestamp < tenderMapping[tenderId].details.dueDate) {
@@ -283,17 +283,17 @@ contract Auctions {
     function reclaimTender(uint256 tenderId) public {
         require(
             tenderMapping[tenderId].details.tenderPoster == msg.sender,
-            "sender is not the tender poster"
+            "Sender is not the tender poster"
         );
         require(
             tenderMapping[tenderId].status == TenderStatus.InProgress,
-            "tender is not in progress"
+            "Tender not in progress"
         );
         require(
             tenderMapping[tenderId].details.tenderAccepter != address(0),
-            "tender accepter is not the address set"
+            "Tender accepter is not the address set"
         );
-        require(tenderMapping[tenderId].details.dueDate > block.timestamp, "auction period is over");
+        require(block.timestamp < tenderMapping[tenderId].details.dueDate, "Auction is over");
 
         tenderMapping[tenderId].details.tenderPoster.transfer(
             tenderMapping[tenderId].details.maxBid + tenderMapping[tenderId].details.penalty
@@ -312,11 +312,11 @@ contract Auctions {
     function retractTender(uint256 tenderId) public {
         require(
             msg.sender == tenderMapping[tenderId].details.tenderPoster,
-            "sender is not the tender poster"
+            "Sender is not the tender poster"
         );
         require(
             tenderMapping[tenderId].status == TenderStatus.Open,
-            "tender is not open"
+            "Tender not open"
         );
 
         // can only retract a tender if bid period is over (need to add)
