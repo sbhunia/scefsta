@@ -94,6 +94,8 @@ contract AuctionGasTest is Test {
         // set bid variables
         bidVal = 100;
         saltVal = 10;
+        hashVal = uint(keccak256(abi.encodePacked(bidVal + saltVal)));
+
         // add new admin
         vm.startPrank(superAdmin);
             acc.addAdmin(admin);
@@ -124,12 +126,14 @@ contract AuctionGasTest is Test {
             //auction functions
             auc.getAllTenders();
             
-            hashVal = 110;
             hoax(ambulance, 10000 ether);
             uint bidID = auc.secretBid{value: penalty}(tender, hashVal);
 
+            skip(timeLimit + 10);
             hoax(ambulance, 1000 ether);
             auc.revealBid{value: penalty}(tender, bidVal, saltVal, bidID);
+            
+            skip(320);
             auc.getAuctionWinner(tender);
 
             /* Do this independently from reclaim tender */

@@ -87,12 +87,18 @@ contract AuctionsTest is Test {
         tender = auc.postTender{value: 100}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", "45056", penalty, "High", allowedHospitals);
         assertEq(tender, 0);
 
+        Auctions.Tender memory newTender = auc.getTender(tender);
+        assertTrue(newTender.status == Auctions.TenderStatus.Open, "Tender is not open");
+        assertTrue(newTender.details.tenderPoster == initiator);
+        assertTrue(newTender.tenderId == 0);
+
+        Auctions.Tender[] memory tenders = auc.getAllTenders();
+        assertTrue(tenders[tender].status == Auctions.TenderStatus.Open, "Tender is not open");
+
         hoax(initiator, 10000 ether);
         tender = auc.postTender{value: 100}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", "45056", penalty, "High", allowedHospitals);
         assertEq(tender, 1);
     }
-
-    function cannotPostTender() public {}
 
     function testSecretBid() public {
         hoax(initiator, 10000 ether);
@@ -103,6 +109,10 @@ contract AuctionsTest is Test {
         hoax(ambulance, 10000 ether);
         uint bidID1 = auc.secretBid{value: 0}(tender, hashVal);
         assertEq(0, bidID1);
+
+        Auctions.Tender memory newTender = auc.getTender(tender);
+        assertTrue(newTender.details.bidders[0] == ambulance, "Bidder is not in the list");
+        assertTrue(newTender.details.bidHashArray[0] == hashVal, "Incorrect hash amount set");
 
         hoax(ambulance2, 10000 ether);
         uint bidID2 = auc.secretBid{value: 0}(tender, hashVal);
@@ -131,7 +141,6 @@ contract AuctionsTest is Test {
 
         Auctions.Tender[] memory tenders = auc.getAllTenders();
         assertTrue(tenders[tenderId].status == Auctions.TenderStatus.InProgress, "Tender is not in progress");
-
     }
  
     function testVerifyDelivery() public {
@@ -139,16 +148,19 @@ contract AuctionsTest is Test {
         tender = auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", "45056", penalty, "High", allowedHospitals);
         assertEq(tender, 0);
         
-        hashVal = 110;
         hoax(ambulance, 10000 ether);
         uint bidID = auc.secretBid{value: penalty}(tender, hashVal);
         assertEq(0, bidID);
 
+        skip(timeLimit + 5);
         hoax(ambulance, 1000 ether);
         auc.revealBid{value: penalty}(tender, bidVal, saltVal, bidID);
 
+        skip(320);
         hoax(hospital, 1000 ether);
         auc.verifyDelivery(tender);
+        Auctions.Tender memory newTender = auc.getTender(tender);
+        assertTrue(newTender.status == Auctions.TenderStatus.Closed, "Tender is not closed");
     }
 
     function testReclaimTender() public {
@@ -156,11 +168,11 @@ contract AuctionsTest is Test {
         tender = auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", "45056", penalty, "High", allowedHospitals);
         assertEq(tender, 0);
         
-        hashVal = 110;
         hoax(ambulance, 10000 ether);
         uint bidID = auc.secretBid{value: penalty}(tender, hashVal);
         assertEq(0, bidID);
 
+        skip(timeLimit + 5);
         hoax(ambulance, 1000 ether);
         auc.revealBid{value: penalty}(tender, bidVal, saltVal, bidID);
 
@@ -201,21 +213,23 @@ contract AuctionsTest is Test {
 
     function testGetAuctionWinner() public {
         hoax(initiator, 10000 ether);
-        tender = auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", "45056", 0, "High", allowedHospitals);
+        tender = auc.postTender{value: 10000}(timeLimit, deliveryTime, "311 Thatcher Loop", "Oxford", "Ohio", "45056", penalty, "High", allowedHospitals);
         assertEq(tender, 0);
 
-        hashVal = 110;
         hoax(ambulance, 10000 ether);
-        uint bidID1 = auc.secretBid{value: 0}(tender, hashVal);
+        uint bidID1 = auc.secretBid{value: penalty}(tender, hashVal);
         assertEq(0, bidID1);
 
+        uint256 hashVal2 = uint(keccak256(abi.encodePacked(bidVal-10 + saltVal)));
         hoax(ambulance2, 10000 ether);
-        uint bidID2 = auc.secretBid{value: 0}(tender, hashVal);
+        uint bidID2 = auc.secretBid{value: penalty}(tender, hashVal2);
         assertEq(1, bidID2);
 
-        hoax(ambulance, 10000 ether);
-        auc.revealBid(tender, bidVal, saltVal, bidID1);
+        skip(timeLimit + 5);
+        hoax(ambulance, 1000 ether);
+        auc.revealBid{value: penalty}(tender, bidVal, saltVal, bidID1);
 
+        skip(320);
         address winner = auc.getAuctionWinner(tender);
         assertEq(winner, ambulance);
     }
