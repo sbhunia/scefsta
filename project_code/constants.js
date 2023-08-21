@@ -60,6 +60,7 @@ export const getPolice = "http://localhost:3000/api/police";
 export const getAmbulances = "http://localhost:3000/api/ambulances";
 export const getHospitals = "http://localhost:3000/api/hospitals";
 export const getTenders = "http://localhost:3000/api/tenders";
+export const getUsers = "http://localhost:3000/api/users";
 export const addAdmin = "api/admins";
 export const addAmbulance = "api/ambulances";
 export const addHospital = "api/hospitals";
