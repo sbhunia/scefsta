@@ -2,7 +2,7 @@ import { useCall } from "@usedapp/core";
 import {  auctionsAddress } from "./config";
 import { ACCOUNT_INSTANCE, AUCTION_INSTANCE } from "./pages/_app";
 import Router from "next/router";
-import { TENDER_STATUS } from "./constants";
+import * as Constants from "./constants";
 const BigNumber = require("bignumber.js");
 
 /**
@@ -151,7 +151,7 @@ export const getAllTenders = async (provider) => {
         dueDate.toLocaleDateString() + " " + dueDate.toLocaleTimeString();
       updatedTender["dueDate"] = formattedDueDate;
 
-      updatedTender["strStatus"] = TENDER_STATUS[tender["status"]];
+      updatedTender["strStatus"] = Constants.TENDER_STATUS[tender["status"]];
       return updatedTender;
     });
     return tenders;
@@ -201,13 +201,13 @@ export const getAuctionWinner = async (tenderId, provider) => {
 export const getPageRoute = (isAdmin, isHospital, isPolice, isAmbulance) => {
   // Use the results of the check functions for further logic
   if (isAdmin) {
-    Router.push("/admin");
+    Router.push(Constants.DevAdminURL);
   } else if (isHospital) {
-    Router.push("/hospital");
+    Router.push(Constants.DevHospitalURL);
   } else if (isPolice) {
-    Router.push("/police");
+    Router.push(Constants.DevPoliceURL);
   } else if (isAmbulance) {
-    Router.push("/ambulance");
+    Router.push(Constants.DevAmbulanceURL);
   } else {
     alert("Wallet is not associated with a valid account, contact an admin");
   }

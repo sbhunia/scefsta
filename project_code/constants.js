@@ -5,9 +5,9 @@ export const PROJECT_NAME = "Title";
 // Page URLs
 export const DevHomeURL = "/home";
 export const DevAdminURL = "/admin";
-export const DevHospitalURL = "/hospital";
-export const DevPoliceURL = "/police";
-export const DevAmbulanceURL = "/ambulance";
+export const DevHospitalURL = "/facility";
+export const DevPoliceURL = "/initiator";
+export const DevAmbulanceURL = "/transport";
 export const DevProfileURL = "/profile";
 export const DevAboutURL = "/about";
 
