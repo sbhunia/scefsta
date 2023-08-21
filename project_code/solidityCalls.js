@@ -1,9 +1,8 @@
 import { useCall } from "@usedapp/core";
-import { accountsAddress, auctionsAddress } from "./config";
+import {  auctionsAddress } from "./config";
 import { ACCOUNT_INSTANCE, AUCTION_INSTANCE } from "./pages/_app";
 import Router from "next/router";
 import { TENDER_STATUS } from "./constants";
-import { ConstructionOutlined } from "@mui/icons-material";
 const BigNumber = require("bignumber.js");
 
 /**
