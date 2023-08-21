@@ -190,6 +190,7 @@ contract Auctions {
 
         // set new info to tender mapping
         tenderMapping[tenderId] = tender;
+        tenders[tenderId] = tender;
     }
     
     /*
@@ -253,6 +254,7 @@ contract Auctions {
         Tender storage referencedTender = tenderMapping[tenderId];
         referencedTender.status = TenderStatus.Closed;
         tenderMapping[tenderId] = referencedTender;
+        tenders[tenderId] = referencedTender;
     }
 
     /*
