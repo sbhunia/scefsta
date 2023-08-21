@@ -59,7 +59,7 @@ function a11yProps(index) {
  * Path: localhost:3000/admin
  */
 function AdminPortal({ admins, hospitals, ambulances, police }) {
-  const { account } = useEthers();
+  const [account, setAccount] = useState();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isHospital, setIsHospital] = useState(false);
   const [isPolice, setIsPolice] = useState(false);
@@ -75,6 +75,7 @@ function AdminPortal({ admins, hospitals, ambulances, police }) {
     setIsHospital(JSON.parse(sessionStorage.getItem("isHospital")));
     setIsPolice(JSON.parse(sessionStorage.getItem("isPolice")));
     setIsAmbulance(JSON.parse(sessionStorage.getItem("isAmbulance")));
+    setAccount(sessionStorage.getItem("accountId"));
   }, []);
 
   if (isAdmin) {

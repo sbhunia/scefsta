@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import styles from "../../styles/Tender.module.css";
@@ -9,7 +9,6 @@ import InputAdornment from "@mui/material/InputAdornment";
 import {
   useContractFunction,
   transactionErrored,
-  useEthers,
 } from "@usedapp/core";
 import { CircularProgress } from "@mui/material";
 import Alert from "@mui/material/Alert";
@@ -30,11 +29,9 @@ export default function BiddingForm({
   setTrigger,
   auctionEnd,
 }) {
-  const { account } = useEthers();
-
+  const [account, setAccount] = useState();;
   const [desiredBid, setDesiredBid] = React.useState("");
   const [salt, setSalt] = React.useState();
-  const [bidId, setBidId] = useState();
 
   const generateSalt = () => {
     let saltVal = crypto.randomBytes(6).toString("hex");
@@ -87,6 +84,10 @@ export default function BiddingForm({
       alert(`Error adding bid to DB, contact the SuperAdmin`);
     }
   };
+
+  useEffect(() => {
+    setAccount(sessionStorage.getItem("accountId"));
+  }, []);
 
   return (
     <div className={styles.editHospital}>

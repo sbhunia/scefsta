@@ -1,15 +1,19 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import styles from "../../styles/TopNavbar.module.css";
 import "../../public/logo_P_1.png";
 import * as Constants from "../../constants";
-import { useEtherBalance, useEthers } from "@usedapp/core";
+import { useEtherBalance } from "@usedapp/core";
 import { formatEther } from "@ethersproject/units";
 
 export default function TopNavbar() {
 
-  const { account } = useEthers();
+  const [account, setAccount] = useState();
   const etherBalance = useEtherBalance(account);
   
+  useEffect(() => {
+    setAccount(sessionStorage.getItem("accountId"));
+  }, [])
+
   return (
     <div className={styles.topNavbar}>
       <div className={styles.topbarWrapper}>

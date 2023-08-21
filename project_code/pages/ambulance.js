@@ -54,7 +54,7 @@ function a11yProps(index) {
  * @returns
  */
 function Ambulance({ patients }) {
-  const { account } = useEthers();
+  const [account, setAccount] = useState();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isHospital, setIsHospital] = useState(false);
   const [isPolice, setIsPolice] = useState(false);
@@ -81,7 +81,7 @@ function Ambulance({ patients }) {
     setIsHospital(JSON.parse(sessionStorage.getItem("isHospital")));
     setIsPolice(JSON.parse(sessionStorage.getItem("isPolice")));
     setIsAmbulance(JSON.parse(sessionStorage.getItem("isAmbulance")));
-
+    setAccount(sessionStorage.getItem("accountId"));
     const provider = new providers.Web3Provider(window.ethereum);
     let tempTenders = await getAllTenders(provider);
     setTenders(tempTenders);

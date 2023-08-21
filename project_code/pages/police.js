@@ -60,13 +60,11 @@ function Police() {
   const [isHospital, setIsHospital] = useState(false);
   const [isPolice, setIsPolice] = useState(false);
   const [isAmbulance, setIsAmbulance] = useState(false);
-  const [tenders, setTenders] = useState([]);
   const [openTenders, setOpenTenders] = useState([]);
   const [openTenderCnt, setOpenTenderCnt] = useState(0);
   const [totalTenderCnt, setTotalTenderCnt] = useState(0);
   const [value, setValue] = useState(0);
-
-  const { account } = useEthers();
+  const [account, setAccount] = useState();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -77,11 +75,11 @@ function Police() {
     setIsHospital(JSON.parse(sessionStorage.getItem("isHospital")));
     setIsPolice(JSON.parse(sessionStorage.getItem("isPolice")));
     setIsAmbulance(JSON.parse(sessionStorage.getItem("isAmbulance")));
+    setAccount(sessionStorage.getItem("accountId"));
 
     const provider = new providers.Web3Provider(window.ethereum);
     let tempTenders = await getAllTenders(provider);
     setTotalTenderCnt(tempTenders.length);
-    setTenders(tempTenders);
 
     // Filtering so as to only have Open tenders
     let tempOpenTendersArr = tempTenders.filter(function (open) {

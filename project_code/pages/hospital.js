@@ -53,7 +53,7 @@ function a11yProps(index) {
  * @param {*} pending JSON object composed of patients that are pending transit.
  */
 function Hospital({ accepted, incoming, pending }) {
-  const { account } = useEthers();
+  const [account, setAccount] = useState();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isHospital, setIsHospital] = useState(false);
   const [isPolice, setIsPolice] = useState(false);
@@ -69,6 +69,7 @@ function Hospital({ accepted, incoming, pending }) {
     setIsHospital(JSON.parse(sessionStorage.getItem("isHospital")));
     setIsPolice(JSON.parse(sessionStorage.getItem("isPolice")));
     setIsAmbulance(JSON.parse(sessionStorage.getItem("isAmbulance")));
+    setAccount(sessionStorage.getItem("accountId"));
   }, []);
 
   if (isHospital) {
