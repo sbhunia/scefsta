@@ -4,7 +4,7 @@ import styles from "../styles/Landing.module.css";
 import Hero from "../components/LeadPage/Hero";
 import Footer from "../components/LeadPage/Footer";
 
-const App = ({ Component, pageProps }) => {
+const App = () => {
     return (
         <div className={styles.giveFlex}>
             <TopNavLanding />
