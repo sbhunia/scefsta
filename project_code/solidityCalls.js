@@ -1,5 +1,5 @@
 import { useCall } from "@usedapp/core";
-import {  auctionsAddress } from "./config";
+import { auctionsAddress } from "./config";
 import { ACCOUNT_INSTANCE, AUCTION_INSTANCE } from "./pages/_app";
 import Router from "next/router";
 import * as Constants from "./constants";
@@ -160,27 +160,27 @@ export const getAllTenders = async (provider) => {
   }
 };
 
-/**
- *
- * @param {*} tenderId
- * @returns
- */
-export const getTender = (tenderId) => {
-  const { value, error } =
-    useCall(
-      auctionsAddress && {
-        contract: AUCTION_INSTANCE,
-        method: "getTender",
-        args: [tenderId],
-      }
-    ) ?? {};
+// /**
+//  *
+//  * @param {*} tenderId
+//  * @returns
+//  */
+// export const getTender = (tenderId) => {
+//   const { value, error } =
+//     useCall(
+//       auctionsAddress && {
+//         contract: AUCTION_INSTANCE,
+//         method: "getTender",
+//         args: [tenderId],
+//       }
+//     ) ?? {};
 
-  if (error) {
-    console.error(error.message);
-    return undefined;
-  }
-  return value;
-};
+//   if (error) {
+//     console.error(error.message);
+//     return undefined;
+//   }
+//   return value;
+// };
 
 export const getAuctionWinner = async (tenderId, provider) => {
   try {

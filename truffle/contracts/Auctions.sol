@@ -88,44 +88,44 @@ contract Auctions {
         string memory severity,
         address[] memory allowedHospitals
     ) public payable returns (uint256) {
-        require(accountsContract.isInitiator(msg.sender), "Sender is not initiator");
-        require(msg.value > 0, "Max value not greater than 0");
+        require(accountsContract.isInitiator(msg.sender), "Sender not initiator");
+        require(msg.value > 0, "Max Value < 0");
 
         // validate allowed hospitals given are valid hospitals
         for (uint256 i = 0; i < allowedHospitals.length; i++) {
-            require(accountsContract.isHospital(allowedHospitals[i]), "Given hospital list invalid");
+            require(accountsContract.isHospital(allowedHospitals[i]), "Hospital(s) invalid");
         }
 
         // initalize new tender information
-        Tender memory newTender;
-        newTender.tenderId = tenderIdCounter;
-        newTender.details.tenderPoster = payable(msg.sender);
-        newTender.status = TenderStatus.Open; // open tender
+        Tender memory tender;
+        tender.tenderId = tenderIdCounter;
+        tender.details.tenderPoster = payable(msg.sender);
+        tender.status = TenderStatus.Open; // open tender
         
         // set important dates for tender
-        newTender.details.postDate = block.timestamp; // set post date to current time
-        newTender.details.auctionDate = block.timestamp + timeLimit; // sets auction end date w/ time limit given
-        newTender.details.revealDate = block.timestamp + timeLimit + REVEAL_PERIOD; // sets reveal peiod end date
-        newTender.details.dueDate = block.timestamp + timeLimit + REVEAL_PERIOD + deliveryTime; // set due date for tender
+        tender.details.postDate = block.timestamp; // set post date to current time
+        tender.details.auctionDate = block.timestamp + timeLimit; // sets auction end date w/ time limit given
+        tender.details.revealDate = block.timestamp + timeLimit + REVEAL_PERIOD; // sets reveal peiod end date
+        tender.details.dueDate = block.timestamp + timeLimit + REVEAL_PERIOD + deliveryTime; // set due date for tender
 
         // set tender information
-        newTender.details.finalBid = MAX_INT; // set current bid to max possible integer
-        newTender.details.maxBid = msg.value; // set maximum bid to msg.value
-        newTender.details.penalty = penalty;
-        newTender.details.allowedHospitals = allowedHospitals;
+        tender.details.finalBid = MAX_INT; // set current bid to max possible integer
+        tender.details.maxBid = msg.value; // set maximum bid to msg.value
+        tender.details.penalty = penalty;
+        tender.details.allowedHospitals = allowedHospitals;
 
         // patient location and details
-        newTender.details.addr = addr;
-        newTender.details.city = city;
-        newTender.details.state = state;
-        newTender.details.zipcode = zipcode;
-        newTender.details.severity = severity;
+        tender.details.addr = addr;
+        tender.details.city = city;
+        tender.details.state = state;
+        tender.details.zipcode = zipcode;
+        tender.details.severity = severity;
         
         // push new tender and adjust mappings accordingly
-        tenders.push(newTender); 
-        tenderMapping[tenderIdCounter] = newTender;
+        tenders.push(tender); 
+        tenderMapping[tenderIdCounter] = tender;
         tenderIdCounter++;
-        return newTender.tenderId;
+        return tender.tenderId;
     }
 
     event BidPlaced(uint256 tenderId, uint256 bidId);
@@ -174,7 +174,7 @@ contract Auctions {
         require(bidVal < tender.details.maxBid, "Bid was not below max bid amount");
         require(msg.sender == tender.details.bidders[index], "Wrong bid ID");
         require(tender.details.penalty == msg.value, "Incorrect penalty amount");
-        require(tender.details.bidHashArray[index] == uint256(keccak256(abi.encodePacked(bidVal + salt))), "Bid value does not match hashed value");
+        require(tender.details.bidHashArray[index] == uint256(keccak256(abi.encodePacked(bidVal + salt))), "Bid value != Hash Value");
 
         // if job was already assigned, refund 
         if (tender.details.tenderAccepter != address(0)) {
@@ -202,7 +202,7 @@ contract Auctions {
         require(
             block.timestamp >
                 tenderMapping[tenderId].details.revealDate,
-                "tender must be past reveal period"
+                "Tender not past Reveal"
         );
 
         require(
@@ -218,7 +218,7 @@ contract Auctions {
     * @param tenderId - id of the tender where delivery is being verified 
     */
     function verifyDelivery(uint256 tenderId) public {
-        require(accountsContract.isHospital(msg.sender), "Sender must be a hospital");
+        require(accountsContract.isHospital(msg.sender), "Sender must be hospital");
         require(
             tenderMapping[tenderId].status == TenderStatus.InProgress,
             "Tender not in progress"
@@ -229,7 +229,7 @@ contract Auctions {
             "Tender is not past reveal date"
         );
 
-        require(contains(tenderMapping[tenderId].details.allowedHospitals, msg.sender), "Sender not an allowed hospital");
+        require(contains(tenderMapping[tenderId].details.allowedHospitals, msg.sender), "Sender valid hospital");
 
         // if the tender was not delivered on time, do not send penalty amount back, else return all funds
         if ( block.timestamp < tenderMapping[tenderId].details.dueDate) {
@@ -266,16 +266,16 @@ contract Auctions {
         return tenders;
     }
 
-    /*
-     * Get a tender from a given tenderID
-     *
-     * @param tenderId - given tenderID
-     *
-     * @returns a single tender with given tenderId
-     */
-     function getTender(uint256 tenderId) public view returns (Tender memory) {
-        return tenderMapping[tenderId];
-     }
+    // /*
+    //  * Get a tender from a given tenderID
+    //  *
+    //  * @param tenderId - given tenderID
+    //  *
+    //  * @returns a single tender with given tenderId
+    //  */
+    //  function getTender(uint256 tenderId) public view returns (Tender memory) {
+    //     return tenderMapping[tenderId];
+    //  }
 
     /*
      * allows police stations to reclaim their funds + the penalty for failed jobs
