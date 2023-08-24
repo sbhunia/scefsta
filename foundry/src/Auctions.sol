@@ -266,16 +266,16 @@ contract Auctions {
         return tenders;
     }
 
-    /*
-     * Get a tender from a given tenderID
-     *
-     * @param tenderId - given tenderID
-     *
-     * @returns a single tender with given tenderId
-     */
-     function getTender(uint256 tenderId) public view returns (Tender memory) {
-        return tenderMapping[tenderId];
-     }
+    // /*
+    //  * Get a tender from a given tenderID
+    //  *
+    //  * @param tenderId - given tenderID
+    //  *
+    //  * @returns a single tender with given tenderId
+    //  */
+    //  function getTender(uint256 tenderId) public view returns (Tender memory) {
+    //     return tenderMapping[tenderId];
+    //  }
 
     /*
      * allows police stations to reclaim their funds + the penalty for failed jobs
