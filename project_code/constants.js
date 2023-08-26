@@ -54,13 +54,20 @@ export const bidId = "bidId";
 export const bidVal = "bidVal";
 
 // API URLs
-export const getAdmins = "http://localhost:3000/api/admins";
-export const getPatients = "http://localhost:3000/api/patients";
-export const getPolice = "http://localhost:3000/api/police";
-export const getAmbulances = "http://localhost:3000/api/ambulances";
-export const getHospitals = "http://localhost:3000/api/hospitals";
-export const getTenders = "http://localhost:3000/api/tenders";
-export const getUsers = "http://localhost:3000/api/users";
+export const getAdmins =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/admins";
+export const getPatients =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/patients";
+export const getPolice =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/police";
+export const getAmbulances =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/ambulances";
+export const getHospitals =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/hospitals";
+export const getTenders =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/tenders";
+export const getUsers =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/users";
 export const addAdmin = "api/admins";
 export const addAmbulance = "api/ambulances";
 export const addHospital = "api/hospitals";
@@ -70,7 +77,8 @@ export const deleteAmbulance = "api/ambulances";
 export const deletePolice = "api/police";
 export const deleteHospital = "api/hospitals";
 
-export const getSalt = "http://localhost:3000/api/salts";
+export const getSalt =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000//api/salts";
 export const addSalt = "api/salts";
 export const deleteSalt = "api/salts";
 

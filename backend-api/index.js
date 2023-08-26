@@ -3,9 +3,10 @@ dotenv.config();
 
 const express = require("express");
 const mysql = require("mysql2");
+const bodyParser = require("body-parser"); // Add this line
 
 const app = express();
-
+app.use(bodyParser.json());
 const { addAdmin, getAdmins, deleteAdmin } = require("./api/admins");
 const {
   addAmbulance,

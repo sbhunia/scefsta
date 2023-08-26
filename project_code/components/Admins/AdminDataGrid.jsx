@@ -136,7 +136,7 @@ export default function AdminDataGrid({ data, popUpChecked }) {
       zipcode: addFormData.zipcode,
     };
 
-    let response = await fetch(Constants.addAdmin, {
+    let response = await fetch(Constants.getAdmins, {
       method: "POST",
       body: JSON.stringify(newContact),
     });
@@ -168,7 +168,8 @@ export default function AdminDataGrid({ data, popUpChecked }) {
 
   const finalizeDeleteAdmin = async () => {
     // make database changes
-    let response = await fetch(Constants.deleteAdmins, {
+    console.log(JSON.stringify(selectedRows));
+    let response = await fetch(Constants.getAdmins, {
       method: "DELETE",
       body: JSON.stringify(selectedRows),
     });
