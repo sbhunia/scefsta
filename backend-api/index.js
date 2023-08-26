@@ -54,7 +54,6 @@ connection.connect((err) => {
 
   app.get("/api/admins", async (req, res, next) => {
     const query = await getAdmins(req, res);
-    console.log("query", query);
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
@@ -67,7 +66,7 @@ connection.connect((err) => {
 
   app.post("/api/admins", async (req, res, next) => {
     const query = await addAdmin(req, res);
-    console.log("query", query);
+
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
@@ -80,7 +79,7 @@ connection.connect((err) => {
 
   app.delete("/api/admins", async (req, res, next) => {
     const query = await deleteAdmin(req, res);
-    console.log("query", query);
+
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
@@ -93,7 +92,7 @@ connection.connect((err) => {
 
   app.get("/api/ambulances", async (req, res, next) => {
     const query = await getAmbulances(req, res);
-    console.log("query", query);
+
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
