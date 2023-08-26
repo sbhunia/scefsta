@@ -1,20 +1,5 @@
 "use strict";
-const mysqlLib = require("../../config_database/mysqlLib");
-import * as Constants from "../../constants";
-
-export default async function handler(req, res) {
-  switch (req.method) {
-    case "GET": {
-      return getSalts(req, res);
-    }
-    case "POST": {
-      return addSalt(req, res);
-    }
-    case "DELETE": {
-      return deleteSalt(req, res);
-    }
-  }
-}
+const Constants = require("../api-constants");
 
 async function addSalt(req, res) {
   let walletId = JSON.parse(req.body)["walletId"];
@@ -28,19 +13,7 @@ async function addSalt(req, res) {
         ${Constants.saltVal}, ${Constants.bidVal}, ${Constants.penalty})
         VALUES ('${walletId}', '${patientId}', '${bidId}', '${saltVal}', '${bidVal}', '${penalty}');`;
 
-  return new Promise((resolve, reject) => {
-    mysqlLib
-      .executeQuery(query)
-      .then((d) => {
-        res.status(200).send({ success: true });
-        resolve();
-      })
-      .catch((e) => {
-        console.log(e);
-        res.status(500).send({ success: false });
-        resolve();
-      });
-  });
+  return query;
 }
 
 async function getSalts(req, res) {
@@ -51,21 +24,7 @@ async function getSalts(req, res) {
                 ${Constants.Patients}.${Constants.patientId} = ${Constants.Salts}.${Constants.patientId}
                 WHERE ${Constants.walletId} = '${walletId}';`;
 
-  console.log("query: ", query);
-  return new Promise((resolve, reject) => {
-    mysqlLib
-      .executeQuery(query)
-      .then((d) => {
-        console.log(d);
-        res.status(200).send(d);
-        resolve();
-      })
-      .catch((e) => {
-        console.log(e);
-        res.status(500).send({ success: false });
-        resolve();
-      });
-  });
+  return query;
 }
 
 async function deleteSalt(req, res) {
@@ -78,17 +37,11 @@ async function deleteSalt(req, res) {
                     ${Constants.patientId} = ${patientId} AND
                     ${Constants.bidId} = ${bidId};`;
 
-  return new Promise((resolve, reject) => {
-    mysqlLib
-      .executeQuery(query)
-      .then((d) => {
-        res.status(200).send({ success: true });
-        resolve();
-      })
-      .catch((e) => {
-        console.log(e);
-        res.status(500).send({ success: false });
-        resolve();
-      });
-  });
+  return query;
 }
+
+module.exports = {
+  addSalt,
+  getSalts,
+  deleteSalt,
+};
