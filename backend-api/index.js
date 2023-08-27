@@ -62,251 +62,91 @@ connection.connect((err) => {
   console.log("Connected to the database!");
 
   app.get("/api/admins", async (req, res, next) => {
-    const query = await getAdmins(req, res);
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        return res.status(500).json({ success: false });
-      }
-
-      res.status(200).json(results);
-    });
+    return await getAdmins(req, res, connection);
   });
 
   app.post("/api/admins", async (req, res, next) => {
-    const query = await addAdmin(req, res);
-
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        return res.status(500).json({ success: false });
-      }
-
-      res.status(200).json({ data: results, success: true });
-    });
+    return await addAdmin(req, res, connection);
   });
 
   app.delete("/api/admins", async (req, res, next) => {
-    const query = await deleteAdmin(req, res);
-
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        return res.status(500).json({ success: false });
-      }
-
-      res.status(200).json({ data: results, success: true });
-    });
+    return await deleteAdmin(req, res, connection);
   });
 
   app.get("/api/ambulances", async (req, res, next) => {
-    const query = await getAmbulances(req, res);
-
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        return res.status(500).json({ success: false });
-      }
-
-      res.status(200).json(results);
-    });
+    return await getAmbulances(req, res, connection);
   });
 
   app.post("/api/ambulances", async (req, res, next) => {
-    const query = await addAmbulance(req, res);
-
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        return res.status(500).json({ success: false });
-      }
-
-      res.status(200).json({ data: results, success: true });
-    });
+    return await addAmbulance(req, res, connection);
   });
 
   app.delete("/api/ambulances", async (req, res, next) => {
-    const query = await deleteAmbulance(req, res);
-
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        return res.status(500).json({ success: false });
-      }
-
-      res.status(200).json({ data: results, success: true });
-    });
+    return await deleteAmbulance(req, res, connection);
   });
 
   app.get("/api/hospitals", async (req, res, next) => {
-    const query = await getHospitals(req, res);
-
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        return res.status(500).json({ success: false });
-      }
-
-      res.status(200).json(results);
-    });
+    return await getHospitals(req, res, connection);
   });
 
   app.post("/api/hospitals", async (req, res, next) => {
-    const query = await addHospital(req, res);
-
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        return res.status(500).json({ success: false });
-      }
-
-      res.status(200).json({ data: results, success: true });
-    });
+    return await addHospital(req, res, connection);
   });
 
   app.delete("/api/hospitals", async (req, res, next) => {
-    const query = await deleteHospital(req, res);
+    return await deleteHospital(req, res, connection);
+  });
 
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        return res.status(500).json({ success: false });
-      }
+  app.get("/api/police", async (req, res, next) => {
+    if (req.query.walletId) {
+      return await getPoliceType(req, res, connection);
+    } else {
+      return await getPolice(req, res, connection);
+    }
+  });
 
-      res.status(200).json({ data: results, success: true });
-    });
+  app.post("/api/police", async (req, res, next) => {
+    const header = req.headers["x-method"];
+
+    if (header === "emergency") {
+      return await addPolice(req, res, connection);
+    } else if (header === "private") {
+      return await addPrivate(req, res, connection);
+    } else if (header === "interfacility") {
+      return await addInterfacility(req, res, connection);
+    }
+  });
+
+  app.delete("/api/police", async (req, res, next) => {
+    return await deletePolice(req, res, connection);
   });
 
   app.get("/api/patients", async (req, res, next) => {
-    const query = await getPatients(req, res);
-
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error("Error executing query:", err);
-        return res.status(500).json({ success: false });
-      }
-
-      res.status(200).json(results);
-    });
+    return await getPatients(req, res, connection);
   });
-});
 
-app.post("/api/patients", async (req, res, next) => {
-  let query;
-  if (req.headers["x-mehod"] === "insert") {
-    query = await addPatient(req, res);
-  } else {
-    query = await updatePatient(req, res);
-  }
-
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      return res.status(500).json({ success: false });
+  app.post("/api/patients", async (req, res, next) => {
+    if (req.headers["x-method"] === "insert") {
+      return await addPatient(req, res, connection);
+    } else {
+      return await updatePatient(req, res, connection);
     }
-
-    res.status(200).json({ data: results, success: true });
   });
-});
 
-app.get("/api/police", async (req, res, next) => {
-  let query;
-  if (req.query.walletId) {
-    query = await getPoliceType(req, res);
-  } else {
-    query = await getPolice(req, res);
-  }
-
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      return res.status(500).json({ success: false });
-    }
-
-    res.status(200).json({ data: results, success: true });
+  app.get("/api/salts", async (req, res, next) => {
+    return await getSalts(req, res, connection);
   });
-});
 
-app.post("/api/police", async (req, res, next) => {
-  const header = req.headers["x-method"];
-
-  let query;
-  if (header === "emergency") {
-    query = await addPolice(req, res);
-  } else if (header === "private") {
-    query = await addPrivate(req, res);
-  } else if (header === "interfacility") {
-    query = await addInterfacility(req, res);
-  }
-
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      return res.status(500).json({ success: false });
-    }
-
-    res.status(200).json({ data: results, success: true });
+  app.post("/api/salts", async (req, res, next) => {
+    return await addSalt(req, res, connection);
   });
-});
 
-app.delete("/api/police", async (req, res, next) => {
-  const query = await deletePolice(req, res);
-
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      return res.status(500).json({ success: false });
-    }
-
-    res.status(200).json({ data: results, success: true });
+  app.delete("/api/salts", async (req, res, next) => {
+    return await deleteSalt(req, res, connection);
   });
-});
 
-app.get("/api/salts", async (req, res, next) => {
-  const query = await getSalts(req, res);
-
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      return res.status(500).json({ success: false });
-    }
-
-    res.status(200).json(results);
-  });
-});
-
-app.post("/api/salts", async (req, res, next) => {
-  const query = await addSalt(req, res);
-
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      return res.status(500).json({ success: false });
-    }
-
-    res.status(200).json({ data: results, success: true });
-  });
-});
-
-app.delete("/api/salts", async (req, res, next) => {
-  const query = await deleteSalt(req, res);
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      return res.status(500).json({ success: false });
-    }
-    res.status(200).json({ data: results, success: true });
-  });
-});
-
-app.get("/api/users", async (req, res, next) => {
-  const query = await getUser(req, res);
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error("Error executing query:", err);
-      return res.status(500).json({ success: false });
-    }
-    res.status(200).json(results);
+  app.get("/api/users", async (req, res, next) => {
+    return await getUser(req, res, connection);
   });
 });
 

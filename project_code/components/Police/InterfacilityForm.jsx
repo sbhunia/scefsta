@@ -81,7 +81,7 @@ export const InterfacililtyForm = ({
       headers: {
         "X-method": "interfacility",
         "Content-Type": "application/json",
-        Origin: APP_DOMAIN,
+        Origin: Constants.APP_DOMAIN,
       },
       body: JSON.stringify(newContact),
     });

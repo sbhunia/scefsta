@@ -112,6 +112,7 @@ export default function TenderForm(props) {
       const URL = `${Constants.getPolice}?walletId='${props.account}'`;
       const response = await fetch(URL);
       const json = await response.json();
+      console.log(json);
       setType(json[0].initiatorType);
       if (json[0].initiatorType === "facility") {
         setValue(1);
@@ -274,10 +275,13 @@ export default function TenderForm(props) {
     }
 
     let response = await fetch(Constants.getPatients, {
-      headers: { "x-method": "insert" },
+      headers: {
+        "x-method": "insert",
+        "Content-Type": "application/json",
+        Origin: Constants.APP_DOMAIN,
+      },
       method: "POST",
       body: JSON.stringify(newPatient),
-      headers: Constants.HEADERS,
     });
 
     let status = await response.json();

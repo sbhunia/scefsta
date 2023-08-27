@@ -1,13 +1,13 @@
 "use strict";
 const Constants = require("../api-constants");
 
-async function addPolice(req, res) {
+async function addPolice(req, res, connection) {
   let policeDept = req.body.policeDept;
   let station = req.body.station;
   let address = req.body.address;
   let city = req.body.city;
   let state = req.body.state;
-  let zipcode = JSON.parse(req.body)[Constants.zipcode];
+  let zipcode = req.body.zipcode;
   let walletId = req.body.walletId;
   let accountType = "initiator";
   let initiatorType = "emergency";
@@ -19,17 +19,24 @@ async function addPolice(req, res) {
                     VALUES ('${walletId}', '${policeDept}', '${station}', '${address}', '${city}', 
                     '${state}', '${zipcode}', '${accountType}', '${initiatorType}');`;
 
-  return query;
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).json({ success: false });
+    }
+
+    return res.status(200).json({ data: results, success: true });
+  });
 }
 
-async function addPrivate(req, res) {
-  let fName = JSON.parse(req.body)[Constants.firstName];
-  let lName = JSON.parse(req.body)[Constants.lastName];
-  let email = JSON.parse(req.body)[Constants.email];
+async function addPrivate(req, res, connection) {
+  let fName = req.body.firstName;
+  let lName = req.body.lastName;
+  let email = req.body.email;
   let address = req.body.address;
   let city = req.body.city;
   let state = req.body.state;
-  let zipcode = JSON.parse(req.body)[Constants.zipcode];
+  let zipcode = req.body.zipcode;
   let walletId = req.body.walletId;
   let accountType = "initiator";
   let initiatorType = "private";
@@ -42,22 +49,38 @@ async function addPrivate(req, res) {
                     '${address}', '${city}', '${state}', '${zipcode}', '${walletId}', 
                     '${accountType}', '${initiatorType}');`;
 
-  return query;
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).json({ success: false });
+    }
+
+    return res.status(200).json({ data: results, success: true });
+  });
 }
 
-async function addInterfacility(req, res) {
-  let facilityName = JSON.parse(req.body)[Constants.hospitalSystem];
+async function addInterfacility(req, res, connection) {
+  let facilityName = req.body.facilityName;
   let address = req.body.address;
   let city = req.body.city;
   let state = req.body.state;
-  let zipcode = JSON.parse(req.body)[Constants.zipcode];
+  let zipcode = req.body.zipcode;
   let walletId = req.body.walletId;
   let accountType = "initiator";
   let initiatorType = "facility";
 
   const isFacilityQuery = `SELECT COUNT(*) FROM Users WHERE (${Constants.walletId} = '${walletId}' AND ${Constants.accountType} = 'facility');`;
-  const result = await mysqlLib.executeQuery(isFacilityQuery);
-  let rows = result[0]["COUNT(*)"];
+  let rows;
+  await connection
+    .promise()
+    .query(isFacilityQuery)
+    .then((results) => {
+      rows = results[0][0]["COUNT(*)"];
+    })
+    .catch((err) => {
+      console.error("Error executing query:", err);
+      return res.status(500).json({ success: false });
+    });
 
   // if the entry is not already a facility then initiator type is facility
   // if already a facility set type to inter-facility
@@ -70,16 +93,30 @@ async function addInterfacility(req, res) {
                     '${facilityName}', '${address}', '${city}', '${state}', '${zipcode}', '${walletId}', 
                     '${accountType}', '${initiatorType}');`;
 
-    return query;
+    connection.query(query, (err, results) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        return res.status(500).json({ success: false });
+      }
+
+      return res.status(200).json({ data: results, success: true });
+    });
   } else if (rows === 1) {
     accountType = "interfacility";
-    const query = `UPDATE ${Constants.Users} SET ${Constants.accountType} = '${accountType}' WHERE ${Constants.walletId} = '${walletId}';`;
-    return query;
+    const query = `UPDATE ${Constants.Users} SET ${Constants.accountType} = '${accountType}', ${Constants.initiatorType} ='${initiatorType}' WHERE ${Constants.walletId} = '${walletId}';`;
+    connection.query(query, (err, results) => {
+      if (err) {
+        console.error("Error executing query:", err);
+        return res.status(500).json({ success: false });
+      }
+
+      return res.status(200).json({ data: results, success: true });
+    });
   }
 }
 
 // Queries the database for police and returns the results
-async function getPolice(req, res) {
+async function getPolice(req, res, connection) {
   const query = `
       SELECT
         ${Constants.walletId},
@@ -103,20 +140,33 @@ async function getPolice(req, res) {
         (${Constants.accountType} = 'initiator' OR ${Constants.accountType} = 'interfacility');
     `;
 
-  return query;
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).json({ success: false });
+    }
+
+    return res.status(200).json(results);
+  });
 }
 
-const getPoliceType = async (req, res) => {
+const getPoliceType = async (req, res, connection) => {
   const walletId = req.query.walletId;
   const query = `SELECT ${Constants.initiatorType} FROM ${Constants.Users} 
-    WHERE ${Constants.walletId} = '${walletId}' AND 
-      (${Constants.accountType} = 'initiator' OR ${Constants.accountType} = 'interfacility');
+    WHERE ${Constants.walletId} = ${walletId} AND 
+      (${Constants.accountType} = 'initiator' OR ${Constants.accountType} = 'interfacility' OR ${Constants.initiatorType} = 'private');
     `;
-  return query;
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).json({ success: false });
+    }
+    return res.status(200).json(results);
+  });
 };
 
 // Deletes police from the database
-async function deletePolice(req, res) {
+async function deletePolice(req, res, connection) {
   const walletIds = req.body;
   const formattedWalletIds = walletIds.map((id) => `'${id}'`).join(",");
 
@@ -125,7 +175,14 @@ async function deletePolice(req, res) {
           WHERE ${Constants.walletId} IN (${formattedWalletIds});
         `;
 
-  return query;
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).json({ success: false });
+    }
+
+    return res.status(200).json({ data: results, success: true });
+  });
 }
 
 module.exports = {

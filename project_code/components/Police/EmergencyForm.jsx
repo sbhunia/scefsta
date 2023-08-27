@@ -85,7 +85,7 @@ export const EmergencyForm = ({
       headers: {
         "X-method": "emergency",
         "Content-Type": "application/json",
-        Origin: APP_DOMAIN,
+        Origin: Constants.APP_DOMAIN,
       },
       body: JSON.stringify(newContact),
     });

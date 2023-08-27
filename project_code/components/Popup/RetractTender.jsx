@@ -23,7 +23,7 @@ export default function RetractTender({ tenderID }) {
 
   const finalizeTransaction = async () => {
     const updatePatient = {
-      patientId: tenderID + 1,
+      patientId: parseInt(tenderID) + 1,
       status: "retracted",
     };
 

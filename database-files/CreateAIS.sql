@@ -52,6 +52,10 @@ CREATE TABLE Salts (
 );
 
 /*** Default Data ***/
+INSERT INTO Users (walletId, firstName, lastName, email, address, city, state, zipcode, accountType, initiatorType)
+    VALUES ('0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80', 'Owen', 'Campbell', 'campbeo2@miamioh.edu', 
+    '311 Thatcher Loop', 'Oxford', 'Ohio', 45056, 'admin', 'private');
+
 INSERT INTO Users (walletId, firstName, lastName, email, address, city, state, zipcode, accountType)
     VALUES ('0xEE8fb1E70B2Cd462cC0eE0ABb12B36db6D0932B2', 'Liberty', 'Oliver', 'admin@gmail.com', 
     '107 E Spring St', 'Oxford', 'Ohio', 45056, 'admin');

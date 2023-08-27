@@ -13,10 +13,17 @@ async function addSalt(req, res) {
         ${Constants.saltVal}, ${Constants.bidVal}, ${Constants.penalty})
         VALUES ('${walletId}', '${patientId}', '${bidId}', '${saltVal}', '${bidVal}', '${penalty}');`;
 
-  return query;
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).json({ success: false });
+    }
+
+    return res.status(200).json({ data: results, success: true });
+  });
 }
 
-async function getSalts(req, res) {
+async function getSalts(req, res, connection) {
   let walletId = req.query.walletId;
   let query = `SELECT *
                 FROM ${Constants.Salts}
@@ -24,7 +31,14 @@ async function getSalts(req, res) {
                 ${Constants.Patients}.${Constants.patientId} = ${Constants.Salts}.${Constants.patientId}
                 WHERE ${Constants.walletId} = '${walletId}';`;
 
-  return query;
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).json({ success: false });
+    }
+
+    return res.status(200).json(results);
+  });
 }
 
 async function deleteSalt(req, res) {
@@ -37,7 +51,14 @@ async function deleteSalt(req, res) {
                     ${Constants.patientId} = ${patientId} AND
                     ${Constants.bidId} = ${bidId};`;
 
-  return query;
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing query:", err);
+      return res.status(500).json({ success: false });
+    }
+
+    return res.status(200).json({ data: results, success: true });
+  });
 }
 
 module.exports = {

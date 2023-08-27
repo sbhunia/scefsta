@@ -70,7 +70,7 @@ export const DeleteForm = ({
   };
 
   const finalizeDeleteInitiator = async () => {
-    let response = await fetch(Constants.getAdminsPolice, {
+    let response = await fetch(Constants.getPolice, {
       method: "DELETE",
       body: JSON.stringify(selectedRows),
       headers: Constants.HEADERS,

@@ -80,7 +80,7 @@ export default function HospitalDataGrid({
   if (isAllowedHosp) {
     columns = [
       {
-        field: Constants.hospitalSystem,
+        field: "facilityName",
         headerName: `${Constants.HOSPITAL} Name`,
         width: 200,
         sortable: true,

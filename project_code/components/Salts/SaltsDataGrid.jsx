@@ -57,7 +57,7 @@ export default function SaltsDataGrid({ accountId }) {
 
   useEffect(() => {
     const getSalts = async () => {
-      const res = await fetch(Constants.getSalt + "?walletId=" + accountId);
+      const res = await fetch(Constants.getSalts + "?walletId=" + accountId);
       const data = await res.json();
 
       // get all the tenders
@@ -68,19 +68,19 @@ export default function SaltsDataGrid({ accountId }) {
       for (var i = 0; i < data.length; i++) {
         // loop through tenders
         for (let tender in tenderData) {
-          let tendId = new BigNumber(
-            tenderData[tender]["tenderId"]["_hex"]);
+          let tendId = new BigNumber(tenderData[tender]["tenderId"]["_hex"]);
 
           // if the tenderID matches corresponding patientID get the due date
           if (tendId.c[0] + 1 === data[i].patientId) {
             data[i]["revealDate"] = tenderData[tender]["revealDate"];
-            data[i]["dueDate"] = tenderData[tender]["dueDate"]
+            data[i]["dueDate"] = tenderData[tender]["dueDate"];
           }
         }
 
         // change patientId to match tenderId
         data[i]["patientId"]--;
-        data[i]["fullAddress"] = data[i]["address"] + ", " + data[i]["city"] + ", " + data[i]["state"];
+        data[i]["fullAddress"] =
+          data[i]["address"] + ", " + data[i]["city"] + ", " + data[i]["state"];
       }
 
       setSalts(data);

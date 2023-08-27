@@ -69,7 +69,7 @@ export default function BiddingForm({
       penalty: penalty,
     };
 
-    let response = await fetch(Constants.getSalt, {
+    let response = await fetch(Constants.getSalts, {
       method: "POST",
       body: JSON.stringify(newSalt),
       headers: Constants.HEADERS,
