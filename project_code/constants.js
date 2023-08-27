@@ -55,14 +55,22 @@ export const bidId = "bidId";
 export const bidVal = "bidVal";
 
 // API URLs
-export const getAdmins = "http://localhost:5000/api/admins";
-export const getPatients = "http://localhost:5000/api/patients";
-export const getPolice = "http://localhost:5000/api/police";
-export const getAmbulances = "http://localhost:5000/api/ambulances";
-export const getHospitals = "http://localhost:5000/api/hospitals";
-export const getTenders = "http://localhost:5000/api/tenders";
-export const getSalts = "http://localhost:5000/api/salts";
-export const getUsers = "http://localhost:5000/api/users";
+export const getAdmins =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/admins";
+export const getPatients =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/patients";
+export const getPolice =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/police";
+export const getAmbulances =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/ambulances";
+export const getHospitals =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/hospitals";
+export const getTenders =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/tenders";
+export const getSalts =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/salts";
+export const getUsers =
+  "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/users";
 
 export const APP_DOMAIN = "http://localhost:3000";
 export const HEADERS = {
