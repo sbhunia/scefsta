@@ -176,6 +176,10 @@ export default function AdminDataGrid({ data, popUpChecked }) {
     let response = await fetch(Constants.getAdmins, {
       method: "DELETE",
       body: JSON.stringify(selectedRows),
+      headers: {
+        "Content-Type": "application/json",
+        Origin: Constants.APP_DOMAIN,
+      },
     });
     let status = await response.json();
 
