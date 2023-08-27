@@ -7,8 +7,14 @@ const bodyParser = require("body-parser"); // Add this line
 const cors = require("cors");
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(cors());
+
+const corsOptions = {
+	origin: 'http://localhost:3000',
+	optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
 const { addAdmin, getAdmins, deleteAdmin } = require("./api/admins");
 const {
@@ -68,7 +74,8 @@ connection.connect((err) => {
   });
 
   app.post("/api/admins", async (req, res, next) => {
-    const query = await addAdmin(req, res);
+	console.log(req);
+	  const query = await addAdmin(req, res);
 
     connection.query(query, (err, results) => {
       if (err) {
