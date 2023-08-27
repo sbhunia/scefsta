@@ -7,6 +7,7 @@ import Alert from "@mui/material/Alert";
 import { CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
 import { AUCTION_INSTANCE } from "../../pages/_app";
+import * as Constants from "../../constants";
 
 export default function ReclaimTender({ tenderID }) {
   // Obtaining React Hooks from reclaimTender smart contract function
@@ -23,13 +24,14 @@ export default function ReclaimTender({ tenderID }) {
   const finalizeTransaction = async () => {
     const updatePatient = {
       patientId: tenderID + 1,
-      status: "reclaimed"
-    }
+      status: "reclaimed",
+    };
 
-    let response = await fetch("api/patients", {
-      headers: {'x-method': 'update'},
+    let response = await fetch(Constants.getPatients, {
+      headers: { "x-method": "update" },
       method: "POST",
       body: JSON.stringify(updatePatient),
+      headers: Constants.HEADERS,
     });
 
     let status = await response.json();

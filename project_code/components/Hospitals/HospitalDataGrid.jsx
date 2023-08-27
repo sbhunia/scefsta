@@ -192,9 +192,10 @@ export default function HospitalDataGrid({
       zipcode: addFormData.zipcode,
     };
 
-    let response = await fetch(Constants.addHospital, {
+    let response = await fetch(Constants.getHospitals, {
       method: "POST",
       body: JSON.stringify(newContact),
+      headers: Constants.HEADERS,
     });
 
     newContact["id"] = newContact["walletId"];
@@ -238,9 +239,10 @@ export default function HospitalDataGrid({
 
   const finalizeDeleteHospital = async () => {
     // delete from DB after transaction finishes
-    let response = await fetch(Constants.deleteHospital, {
+    let response = await fetch(Constants.getHospitals, {
       method: "DELETE",
       body: JSON.stringify(selectedRows),
+      headers: Constants.HEADERS,
     });
 
     let status = await response.json();

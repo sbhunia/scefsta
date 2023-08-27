@@ -11,8 +11,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const corsOptions = {
-	origin: 'http://localhost:3000',
-	optionsSuccessStatus: 200,
+  origin: "http://localhost:3000",
+  optionsSuccessStatus: 200,
 };
 app.use(cors(corsOptions));
 
@@ -68,22 +68,21 @@ connection.connect((err) => {
         console.error("Error executing query:", err);
         return res.status(500).json({ success: false });
       }
-      console.log("Query results:", results);
+
       res.status(200).json(results);
     });
   });
 
   app.post("/api/admins", async (req, res, next) => {
-	console.log(req);
-	  const query = await addAdmin(req, res);
+    const query = await addAdmin(req, res);
 
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
         return res.status(500).json({ success: false });
       }
-      console.log("Query results:", results);
-      res.status(200).json({data: results, success: true});
+
+      res.status(200).json({ data: results, success: true });
     });
   });
 
@@ -95,8 +94,8 @@ connection.connect((err) => {
         console.error("Error executing query:", err);
         return res.status(500).json({ success: false });
       }
-      console.log("Query results:", results);
-      res.status(200).json({data: results, success: true});
+
+      res.status(200).json({ data: results, success: true });
     });
   });
 
@@ -108,85 +107,85 @@ connection.connect((err) => {
         console.error("Error executing query:", err);
         return res.status(500).json({ success: false });
       }
-      console.log("Query results:", results);
+
       res.status(200).json(results);
     });
   });
 
   app.post("/api/ambulances", async (req, res, next) => {
     const query = await addAmbulance(req, res);
-    console.log("query", query);
+
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
         return res.status(500).json({ success: false });
       }
-      console.log("Query results:", results);
-      res.status(200).json(results);
+
+      res.status(200).json({ data: results, success: true });
     });
   });
 
   app.delete("/api/ambulances", async (req, res, next) => {
     const query = await deleteAmbulance(req, res);
-    console.log("query", query);
+
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
         return res.status(500).json({ success: false });
       }
-      console.log("Query results:", results);
-      res.status(200).json(results);
+
+      res.status(200).json({ data: results, success: true });
     });
   });
 
   app.get("/api/hospitals", async (req, res, next) => {
     const query = await getHospitals(req, res);
-    console.log("query", query);
+
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
         return res.status(500).json({ success: false });
       }
-      console.log("Query results:", results);
+
       res.status(200).json(results);
     });
   });
 
   app.post("/api/hospitals", async (req, res, next) => {
     const query = await addHospital(req, res);
-    console.log("query", query);
+
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
         return res.status(500).json({ success: false });
       }
-      console.log("Query results:", results);
-      res.status(200).json(results);
+
+      res.status(200).json({ data: results, success: true });
     });
   });
 
   app.delete("/api/hospitals", async (req, res, next) => {
     const query = await deleteHospital(req, res);
-    console.log("query", query);
+
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
         return res.status(500).json({ success: false });
       }
-      console.log("Query results:", results);
-      res.status(200).json(results);
+
+      res.status(200).json({ data: results, success: true });
     });
   });
 
   app.get("/api/patients", async (req, res, next) => {
     const query = await getPatients(req, res);
-    console.log("query", query);
+
     connection.query(query, (err, results) => {
       if (err) {
         console.error("Error executing query:", err);
         return res.status(500).json({ success: false });
       }
-      console.log("Query results:", results);
+
       res.status(200).json(results);
     });
   });
@@ -200,14 +199,13 @@ app.post("/api/patients", async (req, res, next) => {
     query = await updatePatient(req, res);
   }
 
-  console.log("query", query);
   connection.query(query, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
       return res.status(500).json({ success: false });
     }
-    console.log("Query results:", results);
-    res.status(200).json(results);
+
+    res.status(200).json({ data: results, success: true });
   });
 });
 
@@ -219,14 +217,13 @@ app.get("/api/police", async (req, res, next) => {
     query = await getPolice(req, res);
   }
 
-  console.log("query", query);
   connection.query(query, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
       return res.status(500).json({ success: false });
     }
-    console.log("Query results:", results);
-    res.status(200).json(results);
+
+    res.status(200).json({ data: results, success: true });
   });
 });
 
@@ -242,78 +239,73 @@ app.post("/api/police", async (req, res, next) => {
     query = await addInterfacility(req, res);
   }
 
-  console.log("query", query);
   connection.query(query, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
       return res.status(500).json({ success: false });
     }
-    console.log("Query results:", results);
-    res.status(200).json(results);
+
+    res.status(200).json({ data: results, success: true });
   });
 });
 
 app.delete("/api/police", async (req, res, next) => {
   const query = await deletePolice(req, res);
-  console.log("query", query);
+
   connection.query(query, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
       return res.status(500).json({ success: false });
     }
-    console.log("Query results:", results);
-    res.status(200).json(results);
+
+    res.status(200).json({ data: results, success: true });
   });
 });
 
 app.get("/api/salts", async (req, res, next) => {
   const query = await getSalts(req, res);
-  console.log("query", query);
+
   connection.query(query, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
       return res.status(500).json({ success: false });
     }
-    console.log("Query results:", results);
+
     res.status(200).json(results);
   });
 });
 
 app.post("/api/salts", async (req, res, next) => {
   const query = await addSalt(req, res);
-  console.log("query", query);
+
   connection.query(query, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
       return res.status(500).json({ success: false });
     }
-    console.log("Query results:", results);
-    res.status(200).json(results);
+
+    res.status(200).json({ data: results, success: true });
   });
 });
 
 app.delete("/api/salts", async (req, res, next) => {
   const query = await deleteSalt(req, res);
-  console.log("query", query);
   connection.query(query, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
       return res.status(500).json({ success: false });
     }
-    console.log("Query results:", results);
-    res.status(200).json(results);
+    res.status(200).json({ data: results, success: true });
   });
 });
 
 app.get("/api/users", async (req, res, next) => {
   const query = await getUser(req, res);
-  console.log("query", query);
   connection.query(query, (err, results) => {
     if (err) {
       console.error("Error executing query:", err);
       return res.status(500).json({ success: false });
     }
-    console.log("Query results:", results);
     res.status(200).json(results);
   });
 });

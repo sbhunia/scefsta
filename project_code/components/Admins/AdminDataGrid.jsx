@@ -139,10 +139,7 @@ export default function AdminDataGrid({ data, popUpChecked }) {
     let response = await fetch(Constants.getAdmins, {
       method: "POST",
       body: JSON.stringify(newContact),
-      headers: {
-        "Content-Type": "application/json",
-        Origin: Constants.APP_DOMAIN,
-      },
+      headers: Constants.HEADERS,
     });
 
     newContact["id"] = newContact["walletId"];
@@ -172,14 +169,10 @@ export default function AdminDataGrid({ data, popUpChecked }) {
 
   const finalizeDeleteAdmin = async () => {
     // make database changes
-    console.log(JSON.stringify(selectedRows));
     let response = await fetch(Constants.getAdmins, {
       method: "DELETE",
       body: JSON.stringify(selectedRows),
-      headers: {
-        "Content-Type": "application/json",
-        Origin: Constants.APP_DOMAIN,
-      },
+      headers: Constants.HEADERS,
     });
     let status = await response.json();
 

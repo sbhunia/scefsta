@@ -10,6 +10,7 @@ import FilledInput from "@mui/material/FilledInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import InputLabel from "@mui/material/InputLabel";
 import { AUCTION_INSTANCE } from "../../pages/_app";
+import * as Constants from "../../constants";
 import Web3 from "web3";
 
 const web3 = new Web3();
@@ -28,7 +29,7 @@ export default function RevealBid({
   bidId,
   proposedBidVal,
   fullAddress,
-  setTrigger
+  setTrigger,
 }) {
   const [bidValue, setBidValue] = React.useState(0);
   // Obtaining React Hooks from reclaimTender smart contract function
@@ -58,13 +59,14 @@ export default function RevealBid({
   const finalizeTransaction = async () => {
     const updatePatient = {
       patientId: tenderId + 1,
-      status: "incoming"
-    }
+      status: "incoming",
+    };
 
-    let response = await fetch("api/patients", {
-      headers: {'x-method': 'update'},
+    let response = await fetch(Constants.getPatients, {
+      headers: { "x-method": "update" },
       method: "POST",
       body: JSON.stringify(updatePatient),
+      headers: Constants.HEADERS,
     });
 
     let status = await response.json();
@@ -73,7 +75,7 @@ export default function RevealBid({
     } else {
       alert(`Error updating patient in DB, contact the SuperAdmin`);
     }
-  }
+  };
 
   return (
     <div className={styles.editHospital}>

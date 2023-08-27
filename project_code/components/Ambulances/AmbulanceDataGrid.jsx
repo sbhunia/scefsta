@@ -130,9 +130,10 @@ export default function AmbulanceDataGrid({ data, popUpChecked }) {
       zipcode: addFormData.zipcode,
     };
 
-    let response = await fetch(Constants.addAmbulance, {
+    let response = await fetch(Constants.getAmbulances, {
       method: "POST",
       body: JSON.stringify(newContact),
+      headers: Constants.HEADERS,
     });
 
     newContact["id"] = newContact["walletId"];
@@ -164,9 +165,10 @@ export default function AmbulanceDataGrid({ data, popUpChecked }) {
   };
 
   const finalizeDeleteAmbulance = async () => {
-    let response = await fetch(Constants.deleteAmbulance, {
+    let response = await fetch(Constants.getAmbulances, {
       method: "DELETE",
       body: JSON.stringify(selectedRows),
+      headers: Constants.HEADERS,
     });
 
     let status = await response.json();

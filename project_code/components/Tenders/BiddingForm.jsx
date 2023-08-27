@@ -6,10 +6,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import FilledInput from "@mui/material/FilledInput";
 import InputAdornment from "@mui/material/InputAdornment";
-import {
-  useContractFunction,
-  transactionErrored,
-} from "@usedapp/core";
+import { useContractFunction, transactionErrored } from "@usedapp/core";
 import { CircularProgress } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import Web3 from "web3";
@@ -29,7 +26,7 @@ export default function BiddingForm({
   setTrigger,
   auctionEnd,
 }) {
-  const [account, setAccount] = useState();;
+  const [account, setAccount] = useState();
   const [desiredBid, setDesiredBid] = React.useState("");
   const [salt, setSalt] = React.useState();
 
@@ -72,9 +69,10 @@ export default function BiddingForm({
       penalty: penalty,
     };
 
-    let response = await fetch(Constants.addSalt, {
+    let response = await fetch(Constants.getSalt, {
       method: "POST",
       body: JSON.stringify(newSalt),
+      headers: Constants.HEADERS,
     });
 
     let status = await response.json();

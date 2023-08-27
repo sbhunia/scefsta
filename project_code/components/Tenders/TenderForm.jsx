@@ -243,7 +243,7 @@ export default function TenderForm(props) {
   };
 
   const finalizeTransaction = async () => {
-    let newPatient = {}
+    let newPatient = {};
 
     if (!severity || severity === "") {
       newPatient = {
@@ -256,10 +256,10 @@ export default function TenderForm(props) {
         isAccepted: false,
         zipcode: zipcode,
         severity: "Appt",
-      };      
-      
+      };
+
       setSeverity("Appt");
-    } else  {
+    } else {
       newPatient = {
         injury: injuryType,
         mechanism_of_injury: mechanismofInjury,
@@ -273,10 +273,11 @@ export default function TenderForm(props) {
       };
     }
 
-    let response = await fetch("api/patients", {
-      headers: {'x-method': 'insert'},
+    let response = await fetch(Constants.getPatients, {
+      headers: { "x-method": "insert" },
       method: "POST",
       body: JSON.stringify(newPatient),
+      headers: Constants.HEADERS,
     });
 
     let status = await response.json();
@@ -319,9 +320,7 @@ export default function TenderForm(props) {
             value={tenderAmt}
             onChange={handleAddFormData}
             error={!isPaymentValid}
-            helperText={
-              !isPaymentValid && "Please enter a valid amount in WEI"
-            }
+            helperText={!isPaymentValid && "Please enter a valid amount in WEI"}
           />
         </div>
         <div className={styles.dropdownDiv}>
@@ -336,14 +335,12 @@ export default function TenderForm(props) {
             value={penaltyAmt}
             onChange={handleAddFormData}
             error={!isPenaltyValid}
-            helperText={
-              !isPenaltyValid && "Please enter a valid amount in WEI"
-            }
+            helperText={!isPenaltyValid && "Please enter a valid amount in WEI"}
           />
         </div>
       </div>
     );
-  }
+  };
 
   const FormInput = () => {
     if (type === "emergency") {
@@ -373,7 +370,7 @@ export default function TenderForm(props) {
         />
       );
     }
-  }
+  };
 
   const AuctionLength = () => {
     return (
@@ -390,13 +387,12 @@ export default function TenderForm(props) {
           onChange={handleAddFormData}
           error={!isAuctionValid}
           helperText={
-            !isAuctionValid &&
-            "Please enter a valid time length in minutes"
+            !isAuctionValid && "Please enter a valid time length in minutes"
           }
         />
       </div>
     );
-  }
+  };
 
   const DeliveryTime = () => {
     return (
@@ -413,30 +409,27 @@ export default function TenderForm(props) {
           onChange={handleAddFormData}
           error={!isDeliveryValid}
           helperText={
-            !isDeliveryValid &&
-            "Please enter a valid time length in minutes"
+            !isDeliveryValid && "Please enter a valid time length in minutes"
           }
         />
       </div>
     );
-  }
+  };
 
   const AuctionTimes = () => {
     if (type === "emergency") {
       return (
         <div style={{ display: "flex", justifyContent: "space-around" }}>
-          <AuctionLength/>
-          {value === 0 && (
-            <DeliveryTime/>
-          )}
+          <AuctionLength />
+          {value === 0 && <DeliveryTime />}
         </div>
       );
     } else if (type === "private" || type === "facility") {
       return (
         <div style={{ display: "flex", justifyContent: "space-around" }}>
-          <AuctionLength/>
+          <AuctionLength />
           {value === 0 ? (
-            <DeliveryTime/>
+            <DeliveryTime />
           ) : (
             <DateTimePicker
               className={styles.dateTimeFacility}
@@ -447,106 +440,114 @@ export default function TenderForm(props) {
         </div>
       );
     }
-  };  
+  };
 
   if (loading) {
     return <div>Loading...</div>;
   } else {
-
-  return (
-    <div className={styles.containerForm}>
-      <div style={{ display: "flex" }}>
-        <LocalPoliceIcon style={{ fontSize: "2.6rem" }} />
-        <Typography
-          variant="h4"
-          component="div"
-          gutterBottom
-          className={styles.heading}
+    return (
+      <div className={styles.containerForm}>
+        <div style={{ display: "flex" }}>
+          <LocalPoliceIcon style={{ fontSize: "2.6rem" }} />
+          <Typography
+            variant="h4"
+            component="div"
+            gutterBottom
+            className={styles.heading}
+          >
+            {Constants.POLICE} Tender Form
+          </Typography>
+        </div>
+        <form
+          className={styles.tenderForm}
+          onSubmit={handleSetAllowedHospitals}
         >
-          {Constants.POLICE} Tender Form
-        </Typography>
-      </div>
-      <form className={styles.tenderForm} onSubmit={handleSetAllowedHospitals}>
-        <h2 className={styles.headingText}>Location</h2>
-        <FormAddress handleAddFormData={handleAddFormData} />
-        <ButtonGroup variant="contained" aria-label="outlined button group">
-          <Button style={{ marginTop: ".25rem" }} color="success" type="submit">
-            Set Allowed {Constants.HOSPITAL}
-          </Button>
-        </ButtonGroup>
-      </form>
-      <br />
-      <form className={styles.tenderForm} onSubmit={confirm}>
-        <FormInput/>
-        <h2 className={styles.headingText}>Auction Information</h2>
-         <Amount/>
-         <AuctionTimes/>
-        <div className={styles.buttonGroup}>
+          <h2 className={styles.headingText}>Location</h2>
+          <FormAddress handleAddFormData={handleAddFormData} />
           <ButtonGroup variant="contained" aria-label="outlined button group">
-            <Button disabled={confirmDisabled} color="success" type="submit">
-              Post Tender
+            <Button
+              style={{ marginTop: ".25rem" }}
+              color="success"
+              type="submit"
+            >
+              Set Allowed {Constants.HOSPITAL}
             </Button>
           </ButtonGroup>
-        </div>
-      </form>
-      <Divider variant="middle" className={styles.divider} />
-      {(function () {
-        if (allowedHospPopup) {
-          return (
-            <div>
-              <Popup
-                trigger={allowedHospPopup}
-                setTrigger={setAllowedHospPopup}
-                style={{ width: "45%" }}
-              >
-                <AllowedHospitals
-                  address={location}
-                  city={city}
-                  state={stateIn}
-                  zipcode={zipcode}
-                  setAllowedHospitals={setAllowedHospitals}
+        </form>
+        <br />
+        <form className={styles.tenderForm} onSubmit={confirm}>
+          <FormInput />
+          <h2 className={styles.headingText}>Auction Information</h2>
+          <Amount />
+          <AuctionTimes />
+          <div className={styles.buttonGroup}>
+            <ButtonGroup variant="contained" aria-label="outlined button group">
+              <Button disabled={confirmDisabled} color="success" type="submit">
+                Post Tender
+              </Button>
+            </ButtonGroup>
+          </div>
+        </form>
+        <Divider variant="middle" className={styles.divider} />
+        {(function () {
+          if (allowedHospPopup) {
+            return (
+              <div>
+                <Popup
                   trigger={allowedHospPopup}
                   setTrigger={setAllowedHospPopup}
-                  setSelectedData={setSelectedData}
-                />
-              </Popup>
-            </div>
-          );
-        }
-        if (state.status === "Mining") {
-          return (
-            <div>
-              <Alert severity="warning">Waiting for tender to be posted</Alert>
-              <Box sx={{ display: "flex" }}>
-                <CircularProgress />
-              </Box>
-            </div>
-          );
-        }
-        if (transactionErrored(state)) {
-          return (
-            <div>
-              <Alert severity="error">
-                Transaction failed: {state.errorMessage}
-              </Alert>
-            </div>
-          );
-        }
-        if (state.status === "Success" && events != undefined) {
-          return (
-            <div>
-              <Alert severity="success">
-                Your transaction was successful! Please click the button to
-                finalize the transaction.
-              </Alert>
-              <Button color="success" onClick={finalizeTransaction}>
-                Finalize and Exit
-              </Button>
-            </div>
-          );
-        }
-      })()}
-    </div>
-  );
+                  style={{ width: "45%" }}
+                >
+                  <AllowedHospitals
+                    address={location}
+                    city={city}
+                    state={stateIn}
+                    zipcode={zipcode}
+                    setAllowedHospitals={setAllowedHospitals}
+                    trigger={allowedHospPopup}
+                    setTrigger={setAllowedHospPopup}
+                    setSelectedData={setSelectedData}
+                  />
+                </Popup>
+              </div>
+            );
+          }
+          if (state.status === "Mining") {
+            return (
+              <div>
+                <Alert severity="warning">
+                  Waiting for tender to be posted
+                </Alert>
+                <Box sx={{ display: "flex" }}>
+                  <CircularProgress />
+                </Box>
+              </div>
+            );
+          }
+          if (transactionErrored(state)) {
+            return (
+              <div>
+                <Alert severity="error">
+                  Transaction failed: {state.errorMessage}
+                </Alert>
+              </div>
+            );
+          }
+          if (state.status === "Success" && events != undefined) {
+            return (
+              <div>
+                <Alert severity="success">
+                  Your transaction was successful! Please click the button to
+                  finalize the transaction.
+                </Alert>
+                <Button color="success" onClick={finalizeTransaction}>
+                  Finalize and Exit
+                </Button>
+              </div>
+            );
+          }
+        })()}
+      </div>
+    );
   }
 }
