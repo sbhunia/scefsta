@@ -2,12 +2,11 @@ import styles from "../../styles/Patients.module.css";
 import React from "react";
 import { useContractFunction, transactionErrored } from "@usedapp/core";
 import Alert from "@mui/material/Alert";
-import { CircularProgress } from "@mui/material";
+import { ButtonGroup, CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
 import stylesP from "../../styles/Popup.module.css";
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import { AUCTION_INSTANCE } from "../../pages/_app";
-import { Button } from "reactstrap";
 import * as Constants from "../../constants";
 
 /**
@@ -67,9 +66,11 @@ export default function VerifyDelivery({ tenderID, row }) {
         </p>
       </div>
       <div className={stylesP.submitButtonDiv}>
-        <Button type="submit" color="success" onClick={handleVerifyDelivery}>
-          Confirm Arrival
-        </Button>
+        <ButtonGroup variant="contained" arai-label="outlined button group">
+          <Button type="submit" color="success" onClick={handleVerifyDelivery}>
+            Confirm Arrival
+          </Button>
+        </ButtonGroup>
       </div>
       {(function () {
         if (state.status === "Mining") {

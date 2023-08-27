@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import { AUCTION_INSTANCE } from "../../pages/_app";
 import * as Constants from "../../constants";
 
-export default function ReclaimTender({ tenderID }) {
+export default function ReclaimTender({ tenderID, setTrigger }) {
   // Obtaining React Hooks from reclaimTender smart contract function
   const { send, state, events } = useContractFunction(
     AUCTION_INSTANCE,
@@ -23,7 +23,7 @@ export default function ReclaimTender({ tenderID }) {
 
   const finalizeTransaction = async () => {
     const updatePatient = {
-      patientId: tenderID + 1,
+      patientId: parseInt(tenderID) + 1,
       status: "reclaimed",
     };
 

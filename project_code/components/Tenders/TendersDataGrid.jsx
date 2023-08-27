@@ -203,8 +203,14 @@ export default function TendersDataGrid({
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <ReclaimTender tenderID={tenderID} />
-                    <RetractTender tenderID={tenderID} />
+                    <ReclaimTender
+                      tenderID={tenderID}
+                      setTrigger={setRowPopup}
+                    />
+                    <RetractTender
+                      tenderID={tenderID}
+                      setTrigger={setRowPopup}
+                    />
                   </div>
                 </Popup>
                 <Popup

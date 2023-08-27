@@ -1,7 +1,7 @@
 "use strict";
 const Constants = require("../api-constants");
 
-async function addSalt(req, res) {
+async function addSalt(req, res, connection) {
   let walletId = req.body.walletId;
   let patientId = req.body.patientId;
   let bidId = req.body.bidId;
@@ -41,7 +41,7 @@ async function getSalts(req, res, connection) {
   });
 }
 
-async function deleteSalt(req, res) {
+async function deleteSalt(req, res, connection) {
   let walletId = req.body.walletId;
   let patientId = req.body.patientId;
   let bidId = req.body.bidId;

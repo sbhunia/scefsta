@@ -140,7 +140,7 @@ export default function RevealBid({
           className={styles.givenRewardDiv}
         >
           <InputLabel htmlFor="filled-adornment-amount">
-            Delivery Address:
+            Pickup Address:
           </InputLabel>
           <FilledInput
             id="filled-adornment-amount"

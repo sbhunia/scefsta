@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import { AUCTION_INSTANCE } from "../../pages/_app";
 import * as Constants from "../../constants";
 
-export default function RetractTender({ tenderID }) {
+export default function RetractTender({ tenderID, setTrigger }) {
   // Obtaining React Hooks from reclaimTender smart contract function
   const { send, state } = useContractFunction(
     AUCTION_INSTANCE,
