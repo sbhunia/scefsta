@@ -68,14 +68,16 @@ export const getTenders =
   "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/tenders";
 export const getUsers =
   "http://ambulance-blockchain.sec.csi.miamioh.edu:5000/api/users";
-export const addAdmin = "api/admins";
-export const addAmbulance = "api/ambulances";
-export const addHospital = "api/hospitals";
-export const addPolice = "api/police";
-export const deleteAdmins = "api/admins";
-export const deleteAmbulance = "api/ambulances";
-export const deletePolice = "api/police";
-export const deleteHospital = "api/hospitals";
+// export const addAdmin = "api/admins";
+// export const addAmbulance = "api/ambulances";
+// export const addHospital = "api/hospitals";
+// export const addPolice = "api/police";
+// export const deleteAdmins = "api/admins";
+// export const deleteAmbulance = "api/ambulances";
+// export const deletePolice = "api/police";
+// export const deleteHospital = "api/hospitals";
+
+export const APP_DOMAIN = "http://localhost:3000";
 
 export const getSalt =
   "http://ambulance-blockchain.sec.csi.miamioh.edu:5000//api/salts";

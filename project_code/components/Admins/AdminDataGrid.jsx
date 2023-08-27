@@ -139,6 +139,10 @@ export default function AdminDataGrid({ data, popUpChecked }) {
     let response = await fetch(Constants.getAdmins, {
       method: "POST",
       body: JSON.stringify(newContact),
+      headers: {
+        "Content-Type": "application/json",
+        Origin: Constants.APP_DOMAIN,
+      },
     });
 
     newContact["id"] = newContact["walletId"];
