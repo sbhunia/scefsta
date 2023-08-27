@@ -2,13 +2,13 @@
 const Constants = require("../api-constants");
 
 async function addPolice(req, res) {
-  let policeDept = JSON.parse(req.body)["policeDept"];
-  let station = JSON.parse(req.body)["station"];
-  let address = JSON.parse(req.body)["address"];
-  let city = JSON.parse(req.body)["city"];
-  let state = JSON.parse(req.body)["state"];
+  let policeDept = req.body.policeDept;
+  let station = req.body.station;
+  let address = req.body.address;
+  let city = req.body.city;
+  let state = req.body.state;
   let zipcode = JSON.parse(req.body)[Constants.zipcode];
-  let walletId = JSON.parse(req.body)["walletId"];
+  let walletId = req.body.walletId;
   let accountType = "initiator";
   let initiatorType = "emergency";
 
@@ -26,11 +26,11 @@ async function addPrivate(req, res) {
   let fName = JSON.parse(req.body)[Constants.firstName];
   let lName = JSON.parse(req.body)[Constants.lastName];
   let email = JSON.parse(req.body)[Constants.email];
-  let address = JSON.parse(req.body)["address"];
-  let city = JSON.parse(req.body)["city"];
-  let state = JSON.parse(req.body)["state"];
+  let address = req.body.address;
+  let city = req.body.city;
+  let state = req.body.state;
   let zipcode = JSON.parse(req.body)[Constants.zipcode];
-  let walletId = JSON.parse(req.body)["walletId"];
+  let walletId = req.body.walletId;
   let accountType = "initiator";
   let initiatorType = "private";
 
@@ -47,11 +47,11 @@ async function addPrivate(req, res) {
 
 async function addInterfacility(req, res) {
   let facilityName = JSON.parse(req.body)[Constants.hospitalSystem];
-  let address = JSON.parse(req.body)["address"];
-  let city = JSON.parse(req.body)["city"];
-  let state = JSON.parse(req.body)["state"];
+  let address = req.body.address;
+  let city = req.body.city;
+  let state = req.body.state;
   let zipcode = JSON.parse(req.body)[Constants.zipcode];
-  let walletId = JSON.parse(req.body)["walletId"];
+  let walletId = req.body.walletId;
   let accountType = "initiator";
   let initiatorType = "facility";
 
@@ -117,7 +117,7 @@ const getPoliceType = async (req, res) => {
 
 // Deletes police from the database
 async function deletePolice(req, res) {
-  const walletIds = JSON.parse(req.body);
+  const walletIds = req.body;
   const formattedWalletIds = walletIds.map((id) => `'${id}'`).join(",");
 
   const query = `

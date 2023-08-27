@@ -4,11 +4,11 @@ const Constants = require("../api-constants");
 
 async function addHospital(req, res) {
   let hospitalSystem = JSON.parse(req.body)[Constants.hospitalSystem];
-  let address = JSON.parse(req.body)["address"];
-  let city = JSON.parse(req.body)["city"];
-  let state = JSON.parse(req.body)["state"];
-  let zipcode = JSON.parse(req.body)["zipcode"];
-  let walletId = JSON.parse(req.body)["walletId"];
+  let address = req.body.address;
+  let city = req.body.city;
+  let state = req.body.state;
+  let zipcode = req.body.zipcode;
+  let walletId = req.body.walletId;
   let accountType = "facility";
 
   const isFacilityQuery = `SELECT COUNT(*) FROM Users WHERE (${Constants.walletId} = '${walletId}' AND ${Constants.accountType} = 'initiator' AND ${Constants.initiatorType} = 'facility');`;
@@ -45,7 +45,7 @@ async function getHospitals(req, res) {
 
 // Deletes hospitals from the database
 async function deleteHospital(req, res) {
-  let walletIds = JSON.parse(req.body);
+  let walletIds = req.body;
   let formattedWalletIds = "'" + walletIds.join("','") + "'";
 
   let query = `

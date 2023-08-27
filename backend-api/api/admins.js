@@ -29,7 +29,6 @@ async function getAdmins(req, res) {
 }
 
 async function deleteAdmin(req, res) {
-  console.log(req.body);
   let walletIds = req.body;
   let formattedWalletIds = "'" + walletIds.join("','") + "'";
 

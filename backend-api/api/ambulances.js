@@ -2,14 +2,14 @@
 const Constants = require("../api-constants");
 
 async function addAmbulance(req, res) {
-  let transportCompany = JSON.parse(req.body)[Constants.transportCompany];
-  let licensePlate = JSON.parse(req.body)["licensePlate"];
-  let address = JSON.parse(req.body)["address"];
-  let city = JSON.parse(req.body)["city"];
-  let state = JSON.parse(req.body)["state"];
-  let zipcode = JSON.parse(req.body)[Constants.zipcode];
-  let walletId = JSON.parse(req.body)["walletId"];
-  let accountType = "transport";
+  let transportCompany = req.body.transportCompany;
+  let licensePlate = req.body.licensePlate;
+  let address = req.body.address;
+  let city = req.body.city;
+  let state = req.body.state;
+  let zipcode = req.body.zipcode;
+  let walletId = req.body.walletId;
+  let accountType = req.body.transport;
   let query = `INSERT INTO ${Constants.Users} (${Constants.transportCompany}, ${Constants.walletId}, ${Constants.address},
             ${Constants.city}, ${Constants.state}, ${Constants.zipcode}, ${Constants.licensePlate}, ${Constants.accountType})
             VALUES ('${transportCompany}', '${walletId}', '${address}', '${city}', '${state}', '${zipcode}', '${licensePlate}', '${accountType}');`;
@@ -26,7 +26,7 @@ async function getAmbulances(req, res) {
 }
 
 async function deleteAmbulance(req, res) {
-  let walletIds = JSON.parse(req.body);
+  let walletIds = req.body;
   let formattedWalletIds = "'" + walletIds.join("','") + "'";
 
   let query = `DELETE FROM ${Constants.Users}

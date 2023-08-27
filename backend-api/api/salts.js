@@ -2,12 +2,12 @@
 const Constants = require("../api-constants");
 
 async function addSalt(req, res) {
-  let walletId = JSON.parse(req.body)["walletId"];
-  let patientId = JSON.parse(req.body)["patientId"];
-  let bidId = JSON.parse(req.body)["bidId"];
-  let saltVal = JSON.parse(req.body)["saltVal"];
-  let bidVal = JSON.parse(req.body)["bidVal"];
-  let penalty = JSON.parse(req.body)["penalty"];
+  let walletId = req.body.walletId;
+  let patientId = req.body.patientId;
+  let bidId = req.body.bidId;
+  let saltVal = req.body.saltVal;
+  let bidVal = req.body.bidVal;
+  let penalty = req.body.penalty;
 
   let query = `INSERT INTO ${Constants.Salts} (${Constants.walletId}, ${Constants.patientId}, ${Constants.bidId},
         ${Constants.saltVal}, ${Constants.bidVal}, ${Constants.penalty})
@@ -28,9 +28,9 @@ async function getSalts(req, res) {
 }
 
 async function deleteSalt(req, res) {
-  let walletId = JSON.parse(req.body)["walletId"];
-  let patientId = JSON.parse(req.body)["patientId"];
-  let bidId = JSON.parse(req.body)["bidId"];
+  let walletId = req.body.walletId;
+  let patientId = req.body.patientId;
+  let bidId = req.body.bidId;
 
   let query = `DELETE FROM ${Constants.Salts}
                     WHERE ${Constants.walletId} = ${walletId} AND
