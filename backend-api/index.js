@@ -83,7 +83,7 @@ connection.connect((err) => {
         return res.status(500).json({ success: false });
       }
       console.log("Query results:", results);
-      res.status(200).json(results);
+      res.status(200).json({data: results, success: true});
     });
   });
 
@@ -96,7 +96,7 @@ connection.connect((err) => {
         return res.status(500).json({ success: false });
       }
       console.log("Query results:", results);
-      res.status(200).json(results);
+      res.status(200).json({data: results, success: true});
     });
   });
 
