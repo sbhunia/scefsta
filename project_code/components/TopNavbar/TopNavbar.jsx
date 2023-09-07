@@ -30,7 +30,7 @@ export default function TopNavbar() {
               Address:{" "}
               {account.substring(0, 5) +
                 "..." +
-                account.substring(account.length - 4, account.length - 1)} 
+                account.substring(account.length - 4, account.length)} 
                 <span className={styles.tab}></span>
               Balance: {formatEther(etherBalance).substring(0, 8)}
             </p>
