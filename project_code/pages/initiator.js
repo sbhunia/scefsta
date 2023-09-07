@@ -62,6 +62,7 @@ function Police() {
   const [isAmbulance, setIsAmbulance] = useState(false);
   const [openTenders, setOpenTenders] = useState([]);
   const [openTenderCnt, setOpenTenderCnt] = useState(0);
+  const [allTenders, setAllTenders] = useState([]);
   const [totalTenderCnt, setTotalTenderCnt] = useState(0);
   const [value, setValue] = useState(0);
   const [account, setAccount] = useState();
@@ -79,12 +80,14 @@ function Police() {
 
     const provider = new providers.Web3Provider(window.ethereum);
     let tempTenders = await getAllTenders(provider);
+    setAllTenders(tempTenders);
     setTotalTenderCnt(tempTenders.length);
 
     // Filtering so as to only have Open tenders
     let tempOpenTendersArr = tempTenders.filter(function (open) {
       return open.strStatus === "Open";
     });
+
     setOpenTenders(tempOpenTendersArr);
     setOpenTenderCnt(tempOpenTendersArr.length);
 
@@ -136,7 +139,7 @@ function Police() {
                   </Grid>
                   <Grid item xs={12}>
                     <TendersPolice
-                      data={openTenders}
+                      data={allTenders}
                       popUpChecked={true}
                       account={account}
                     />

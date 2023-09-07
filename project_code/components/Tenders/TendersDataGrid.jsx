@@ -98,7 +98,7 @@ export default function TendersDataGrid({
     let result = await getAuctionWinner(tenderId, provider);
 
     if (!result) {
-      alert("Tender must not be open, and must be past reveal period");
+      alert("Tender must be past reveal period");
     } else if (result === sessionStorage.getItem("accountId")) {
       alert("You won the auction! Proceed to pickup patient");
     } else {

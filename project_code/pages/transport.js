@@ -94,7 +94,7 @@ function Ambulance({ patients }) {
 
     // Filtering so as to only have Open tenders
     let tempProgressTendersArr = tempTenders.filter(function (inProgress) {
-      return inProgress.strStatus === "In Progress";
+      return inProgress.strStatus === "InProgress";
     });
     setInProgressTenders(tempProgressTendersArr);
   }, []);
