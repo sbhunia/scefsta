@@ -36,10 +36,12 @@ export default function PatientsDataGrid({data, arrival}) {
     }
 
     useEffect(async () => {
+        let account = sessionStorage.getItem("accountId");
+
         let tempData = dataContacts;
         const provider = new providers.Web3Provider(window.ethereum);
         let tempTenders = await getAllTenders(provider);
-
+        console.log(tempData);
         // get data from tenders and map new data
         const mergedPatients = tempData.map((patient) => {
             // if there is no injuries listed set mechanism and injury to N/A
@@ -52,9 +54,13 @@ export default function PatientsDataGrid({data, arrival}) {
             for (let tender in tempTenders) {
                 let tendId = new BigNumber(
                     tempTenders[tender]["tenderId"]["_hex"]);
-                    
-                // if the tenderID matches corresponding patientID get the due date
+                
+                let allowedHospitals = tempTenders[tender].details.allowedHospitals;
+                patient.allowedHospitals = allowedHospitals;
+
+                // if tender ID matches the patient ID
                 if (tendId.c[0] + 1 === patient.patientId) {
+                    // get the due date
                     patient.dueDate = tempTenders[tender].dueDate;
                 }
             }
@@ -62,7 +68,16 @@ export default function PatientsDataGrid({data, arrival}) {
             return patient;
         });
 
-        setDataContacts(mergedPatients)
+        const filterPatients = mergedPatients.filter((patient) => {
+            for (let i = 0; i < patient.allowedHospitals.length; i++) {
+                if (patient.allowedHospitals[i] === account) {
+                    return true;
+                }
+            }
+            return false;
+        })
+        
+        setDataContacts(filterPatients);
     }, [])
 
     return (
