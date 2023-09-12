@@ -16,9 +16,9 @@ use TXT file for --static or --load, CSV file for --box
 def parse_gas(filename):
     # set lines to be skipped, skip 36 for auctions gas and 12 for accounts gas to remove unnecessary information
     if "auc" in filename:
-        skipLines = 38
+        skipLines = 26
     else:
-        skipLines = 13
+        skipLines = 10
 
     # set the output filename and open the given file
     outfile_name = filename[:-4:] + ".csv"
@@ -34,12 +34,12 @@ def parse_gas(filename):
                 continue
 
             # if it is a line with values replace the special chars and write to file
-            if line.startswith("â") or line.startswith("│"):
-                if "Œâ" in line or '”€' in line:
+            if line.startswith("â") or line.startswith("│") or line.startswith("|"):
+                if "Œâ" in line or '”€' in line or "-" in line:
                     continue
-                line = line.replace("â", " ").replace("┆", ",").replace(" ", "").strip(',')
-
-                line_arr = line[1:-2:].split(",")
+                line = line.replace("â", " ").replace("|", ",").replace("┆", ",").replace(" ", "").strip(',')
+                print(line)
+                line_arr = line[0:-2:].split(",")
                 row = [line_arr[0], line_arr[1], line_arr[2], line_arr[3], line_arr[4], line_arr[5]]
                 df.loc[len(df)] = row
     
@@ -65,23 +65,16 @@ def parse_load(filename):
         lineCnt = 0
         # loop through the lines in teh array
         for line in lines_arr:
-            # if the line is a break in the table, else if the line is not a data row set line count to 0
-            if repr(line).startswith("'├"):
-                continue
-            elif not repr(line).startswith("'│"):
+            if not line.startswith("|"):
                 lineCnt = 0
                 continue
-
-            # remove the newline and see if the line starts with another value
-            line = line.replace("\n", "")
-            if line.startswith("â") or line.startswith("│"):
+        
+            if line.startswith("|"):
                 lineCnt += 1
-                if lineCnt <= 3:
+                if lineCnt <= 5:
                     continue
 
-                # replace the special characters for csv format
-                line = line.replace("â", " ").replace("”†", ",").strip(',')
-                line = line.replace("│", " ").replace("┆", ",").strip(',').replace(" ", "")
+                line = line.replace("\n", "").replace(" ", "").replace("|", ",").strip(",")
 
                 # get information from the line
                 line_arr = line.split(",")
@@ -104,6 +97,8 @@ def parse_load(filename):
                 #     data_dict[func]["500_avg"] = avg1.strip()
                 continue
     df = pd.DataFrame(columns=['function', "1", "20", "100"])
+
+    # df = pd.DataFrame(columns=['function', "1", "20", "100", "500"])
     # get the output file name
     outfile_name = filename[:-4:].strip()
 
@@ -114,6 +109,7 @@ def parse_load(filename):
             print("missing value for " + key)
         else: 
             row = [key, value["1_avg"], value["20_avg"], value["100_avg"]]
+            # row = [key, value["1_avg"], value["20_avg"], value["100_avg"], value["500_avg"]]
             df.loc[len(df)] = row
 
     plot_load(outfile_name, df)
@@ -160,12 +156,13 @@ def plot_static(filename, df):
 
 # plot the loaded functions compiled, generated from csv version of load gas prices using foundry
 def plot_load(filename, df):
+    print(df)
     # get the functions and their gas prices
     function_name = [str.strip() for str in list(df.iloc[:, 0])]
     one_gas = [eval(i) for i in list(df.iloc[:, 1])]
     twenty_gas = [eval(i) for i in list(df.iloc[:, 2])]
     hund_gas = [eval(i) for i in list(df.iloc[:, 3])]
-    #fivehund_gas = [eval(i) for i in list(df.iloc[:, 4])]
+    # fivehund_gas = [eval(i) for i in list(df.iloc[:, 4])]
 
     # set the number of bars needed and the width of each bar
     x = np.arange(len(function_name))
@@ -178,10 +175,11 @@ def plot_load(filename, df):
     ax.bar(x - width, one_gas, width, color='thistle', edgecolor='black', hatch='/')
     ax.bar(x, twenty_gas, width, color='springgreen', edgecolor='black', hatch='o')
     ax.bar(x + width, hund_gas, width, color='salmon', edgecolor='black', hatch='-')
-    #ax.bar(x + 2 * width, fivehund_gas, width, color='lightseagreen', edgecolor='black', hatch='\\')
+    # ax.bar(x + 2 * width, fivehund_gas, width, color='lightseagreen', edgecolor='black', hatch='\\')
 
     # plot attributes
     ax.legend(['1', '20', '100'], loc='upper right')
+    # ax.legend(['1', '20', '100', '500'], loc='upper right')
     #ax.set_title("Load Factor Gas Report for Auction API Calls")
     ax.set_ylabel("Gas consumed in GWEI (log-scale)")
     ax.set_xlabel("Smart Contract Method")
