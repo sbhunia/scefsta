@@ -4,7 +4,6 @@ import stylesP from "../../styles/Popup.module.css";
 import HospitalDataGrid from "../Hospitals/HospitalDataGrid";
 import { getDistance } from "geolib";
 import axios from "axios";
-import * as Constants from "../../constants";
 
 const apiKey = "f6O9rKeaLXRPkZhRRw0tjQWUn8Tp7Y6s";
 
