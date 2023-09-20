@@ -1,6 +1,6 @@
 // contract addresses for both contracts
-export const accountsAddress = "0x05C266DCc58DEc55Be7A624EE89532C2A48Ee0E1";
-export const auctionsAddress = "0x52CaDa6B640030cF1B28c17ed07CB0765CbFa818";
+export const accountsAddress = "0x71549C0D0ef024aE0Fc9c88944b713a023369A7F";
+export const auctionsAddress = "0xEB329C39c67714f850bEFC054c34c868B7D384Ee";
 
 export const accounts_abi = [
   {
