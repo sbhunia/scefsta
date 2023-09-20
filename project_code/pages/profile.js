@@ -17,7 +17,9 @@ function Profile() {
 
   useEffect(() => {
     const getUsers = async (walletId) => {
-      const res = await fetch(Constants.getUsers + "?walletId=" + walletId);
+      const res = await fetch(Constants.getUsers + "?walletId=" + walletId, {
+        headers: Constants.HEADERS,
+      });
       const data = await res.json();
       setUsers(data);
     };
@@ -30,8 +32,7 @@ function Profile() {
     }
   }, []);
 
-
-  const UserData = ({user}) => {
+  const UserData = ({ user }) => {
     const userFields = [
       { label: "First Name", value: user.firstName },
       { label: "Last Name", value: user.lastName },
@@ -65,7 +66,7 @@ function Profile() {
         </ul>
       </div>
     );
-  }
+  };
 
   if (account && chainId && balance != undefined && users != undefined) {
     const my =
@@ -83,11 +84,12 @@ function Profile() {
             </div>
             <div className={styles.profile}>
               <h2 style={{ textAlign: "center" }}>Account Information</h2>
-              <UserData user={users[0]}/>
+              <UserData user={users[0]} />
 
               <div className={styles.logout}>
                 <div className={styles["logout-btn"]}>
-                  <Button color="warning"
+                  <Button
+                    color="warning"
                     style={{ display: "block", margin: "0 auto" }}
                     onClick={() => {
                       window.localStorage.removeItem("transactions");

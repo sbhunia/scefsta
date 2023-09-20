@@ -28,10 +28,13 @@ export default function ReclaimTender({ tenderID, setTrigger }) {
     };
 
     let response = await fetch(Constants.getPatients, {
-      headers: { "x-method": "update" },
+      headers: {
+        "x-method": "update",
+        "Content-Type": "application/json",
+        Origin: APP_DOMAIN,
+      },
       method: "POST",
       body: JSON.stringify(updatePatient),
-      headers: Constants.HEADERS,
     });
 
     let status = await response.json();

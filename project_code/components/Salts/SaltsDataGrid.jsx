@@ -57,7 +57,9 @@ export default function SaltsDataGrid({ accountId }) {
 
   useEffect(() => {
     const getSalts = async () => {
-      const res = await fetch(Constants.getSalts + "?walletId=" + accountId);
+      const res = await fetch(Constants.getSalts + "?walletId=" + accountId, {
+        headers: Constants.HEADERS,
+      });
       const data = await res.json();
 
       // get all the tenders
