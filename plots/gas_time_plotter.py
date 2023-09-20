@@ -38,7 +38,6 @@ def parse_gas(filename):
                 if "Œâ" in line or '”€' in line or "-" in line:
                     continue
                 line = line.replace("â", " ").replace("|", ",").replace("┆", ",").replace(" ", "").strip(',')
-                print(line)
                 line_arr = line[0:-2:].split(",")
                 row = [line_arr[0], line_arr[1], line_arr[2], line_arr[3], line_arr[4], line_arr[5]]
                 df.loc[len(df)] = row
@@ -52,8 +51,8 @@ def parse_load(filename):
     # set lines to be skipped, skip 36 for auctions gas and 12 for accounts gas
     if "auc" in filename:
         data_dict = {"verifyDelivery": {}, "getAuctionWinner": {}, "postTender": {},
-                 "secretBid": {}, "revealBid": {}, "getAllTenders": {}}
-        """"reclaimTender": {}, retractTender": {},"""
+                 "secretBid": {}, "revealBid": {}, "getAllTenders": {},
+        "reclaimTender": {}, "retractTender": {}}
     else:
         data_dict = {"addAdmin": {}, "addAmbulance": {}, "addHospital": {}, "addInitiator": {}, "isAdmin": {}, "isAmbulance": {},
                  "isHospital": {}, "isInitiator": {}, "removeAdmin": {}, "removeAmbulance": {}, "removeHospital": {}, "removeInitiator": {}}
@@ -130,8 +129,8 @@ def plot_static(filename, df):
 
     # generate subplots and set height/width
     fig, ax = plt.subplots()
-    fig.set_figwidth(15)
-    fig.set_figheight(6)
+    fig.set_figwidth(7)
+    fig.set_figheight(4)
 
     # plot the bars
     ax.bar(x-width, min_gas, width, color='thistle', edgecolor='black', hatch='/')
@@ -140,7 +139,7 @@ def plot_static(filename, df):
     ax.bar(x+2*width, avg_gas, width, color='lightseagreen', edgecolor='black', hatch='\\')
 
     # plot attributes
-    ax.legend(['minimum', 'maximum', 'median', 'average'], bbox_to_anchor=(1.0, 1.0), loc='upper left')
+    ax.legend(['minimum', 'maximum', 'median', 'average'], loc='upper right')
     # ax.set_title("Gas report for Smart Contract (500 calls each)")
     ax.set_ylabel("Gas consumed in GWEI (log-scale)")
     ax.set_xlabel("Smart Contract Methods")
@@ -156,7 +155,6 @@ def plot_static(filename, df):
 
 # plot the loaded functions compiled, generated from csv version of load gas prices using foundry
 def plot_load(filename, df):
-    print(df)
     # get the functions and their gas prices
     function_name = [str.strip() for str in list(df.iloc[:, 0])]
     one_gas = [eval(i) for i in list(df.iloc[:, 1])]
@@ -168,8 +166,14 @@ def plot_load(filename, df):
     x = np.arange(len(function_name))
     width = 0.2
 
+   
+
     # create the subplots
     fig, ax = plt.subplots()
+
+    # set figure size
+    fig.set_figwidth(5)
+    fig.set_figheight(4)
 
     # plot the individual bars for eacch gas amount
     ax.bar(x - width, one_gas, width, color='thistle', edgecolor='black', hatch='/')
@@ -200,16 +204,17 @@ def plot_box(filename):
     df = pd.DataFrame(data)
 
     # generate the boxplot
-    df.boxplot()
+    df.boxplot(figsize=(5, 4))
 
     # plot attributes
-    plt.xticks(rotation=45, ha='right', fontsize=8)
+    plt.xticks(rotation=45, ha='right')
     plt.xlabel("Smart Contract Methods")
     plt.ylabel("Latency Time (ms)")
     plt.grid(visible=False)
 
     # save the figure as a vectorized image for quality
     plt_filename = filename[:-4:] + ".eps"
+    plt.tight_layout()
     plt.savefig(plt_filename, format="eps", dpi=1200)
     plt.show()
     
