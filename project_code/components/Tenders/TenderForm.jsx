@@ -110,7 +110,9 @@ export default function TenderForm(props) {
   const fetchType = async () => {
     try {
       const URL = `${Constants.getPolice}?walletId='${props.account}'`;
-      const response = await fetch(URL);
+      const response = await fetch(URL, {
+        headers: Constants.HEADERS,
+      });
       const json = await response.json();
       console.log(json);
       setType(json[0].initiatorType);
