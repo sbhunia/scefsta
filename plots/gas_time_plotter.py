@@ -129,7 +129,7 @@ def plot_static(filename, df):
 
     # generate subplots and set height/width
     fig, ax = plt.subplots()
-    fig.set_figwidth(7)
+    fig.set_figwidth(5)
     fig.set_figheight(4)
 
     # plot the bars
