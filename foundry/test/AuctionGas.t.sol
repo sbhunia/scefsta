@@ -137,16 +137,16 @@ contract AuctionGasTest is Test {
             auc.getAuctionWinner(tender);
 
             /* Do this independently from reclaim tender */
-            // {
-            //     hoax(hospital, 1000 ether);
-            //     auc.verifyDelivery(tender);
-            // }
+            {
+                hoax(hospital, 1000 ether);
+                auc.verifyDelivery(tender);
+            }
 
             /* Do this indepently of verify delivery */
-            {
-                hoax(initiator, 1000 ether);
-                auc.reclaimTender(tender);
-            }
+            // {
+            //     hoax(initiator, 1000 ether);
+            //     auc.reclaimTender(tender);
+            // }
         }
     }
 }

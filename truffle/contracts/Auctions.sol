@@ -172,9 +172,9 @@ contract Auctions {
         require(block.timestamp < tender.details.revealDate, "Tender past reveal period");
         require(tender.status == TenderStatus.Open, "Tender not open");
         require(bidVal < tender.details.maxBid, "Bid was not below max bid amount");
-        //require(msg.sender == tender.details.bidders[index], "Wrong bid ID");
+        require(msg.sender == tender.details.bidders[index], "Wrong bid ID");
         require(tender.details.penalty == msg.value, "Incorrect penalty amount");
-        //require(tender.details.bidHashArray[index] == uint256(keccak256(abi.encodePacked(bidVal + salt))), "Bid value != Hash Value");
+        require(tender.details.bidHashArray[index] == uint256(keccak256(abi.encodePacked(bidVal + salt))), "Bid value != Hash Value");
 
         // if job was already assigned, refund 
         if (tender.details.tenderAccepter != address(0)) {

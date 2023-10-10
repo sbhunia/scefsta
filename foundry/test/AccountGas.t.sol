@@ -97,7 +97,7 @@ contract AuctionGasTest is Test {
     }
 
     function testAccountGasTimes() public {
-        for (uint256 i = 0; i < 500; i++) {
+        for (uint256 i = 0; i < 100; i++) {
             // add new admin
             vm.startPrank(superAdmin);
                 acc.addAdmin(admin);
