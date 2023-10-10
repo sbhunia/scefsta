@@ -8,6 +8,7 @@ const {
   expectRevert,
   time,
 } = require("@openzeppelin/test-helpers");
+const BigNumber = require("bignumber.js");
 
 contract("Accounts", (accounts) => {
   it("gets API latency times of Accounts API functions", async () => {
@@ -107,7 +108,8 @@ contract("Auctions", async (accounts) => {
     const auctionsInstance = await Auctions.deployed();
     const fs = require("fs");
 
-    let auctionStr = "postTender, secretBid, getAllTenders\n";
+    let auctionStr =
+      "postTender, secretBid, revealBid, getAuctionWinner, verifyDelivery, reclaimTender, retractTender, getAllTenders\n";
 
     // add accounts to be used
     await accountsInstance.addAdmin(accounts[1], { from: accounts[0] });
@@ -117,7 +119,7 @@ contract("Auctions", async (accounts) => {
     await accountsInstance.addAmbulance(accounts[5], { from: accounts[1] });
 
     // test auction functions
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 30; i += 3) {
       let postStart = Date.now();
       let tenderId = await auctionsInstance.postTender(
         30,
@@ -135,9 +137,11 @@ contract("Auctions", async (accounts) => {
       let postTime = (Date.now() - postStart).toString();
       auctionStr += postTime + ",";
 
-      /* RETRACT TENDER HERE
-
-      */
+      /* RETRACT TENDER HERE */
+      // let retractStart = Date.now();
+      // await auctionsInstance.retractTender.call(0, { from: accounts[2] });
+      // let retractTime = (Date.now() - retractStart).toString();
+      // auctionStr += retractTime + ",";
 
       let hash = web3.utils.soliditySha3(100 + 10);
       let bidStart = Date.now();
@@ -152,33 +156,82 @@ contract("Auctions", async (accounts) => {
       await time.increase(time.duration.minutes(1));
 
       let revStart = Date.now();
-      await auctionsInstance.revealBid.call(
-        web3.utils.toBN(i),
+      await auctionsInstance.revealBid(web3.utils.toBN(i), 100, 10, bidId, {
+        from: accounts[4],
+        value: 20,
+      });
+
+      let revTime = (Date.now() - revStart).toString();
+      auctionStr += revTime + ",";
+
+      await time.increase(time.duration.minutes(5)); // Increase time by 1 minute
+      let getWinnerStart = Date.now();
+      await auctionsInstance.getAuctionWinner(web3.utils.toBN(i));
+      let getWinnerTime = (Date.now() - getWinnerStart).toString();
+      auctionStr += getWinnerTime + ",";
+
+      let verStart = Date.now();
+      await auctionsInstance.verifyDelivery.call(0, { from: accounts[3] });
+      let verTime = (Date.now() - verStart).toString();
+      auctionStr += verTime + ",";
+
+      // now repeat for reclaim tender
+      await auctionsInstance.postTender(
+        30,
+        60,
+        "6729 old stagecoach road",
+        "frazeysburg",
+        "ohio",
+        "43822",
+        20,
+        "critical",
+        [accounts[3]],
+        { from: accounts[2], value: 10000 }
+      );
+
+      let bidId2 = await auctionsInstance.secretBid.call(
+        web3.utils.toBN(i + 1),
+        hash,
+        { from: accounts[4], value: web3.utils.toBN(20) }
+      );
+
+      await time.increase(time.duration.minutes(1));
+
+      await auctionsInstance.revealBid(
+        web3.utils.toBN(i + 1),
         100,
         10,
-        bidId,
+        bidId2,
         {
           from: accounts[4],
           value: 20,
         }
       );
-      let revTime = (Date.now() - revStart).toString();
-      auctionStr += revTime + ",";
 
-      //   await time.increase(time.duration.minutes(1)); // Increase time by 1 minute
-      //   let getWinnerStart = Date.now();
-      //   await auctionsInstance.getWinner(web3.uitls.toBN(i));
-      //   let getWinnerTime = (Date.now() - getWinnerStart).toString();
-      //   auctionStr += getWinnerTime + ",";
-
-      // let verStart = Date.now();
-      // await auctionsInstance.verifyDelivery.call(0, {from: accounts[3]});
-      // let verTime = (Date.now() - verStart).toString();
-      // auctionStr += verTime + ",";
+      let reclaimStart = Date.now();
+      await auctionsInstance.reclaimTender.call(i + 1, { from: accounts[2] });
+      let reclaimTime = (Date.now() - reclaimStart).toString();
+      auctionStr += reclaimTime + ",";
 
       // now repeat for retract tender
+      await auctionsInstance.postTender(
+        30,
+        60,
+        "6729 old stagecoach road",
+        "frazeysburg",
+        "ohio",
+        "43822",
+        20,
+        "critical",
+        [accounts[3]],
+        { from: accounts[2], value: 10000 }
+      );
 
-      // now repeat for reclaim tender
+      /* RETRACT TENDER HERE */
+      let retractStart = Date.now();
+      await auctionsInstance.retractTender.call(i + 2, { from: accounts[2] });
+      let retractTime = (Date.now() - retractStart).toString();
+      auctionStr += retractTime + ",";
 
       let getAllStart = Date.now();
       let tenders = await auctionsInstance.getAllTenders();
