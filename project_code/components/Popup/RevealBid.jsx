@@ -66,7 +66,7 @@ export default function RevealBid({
       headers: {
         "x-method": "update",
         "Content-Type": "application/json",
-        Origin: APP_DOMAIN,
+        Origin: Constants.APP_DOMAIN,
       },
       method: "POST",
       body: JSON.stringify(updatePatient),
