@@ -164,7 +164,7 @@ export default withMetaMask(Hospital);
 export async function getStaticProps(ctx) {
   const res = await fetch(Constants.getPatients);
   const data = await res.json();
-
+  console.log("all patients", data);
   let isAccepted = data.filter(function (open) {
     return open.status === "accepted";
   });

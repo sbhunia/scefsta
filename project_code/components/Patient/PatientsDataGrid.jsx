@@ -41,7 +41,8 @@ export default function PatientsDataGrid({data, arrival}) {
         let tempData = dataContacts;
         const provider = new providers.Web3Provider(window.ethereum);
         let tempTenders = await getAllTenders(provider);
-        console.log(tempData);
+        console.log("data", tempData);
+        console.log("tenders", tempTenders);
         // get data from tenders and map new data
         const mergedPatients = tempData.map((patient) => {
             // if there is no injuries listed set mechanism and injury to N/A
@@ -64,7 +65,7 @@ export default function PatientsDataGrid({data, arrival}) {
                     patient.dueDate = tempTenders[tender].dueDate;
                 }
             }
-
+            console.log("merged", patient);
             return patient;
         });
 
