@@ -59,9 +59,9 @@ function Hospital() {
   const [isPolice, setIsPolice] = useState(false);
   const [isAmbulance, setIsAmbulance] = useState(false);
   const [value, setValue] = React.useState(0);
-  const [accepted, setAccepted] = useState([]);
-  const [incoming, setIncoming] = useState([]);
-  const [pending, setPending] = useState([]);
+  const [accepted, setAccepted] = useState();
+  const [incoming, setIncoming] = useState();
+  const [pending, setPending] = useState();
 
 
   const handleChange = (event, newValue) => {
@@ -101,7 +101,7 @@ function Hospital() {
     setAccount(sessionStorage.getItem("accountId"));
   }, []);
 
-  if (isHospital && pending.length > 0) {
+  if (isHospital && pending) {
     return (
       <div>
         <TopNavbar />

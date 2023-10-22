@@ -60,9 +60,9 @@ function Ambulance() {
   const [isPolice, setIsPolice] = useState(false);
   const [isAmbulance, setIsAmbulance] = useState(false);
   const [tenders, setTenders] = useState([]);
-  const [openTenders, setOpenTenders] = useState([]);
-  const [inProgressTenders, setInProgressTenders] = useState([]);
-  const [patients, setPatients] = useState([]);
+  const [openTenders, setOpenTenders] = useState();
+  const [inProgressTenders, setInProgressTenders] = useState();
+  const [patients, setPatients] = useState();
 
   const salts = {
     walletId: "0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80",
@@ -113,7 +113,7 @@ function Ambulance() {
     setInProgressTenders(tempProgressTendersArr);
   }, []);
 
-  if (isAmbulance && openTenders.length > 0) {
+  if (isAmbulance && openTenders) {
     return (
       <div className={styles.entire}>
         <TopNavbar />

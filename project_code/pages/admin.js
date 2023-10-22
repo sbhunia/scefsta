@@ -64,10 +64,10 @@ function AdminPortal() {
   const [isPolice, setIsPolice] = useState(false);
   const [isAmbulance, setIsAmbulance] = useState(false);
   const [value, setValue] = useState(0);
-  const [admins, setAdmins] = useState([]);
-  const [hospitals, setHospitals] = useState([]);
-  const [ambulances, setAmbulances] = useState([]);
-  const [police, setPolice] = useState([]);
+  const [admins, setAdmins] = useState();
+  const [hospitals, setHospitals] = useState();
+  const [ambulances, setAmbulances] = useState();
+  const [police, setPolice] = useState();
 
 
   const handleChange = (event, newValue) => {
@@ -116,7 +116,7 @@ function AdminPortal() {
     setAccount(sessionStorage.getItem("accountId"));
   }, []);
 
-  if (isAdmin && admins.length > 0) {
+  if (isAdmin && admins) {
     return (
       <div className={styles.collector2}>
         <TopNavbar />
