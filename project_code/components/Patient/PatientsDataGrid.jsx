@@ -130,7 +130,7 @@ export default function PatientsDataGrid({data, arrival}) {
                     return (
                         <div>
                             <Popup trigger={rowPopup} setTrigger={setRowPopup}>
-                                <VerifyDelivery row={row}></VerifyDelivery>
+                                <VerifyDelivery row={row} setTrigger={setRowPopup}></VerifyDelivery>
                             </Popup>
                         </div>
                     )

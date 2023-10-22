@@ -15,9 +15,9 @@ import * as Constants from "../../constants";
  * @param {*} row patient row
  * @returns
  */
-export default function VerifyDelivery({ tenderID, row }) {
+export default function VerifyDelivery({ tenderID, row, setTrigger }) {
   // Obtaining React Hooks from reclaimTender smart contract function
-  const { send, state } = useContractFunction(
+  const { send, state, events } = useContractFunction(
     AUCTION_INSTANCE,
     "verifyDelivery"
   );
@@ -28,7 +28,7 @@ export default function VerifyDelivery({ tenderID, row }) {
 
   const finalizeTransaction = async () => {
     const updatePatient = {
-      patientId: row["row"][id],
+      patientId: row["row"]["id"],
       status: "accepted",
     };
 
@@ -36,12 +36,11 @@ export default function VerifyDelivery({ tenderID, row }) {
       headers: {
         "x-method": "update",
         "Content-Type": "application/json",
-        Origin: APP_DOMAIN,
+        Origin: Constants.APP_DOMAIN,
       },
       method: "POST",
       body: JSON.stringify(updatePatient),
     });
-
     let status = await response.json();
     if (status.success) {
       setTrigger(false);
@@ -78,9 +77,14 @@ export default function VerifyDelivery({ tenderID, row }) {
       {(function () {
         if (state.status === "Mining") {
           return (
+            <div>
+              <Alert severity="warning">
+                  Waiting for the delivery to be verified
+                </Alert>
             <Box sx={{ display: "flex" }}>
               <CircularProgress />
             </Box>
+            </div>
           );
         }
         if (transactionErrored(state)) {
@@ -92,13 +96,13 @@ export default function VerifyDelivery({ tenderID, row }) {
             </div>
           );
         }
-        if (state.status === "Success") {
+        if (state.status === "Success" && events != undefined) {
           return (
             <div>
               <Alert severity="success">
                 Patient successfully verified! Funds have been transferred!
               </Alert>
-              <Button color="successs" onClick={finalizeTransaction}>
+              <Button color="success" onClick={finalizeTransaction}>
                 Finalize and Exit
               </Button>
             </div>
