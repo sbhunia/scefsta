@@ -77,16 +77,24 @@ function AdminPortal() {
   useEffect(() => {
     const fetchAccounts = async () => {
       try {
-        const res1 = await fetch(Constants.getHospitals);
+        const res1 = await fetch(Constants.getHospitals, {
+          headers: Constants.HEADERS
+        });
         const data1 = await res1.json();
   
-        const res2 = await fetch(Constants.getAmbulances);
+        const res2 = await fetch(Constants.getAmbulances, {
+          headers: Constants.HEADERS
+        });
         const data2 = await res2.json();
   
-        const res3 = await fetch(Constants.getPolice);
+        const res3 = await fetch(Constants.getPolice, {
+          headers: Constants.HEADERS
+        });
         const data3 = await res3.json();
   
-        const res4 = await fetch(Constants.getAdmins);
+        const res4 = await fetch(Constants.getAdmins, {
+          headers: Constants.HEADERS
+        });
         const data4 = await res4.json();
         
         setHospitals(data1);
