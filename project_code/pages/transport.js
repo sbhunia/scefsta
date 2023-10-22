@@ -53,7 +53,7 @@ function a11yProps(index) {
  * @param {*} tenders JSON containing open tenders.
  * @returns
  */
-function Ambulance({ patients }) {
+function Ambulance() {
   const [account, setAccount] = useState();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isHospital, setIsHospital] = useState(false);
@@ -62,6 +62,7 @@ function Ambulance({ patients }) {
   const [tenders, setTenders] = useState([]);
   const [openTenders, setOpenTenders] = useState([]);
   const [inProgressTenders, setInProgressTenders] = useState([]);
+  const [patients, setPatients] = useState([]);
 
   const salts = {
     walletId: "0xAd6cacC05493c496b53CCa73AB0ADf0003cB2D80",
@@ -70,13 +71,26 @@ function Ambulance({ patients }) {
     saltValue: "78757623669420",
   };
 
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const fetchPatients = async () => {
+    try {
+      const res = await fetch(Constants.getPatients, {
+        headers: Constants.HEADERS,
+      });
+    const data = await res.json();
+    setPatients(data);
+    } catch(error) {
+      console.error("Error fetching patients", error);
+    }
+  }
+
   useEffect(async () => {
+    fetchPatients();
     setIsAdmin(JSON.parse(sessionStorage.getItem("isAdmin")));
     setIsHospital(JSON.parse(sessionStorage.getItem("isHospital")));
     setIsPolice(JSON.parse(sessionStorage.getItem("isPolice")));
@@ -99,7 +113,7 @@ function Ambulance({ patients }) {
     setInProgressTenders(tempProgressTendersArr);
   }, []);
 
-  if (isAmbulance) {
+  if (isAmbulance && openTenders.length > 0) {
     return (
       <div className={styles.entire}>
         <TopNavbar />
@@ -201,14 +215,3 @@ function Ambulance({ patients }) {
 }
 
 export default withMetaMask(Ambulance);
-
-export async function getStaticProps(ctx) {
-  const res1 = await fetch(Constants.getPatients);
-  const data1 = await res1.json();
-
-  return {
-    props: {
-      patients: data1,
-    },
-  };
-}

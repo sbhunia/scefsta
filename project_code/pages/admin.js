@@ -9,7 +9,6 @@ import Hospitals from "../components/Hospitals/Hospitals";
 import Ambulances from "../components/Ambulances/Ambulances";
 import Police from "../components/Police/Police";
 import styles from "../styles/Admin.module.css";
-import { useEthers } from "@usedapp/core";
 import { Button } from "@mui/material";
 import { CircularProgress } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
@@ -58,19 +57,50 @@ function a11yProps(index) {
  * @param {*} police JSON array containing list of police stations.
  * Path: localhost:3000/admin
  */
-function AdminPortal({ admins, hospitals, ambulances, police }) {
+function AdminPortal() {
   const [account, setAccount] = useState();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isHospital, setIsHospital] = useState(false);
   const [isPolice, setIsPolice] = useState(false);
   const [isAmbulance, setIsAmbulance] = useState(false);
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [admins, setAdmins] = useState([]);
+  const [hospitals, setHospitals] = useState([]);
+  const [ambulances, setAmbulances] = useState([]);
+  const [police, setPolice] = useState([]);
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const res1 = await fetch(Constants.getHospitals);
+        const data1 = await res1.json();
+  
+        const res2 = await fetch(Constants.getAmbulances);
+        const data2 = await res2.json();
+  
+        const res3 = await fetch(Constants.getPolice);
+        const data3 = await res3.json();
+  
+        const res4 = await fetch(Constants.getAdmins);
+        const data4 = await res4.json();
+        
+        setHospitals(data1);
+        setAmbulances(data2);
+        setPolice(data3);
+        setAdmins(data4);
+  
+      } catch(error) {
+        console.error("Error fetching accounts", error);
+      }
+    }
+
+    fetchAccounts();
+
     setIsAdmin(JSON.parse(sessionStorage.getItem("isAdmin")));
     setIsHospital(JSON.parse(sessionStorage.getItem("isHospital")));
     setIsPolice(JSON.parse(sessionStorage.getItem("isPolice")));
@@ -78,7 +108,7 @@ function AdminPortal({ admins, hospitals, ambulances, police }) {
     setAccount(sessionStorage.getItem("accountId"));
   }, []);
 
-  if (isAdmin) {
+  if (isAdmin && admins.length > 0) {
     return (
       <div className={styles.collector2}>
         <TopNavbar />
@@ -188,26 +218,3 @@ function AdminPortal({ admins, hospitals, ambulances, police }) {
 }
 
 export default withMetaMask(AdminPortal);
-
-export async function getStaticProps(ctx) {
-  const res1 = await fetch(Constants.getHospitals);
-  const data1 = await res1.json();
-
-  const res2 = await fetch(Constants.getAmbulances);
-  const data2 = await res2.json();
-
-  const res3 = await fetch(Constants.getPolice);
-  const data3 = await res3.json();
-
-  const res4 = await fetch(Constants.getAdmins);
-  const data4 = await res4.json();
-
-  return {
-    props: {
-      admins: data4,
-      hospitals: data1,
-      ambulances: data2,
-      police: data3,
-    },
-  };
-}

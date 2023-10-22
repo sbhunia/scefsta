@@ -52,19 +52,48 @@ function a11yProps(index) {
  * @param {*} incoming JSON object composed of data of incoming patients.
  * @param {*} pending JSON object composed of patients that are pending transit.
  */
-function Hospital({ accepted, incoming, pending }) {
+function Hospital() {
   const [account, setAccount] = useState();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isHospital, setIsHospital] = useState(false);
   const [isPolice, setIsPolice] = useState(false);
   const [isAmbulance, setIsAmbulance] = useState(false);
   const [value, setValue] = React.useState(0);
+  const [accepted, setAccepted] = useState([]);
+  const [incoming, setIncoming] = useState([]);
+  const [pending, setPending] = useState([]);
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const fetchPatients = async () => {
+    try {
+      const res = await fetch(Constants.getPatients, {
+        headers: Constants.HEADERS,
+      });
+    const data = await res.json();
+    console.log("all patients", data);
+    setAccepted(data.filter(function (open) {
+      return open.status === "accepted";
+    }));
+
+    setIncoming(data.filter(function (open) {
+      return open.status === "incoming";
+    }));
+
+    setPending(data.filter(function (open) {
+      return open.status === "pending"
+    }));
+    } catch(error) {
+      console.error("Error fetching patients", error);
+    }
+  }
+
   useEffect(() => {
+    fetchPatients();
+
     setIsAdmin(JSON.parse(sessionStorage.getItem("isAdmin")));
     setIsHospital(JSON.parse(sessionStorage.getItem("isHospital")));
     setIsPolice(JSON.parse(sessionStorage.getItem("isPolice")));
@@ -72,7 +101,7 @@ function Hospital({ accepted, incoming, pending }) {
     setAccount(sessionStorage.getItem("accountId"));
   }, []);
 
-  if (isHospital) {
+  if (isHospital && pending.length > 0) {
     return (
       <div>
         <TopNavbar />
@@ -160,28 +189,3 @@ function Hospital({ accepted, incoming, pending }) {
 }
 
 export default withMetaMask(Hospital);
-
-export async function getStaticProps(ctx) {
-  const res = await fetch(Constants.getPatients);
-  const data = await res.json();
-  console.log("all patients", data);
-  let isAccepted = data.filter(function (open) {
-    return open.status === "accepted";
-  });
-
-  let isIncoming = data.filter(function (open) {
-    return open.status === "incoming";
-  });
-
-  let isPending = data.filter(function (open) {
-    return open.status === "pending"
-  });
-
-  return {
-    props: {
-      accepted: isAccepted,
-      incoming: isIncoming,
-      pending: isPending,
-    },
-  };
-}

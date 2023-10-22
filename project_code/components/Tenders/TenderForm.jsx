@@ -348,54 +348,6 @@ export default function TenderForm(props) {
     }
   };
 
-  // const AuctionLength = () => {
-  //   return (
-  //     <div className={styles.dropdownDiv}>
-  //       <TextField
-  //         type="text"
-  //         name="auction"
-  //         label="Auction Length (Minutes)"
-  //         variant="standard"
-  //         placeholder="5"
-  //         className={stylesP.formInput}
-  //         required
-  //         value={auctionLength}
-  //         onChange={handleAddFormData}
-  //         error={!isAuctionValid}
-  //         helperText={
-  //           !isAuctionValid && "Please enter a valid time length in minutes"
-  //         }
-  //       />
-  //     </div>
-  //   );
-  // };
-
-  // const DeliveryTime = () => {
-  //   return (
-  //     <div className={styles.dropdownDiv}>
-  //       <TextField
-  //         type="text"
-  //         name="delivery"
-  //         label="Delivery Time (min)"
-  //         variant="standard"
-  //         placeholder="30"
-  //         className={stylesP.formInput}
-  //         required={value === 0}
-  //         value={deliveryTime}
-  //         onChange={handleAddFormData}
-  //         error={!isDeliveryValid}
-  //         helperText={
-  //           !isDeliveryValid && "Please enter a valid time length in minutes"
-  //         }
-  //       />
-  //     </div>
-  //   );
-  // };
-
-  // const AuctionTimes = () => {
-    
-  // };
-
   if (loading) {
     return <div>Loading...</div>;
   } else {
