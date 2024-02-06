@@ -1,5 +1,21 @@
 # Background
-This thesis project is an extension of a previous capstone project. The goal of this project is to create competition between EMS companies using blockchain technology. This capstone project will add features and optimize the legacy system created by the other capstone team. The thesis project added several new and novel functionalities such as selecting specific a     hospital(s), implementing a penalty function, refined the auction platform, created smart contract testing and diagnostics, and added functional domains to the auction system (Private, Emergency, Inter-facility).
+This thesis project is an extension of a previous capstone project. The goal of this project is to create competition between EMS companies using blockchain technology. This capstone project will add features and optimize the legacy system created by the other capstone team. The thesis project added several new and novel functionalities such as selecting specific a hospital(s), implementing a penalty function, refined the auction platform, created smart contract testing and diagnostics, and added functional domains to the auction system (Private, Emergency, Inter-facility).
+
+# Vision
+SCeFSTA is to provide a transparent way for police stations to deploy ambulances to patients in need, and to reward them appropriately.
+Oftentimes, in less developed countries, ambulances don't have any strong incentive to do their jobs efficiently, since the drivers do not always have confidence that they will be paid.
+By automating payments to the drivers upon successful delivery of the patients, drivers can be sure that they will be paid upon successful completion of their job.
+
+# Mission
+This thesis seeks to build an web application in conjunction with our client to serve the healthcare industry. The goal of this project is to efficiently dispatch scarce resources. We are seeking to understand whether blockchain is part of a practical solution to patient management. We seek to understand the needs of our end-users and provide the most beneficial user interface.
+
+# User Interface
+## Video Demo
+
+## UI Screenshots
+
+# Technologies utilized 
+A wide variety of technologies are utilized throughout this project. The user interface of the application is deployed on NEXT.js, the database for storing user information utilizing mySQL, the backend api is deployed through node, truffle is used to deploy the Ethereum network, Python is used to analyze endpoint data, and Foundry blockchain toolchain is used to test the smart contract functions.
 
 # Project structure
 This project has 6 main directories that encompass the entire codebase.
@@ -17,6 +33,7 @@ This project has 6 main directories that encompass the entire codebase.
     - More detailed instructions for the gas_time_plotter.py file are included in the /plots directory for compiling the code and getting the data to be compiled.
 1. project_code
     - This directory houses the entirety of the NEXT.js application that serves as the user interface. The config.js file at /project_code/config.js holds the smart contract information needed to interface with the deployed smart contract. The /project_code/constants.js code houses many string constants for the application that allows for changing all instances of API calls and naming conventions throughout the app. The /project_code/styles directory has all the css files used in the project, /pages has all of the routable pages inside the application, and the /components directory has any react component that is utilized within the /pages directory or within another react component.
+    - More detailed instructions for compiling this code is in the "Installation" section of the README
 1. truffle
     - The truffle directory houses the smart contracts that are deployed on the blockchain network that is interfaced by the NEXT.js application in /project_code. The /build directory contains the ABI information that must be copied into the /project_code/config.js file after deploying the smart contract. The /contracts directory houses the smart contracts themselves, and the /test directory holds some smart contract tests as well as the test for smart contract API latency.
     - Instructions on how to deploy the smart contracts with truffle are given below in the "Deploying smart contract" section.
@@ -70,7 +87,3 @@ Test network faucets to gain test cryptocurrency
     - Add the new contract address to /project_code/config.js and remove the old one
     - Get the contract ABI from /truffle/build (one for Accounts and one for Auctions)
         - 
-
-
- 
-
