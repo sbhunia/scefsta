@@ -22,25 +22,34 @@ Run on localhost:
 - run command "NODE_OPTIONS=--openssl-legacy-provider"
 - run command "npm run dev"
 
-Test network faucets to gain test cryptocurrency
-- Ethereum's Sepolia: https://sepoliafaucet.com/
-- Avalanche's AVAX: https://faucet.avax.network/
-
 # Troubleshooting
 - If it says the cache is full, delete .next directory and recompile 
 - For openSSL error at compilation: "export NODE_OPTIONS=--openssl-legacy-provider"
 - If npm install is failing (mac m1 or m2 chip error), look up https://stackoverflow.com/questions/68896696/having-trouble-installing-npm-on-mac-m1
     - need to download nvm and change node version to perform fix above
 
-# Deploying Smart Contract
-** Only perform this step if you are the contract owner **
 
+# Deploying Smart Contract
+## Network utilized
+The current iteration of this software is deployed on Sepolia, an Ethereum test network. This allows for easy development that is free to use. The network can be changed easily by setting up MetaMask with the desired network, and adding the 
+
+Test network faucets to gain test cryptocurrency
+- Ethereum's Sepolia: https://sepoliafaucet.com/
+- Avalanche's AVAX: https://faucet.avax.network/
+
+## Tutorial
+** Only perform this step if you are the contract owner **
 - Setup wallet with metamask & testnet to be used
 - Download ganache: sudo npm install -g ganache
 - Good links for deploying on Avalanche with Infura:
+    - The new contract will be deployed in the truffle directory
     - Tutorial: https://dzone.com/articles/how-to-deploy-an-erc-20-smart-contract-on-avalanch
     - Infura:  https://app.infura.io/dashboard
     - Verify contract: https://testnet.snowtrace.io/
+- Once you have deployed the new contract:
+    - Add the new contract address to /project_code/config.js and remove the old one
+    - Get the contract ABI from /truffle/build (one for Accounts and one for Auctions)
+        - 
 
 
  
