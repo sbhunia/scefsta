@@ -1,0 +1,37 @@
+Compiling 1 files with 0.8.15
+Solc 0.8.15 finished in 3.51s
+Compiler run successful!
+
+Running 1 test for test/AuctionGas.t.sol:AuctionGasTest
+[PASS] testAuctionGasTimes() (gas: 462176858)
+Test result: ok. 1 passed; 0 failed; finished in 787.12ms
+| src/Accounts.sol:Accounts contract |                 |       |        |       |         |
+|------------------------------------|-----------------|-------|--------|-------|---------|
+| Deployment Cost                    | Deployment Size |       |        |       |         |
+| 959830                             | 3931            |       |        |       |         |
+| Function Name                      | min             | avg   | median | max   | # calls |
+| addAdmin                           | 29655           | 29655 | 29655  | 29655 | 1       |
+| addAmbulance                       | 29647           | 29647 | 29647  | 29647 | 1       |
+| addHospital                        | 27368           | 27368 | 27368  | 27368 | 1       |
+| addInitiator                       | 27390           | 27390 | 27390  | 27390 | 1       |
+| isAmbulance                        | 504             | 514   | 504    | 2504  | 200     |
+| isHospital                         | 525             | 535   | 525    | 2525  | 200     |
+| isInitiator                        | 569             | 589   | 569    | 2569  | 100     |
+
+
+| src/Auctions.sol:Auctions contract |                 |        |        |         |         |
+|------------------------------------|-----------------|--------|--------|---------|---------|
+| Deployment Cost                    | Deployment Size |        |        |         |         |
+| 2866855                            | 14389           |        |        |         |         |
+| Function Name                      | min             | avg    | median | max     | # calls |
+| getAllTenders                      | 10050           | 545244 | 536335 | 1115027 | 100     |
+| getAuctionWinner                   | 908             | 908    | 908    | 908     | 100     |
+| postTender                         | 778738          | 778863 | 778738 | 791238  | 100     |
+| revealBid                          | 143693          | 143693 | 143693 | 143693  | 100     |
+| secretBid                          | 94674           | 94694  | 94674  | 96674   | 100     |
+| verifyDelivery                     | 26485           | 26485  | 26485  | 26485   | 100     |
+| retractTender                      | 8718            | 8718   | 8718   | 8718   | 100     |
+| reclaimTender                      | 9210            | 9210   | 9210   | 9210    | 100     |
+
+
+

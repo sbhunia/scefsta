@@ -1,0 +1,108 @@
+Compiling 1 files with 0.8.15
+Solc 0.8.15 finished in 2.89s
+Compiler run successful!
+
+Running 1 test for test/AccountGas.t.sol:AuctionGasTest
+[PASS] testAccountGasTimes() (gas: 170066)
+Test result: ok. 1 passed; 0 failed; finished in 2.59ms
+| src/Accounts.sol:Accounts contract |                 |       |        |       |         |
+|------------------------------------|-----------------|-------|--------|-------|---------|
+| Deployment Cost                    | Deployment Size |       |        |       |         |
+| 959830                             | 3931            |       |        |       |         |
+| Function Name                      | min             | avg   | median | max   | # calls |
+| addAdmin                           | 31655           | 31655 | 31655  | 31655 | 1       |
+| addAmbulance                       | 29647           | 29647 | 29647  | 29647 | 1       |
+| addHospital                        | 27368           | 27368 | 27368  | 27368 | 1       |
+| addInitiator                       | 27390           | 27390 | 27390  | 27390 | 1       |
+| isAdmin                            | 570             | 570   | 570    | 570   | 1       |
+| isAmbulance                        | 504             | 504   | 504    | 504   | 1       |
+| isHospital                         | 525             | 525   | 525    | 525   | 1       |
+| isInitiator                        | 569             | 569   | 569    | 569   | 1       |
+| removeAdmin                        | 800             | 800   | 800    | 800   | 1       |
+| removeAmbulance                    | 836             | 836   | 836    | 836   | 1       |
+| removeHospital                     | 836             | 836   | 836    | 836   | 1       |
+| removeInitiator                    | 871             | 871   | 871    | 871   | 1       |
+
+
+
+Compiling 1 files with 0.8.15
+Solc 0.8.15 finished in 2.84s
+Compiler run successful!
+
+Running 1 test for test/AccountGas.t.sol:AuctionGasTest
+[PASS] testAccountGasTimes() (gas: 2429922)
+Test result: ok. 1 passed; 0 failed; finished in 7.40ms
+| src/Accounts.sol:Accounts contract |                 |       |        |       |         |
+|------------------------------------|-----------------|-------|--------|-------|---------|
+| Deployment Cost                    | Deployment Size |       |        |       |         |
+| 959830                             | 3931            |       |        |       |         |
+| Function Name                      | min             | avg   | median | max   | # calls |
+| addAdmin                           | 21655           | 22155 | 21655  | 31655 | 20      |
+| addAmbulance                       | 21647           | 22047 | 21647  | 29647 | 20      |
+| addHospital                        | 21368           | 21668 | 21368  | 27368 | 20      |
+| addInitiator                       | 21390           | 21690 | 21390  | 27390 | 20      |
+| isAdmin                            | 570             | 570   | 570    | 570   | 20      |
+| isAmbulance                        | 504             | 504   | 504    | 504   | 20      |
+| isHospital                         | 525             | 525   | 525    | 525   | 20      |
+| isInitiator                        | 569             | 569   | 569    | 569   | 20      |
+| removeAdmin                        | 800             | 800   | 800    | 800   | 20      |
+| removeAmbulance                    | 836             | 836   | 836    | 836   | 20      |
+| removeHospital                     | 836             | 836   | 836    | 836   | 20      |
+| removeInitiator                    | 871             | 871   | 871    | 871   | 20      |
+
+
+
+Compiling 1 files with 0.8.15
+Solc 0.8.15 finished in 2.87s
+Compiler run successful!
+
+Running 1 test for test/AccountGas.t.sol:AuctionGasTest
+[PASS] testAccountGasTimes() (gas: 11945304)
+Test result: ok. 1 passed; 0 failed; finished in 26.57ms
+| src/Accounts.sol:Accounts contract |                 |       |        |       |         |
+|------------------------------------|-----------------|-------|--------|-------|---------|
+| Deployment Cost                    | Deployment Size |       |        |       |         |
+| 959830                             | 3931            |       |        |       |         |
+| Function Name                      | min             | avg   | median | max   | # calls |
+| addAdmin                           | 21655           | 21755 | 21655  | 31655 | 100     |
+| addAmbulance                       | 21647           | 21727 | 21647  | 29647 | 100     |
+| addHospital                        | 21368           | 21428 | 21368  | 27368 | 100     |
+| addInitiator                       | 21390           | 21450 | 21390  | 27390 | 100     |
+| isAdmin                            | 570             | 570   | 570    | 570   | 100     |
+| isAmbulance                        | 504             | 504   | 504    | 504   | 100     |
+| isHospital                         | 525             | 525   | 525    | 525   | 100     |
+| isInitiator                        | 569             | 569   | 569    | 569   | 100     |
+| removeAdmin                        | 800             | 800   | 800    | 800   | 100     |
+| removeAmbulance                    | 836             | 836   | 836    | 836   | 100     |
+| removeHospital                     | 836             | 836   | 836    | 836   | 100     |
+| removeInitiator                    | 871             | 871   | 871    | 871   | 100     |
+
+
+
+Compiling 1 files with 0.8.15
+Solc 0.8.15 finished in 2.87s
+Compiler run successful!
+
+Running 1 test for test/AccountGas.t.sol:AuctionGasTest
+[PASS] testAccountGasTimes() (gas: 59527014)
+Test result: ok. 1 passed; 0 failed; finished in 125.04ms
+| src/Accounts.sol:Accounts contract |                 |       |        |       |         |
+|------------------------------------|-----------------|-------|--------|-------|---------|
+| Deployment Cost                    | Deployment Size |       |        |       |         |
+| 959830                             | 3931            |       |        |       |         |
+| Function Name                      | min             | avg   | median | max   | # calls |
+| addAdmin                           | 21655           | 21675 | 21655  | 31655 | 500     |
+| addAmbulance                       | 21647           | 21663 | 21647  | 29647 | 500     |
+| addHospital                        | 21368           | 21380 | 21368  | 27368 | 500     |
+| addInitiator                       | 21390           | 21402 | 21390  | 27390 | 500     |
+| isAdmin                            | 570             | 570   | 570    | 570   | 500     |
+| isAmbulance                        | 504             | 504   | 504    | 504   | 500     |
+| isHospital                         | 525             | 525   | 525    | 525   | 500     |
+| isInitiator                        | 569             | 569   | 569    | 569   | 500     |
+| removeAdmin                        | 800             | 800   | 800    | 800   | 500     |
+| removeAmbulance                    | 836             | 836   | 836    | 836   | 500     |
+| removeHospital                     | 836             | 836   | 836    | 836   | 500     |
+| removeInitiator                    | 871             | 871   | 871    | 871   | 500     |
+
+
+

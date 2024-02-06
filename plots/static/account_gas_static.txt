@@ -1,0 +1,25 @@
+No files changed, compilation skipped
+
+Running 1 test for test/AccountGas.t.sol:AuctionGasTest
+[PASS] testAccountGasTimes() (gas: 59527014)
+Test result: ok. 1 passed; 0 failed; finished in 124.68ms
+| src/Accounts.sol:Accounts contract |                 |       |        |       |         |
+|------------------------------------|-----------------|-------|--------|-------|---------|
+| Deployment Cost                    | Deployment Size |       |        |       |         |
+| 959830                             | 3931            |       |        |       |         |
+| Function Name                      | min             | avg   | median | max   | # calls |
+| addAdmin                           | 21655           | 21675 | 21655  | 31655 | 500     |
+| addAmbulance                       | 21647           | 21663 | 21647  | 29647 | 500     |
+| addHospital                        | 21368           | 21380 | 21368  | 27368 | 500     |
+| addInitiator                       | 21390           | 21402 | 21390  | 27390 | 500     |
+| isAdmin                            | 570             | 570   | 570    | 570   | 500     |
+| isAmbulance                        | 504             | 504   | 504    | 504   | 500     |
+| isHospital                         | 525             | 525   | 525    | 525   | 500     |
+| isInitiator                        | 569             | 569   | 569    | 569   | 500     |
+| removeAdmin                        | 800             | 800   | 800    | 800   | 500     |
+| removeAmbulance                    | 836             | 836   | 836    | 836   | 500     |
+| removeHospital                     | 836             | 836   | 836    | 836   | 500     |
+| removeInitiator                    | 871             | 871   | 871    | 871   | 500     |
+
+
+

@@ -24,7 +24,7 @@ Run on localhost:
 
 # Troubleshooting
 - If it says the cache is full, delete .next directory and recompile 
-- For openSSL error at compilation: "export NODE_OPTIONS=--openssl-legacy-provider"
+- For openSSL error:(bash) "export NODE_OPTIONS=--openssl-legacy-provider" (windows) "set NODE_OPTIONS=--openssl-legacy-provider"
 - If npm install is failing (mac m1 or m2 chip error), look up https://stackoverflow.com/questions/68896696/having-trouble-installing-npm-on-mac-m1
     - need to download nvm and change node version to perform fix above
 

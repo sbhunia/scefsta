@@ -1,130 +1,136 @@
-import React, { useEffect, useState } from 'react';
-import Router from 'next/router';
-import { Button } from 'reactstrap';
-import styles from '../../styles/TopNavbar.module.css';
-import '../../public/logo_P_1.png';
-import MetaMaskOnboarding from '@metamask/onboarding';
-import { OnboardingButton } from '../Onboarding';
-import { render } from 'react-dom';
-
-import { Mainnet, DAppProvider, useEtherBalance, useEthers, Config, Goerli } from '@usedapp/core'
-import { formatEther } from '@ethersproject/units'
-import { getDefaultProvider } from 'ethers'
+import React, { useEffect, useState } from "react";
+import { Button } from "reactstrap";
+import styles from "../../styles/TopNavbar.module.css";
+import "../../public/logo_P_1.png";
+import MetaMaskOnboarding from "@metamask/onboarding";
+import { useEtherBalance, useEthers } from "@usedapp/core";
+import { formatEther } from "@ethersproject/units";
+import {
+  checkAdmin,
+  checkHospital,
+  checkPolice,
+  checkAmbulance,
+  getPageRoute,
+} from "../../solidityCalls";
+import { providers } from "ethers";
+import * as Constants from "../../constants";
+import Link from "next/link";
 
 export default function TopNavbar() {
-    // const [buttonText, setButtonText] = useState("Connect");
-    // const [buttonDisabled, setButtonDisabled] = useState(false);
-    // const [connected, setConnected] = useState(false);
-    // const { activateBrowserWallet, account } = useEthers();
-    // const balance = useEtherBalance(account);
-    const [metaInstalled, setMetaInstalled] = useState(false);
+  const [metaInstalled, setMetaInstalled] = useState(false);
 
+  const { account, chainId } = useEthers();
+  const etherBalance = useEtherBalance(account);
 
-    const { account, chainId } = useEthers()
-    const etherBalance = useEtherBalance(account)
-    // if (chainId && !config.readOnlyUrls[chainId]) {
-    //     return <p>Please use either Mainnet or Goerli testnet.</p>
-    // }
-
-    const ConnectButton = () => {
-        const { account, deactivate, activateBrowserWallet } = useEthers()
-        // 'account' being undefined means that we are not connected.
-        if (account) {
-            return (
-                <div>
-                    <Button onClick={() => deactivate()}>Disconnect</Button>
-                    <Button onClick={login}>Login</Button> 
-                </div>
-            )
-        }
-        else {
-            return (
-                <div>
-                    <Button onClick={() => activateBrowserWallet()}>Connect</Button>
-                </div>
-            )
-        }
-    }
-
-    // see if matamask is installed and set variable
-    const checkMetaInstalled = () => {
-        if (typeof window !== 'undefined') {
-            if (window.ethereum) {
-                setMetaInstalled(true);
-            } else {
-                setMetaInstalled(false);
-            }
-        }
-    }
-
-    const installMeta = () => {
-        const forwarderOrigin = 'http://localhost:9010';
-
-        // create new metamask onboarding object
-        const onboarding = new MetaMaskOnboarding({ forwarderOrigin });
-
-        // onboard the user for metamask installation
-        onboarding.startOnboarding();
-        setMetaInstalled(true);
-        window.location.reload(false);
-    }
-
-    useEffect(() => {
-        checkMetaInstalled();
-    })
-
-    const connectMeta = () => {
-        return (
-            <div style={{display:'flex',alignItems:'center'}}>
-                {/* {isActive ? <span>Connected with {ABR_ADD}</span> : <span>MetaMask Not Connected</span>}
-                {isActive ? <Button onClick={disconnect} variant="primary">Disconnect Metamask</Button> : <Button onClick={connect} variant="danger">Connect Metamask</Button>}
-                {isActive ? <Button onClick={login}>Login</Button> :
-                    <Button disabled>Login</Button>} */}
-
-                {etherBalance && (
-                    <div className="balance" >
-                        <p className="bold"  style={{margin:'0 20px',color:'#fff'}}>Address: {account.substring(0, 5) + "..." + account.substring(account.length - 4, account.length - 1) + "\t"}
-                            Balance: {formatEther(etherBalance)}</p>
-                    </div>
-                )}
-                <ConnectButton />
-            </div>
-        );
-    }
-
-    const login = () => {
-        Router.push('/home');
-    }
-
-    return (
-        /* In progress */
-        <div className={styles.topNavbar}>
-            <div className={styles.topbarWrapper}>
-                <div>
-                    <span className={styles.topbarLeft}>
-                        <a href='/'><img src='logo_P_1.png' className={styles.topbarLogo}></img></a>
-                        <h3 className={styles.topbarUser}>AIS</h3>
-                    </span>
-                </div>
-                <div className={styles.topbarRight}>
-                    {metaInstalled ? connectMeta() : <Button onClick={installMeta} variant="primary">Install MetaMask</Button>}
-
-                </div>
-            </div>
+  const ConnectButton = () => {
+    const { account, deactivate, activateBrowserWallet } = useEthers();
+    // 'account' being undefined means that we are not connected.
+    if (account) {
+      return (
+        <div>
+          <Button color="warning" className={styles.leftButton} onClick={() => deactivate()}>Disconnect</Button>
+          <span className={styles.halfTab}></span>
+          <Button color="success" onClick={login}>Login</Button>
         </div>
-        /* Final code */
-        // <div className={styles.topNavbar}>
-        //     <div className={styles.topbarWrapper}>
-        //         <div>
-        //             <span className={styles.topbarLeft}>
-        //                 <a href='/'><img src='logo_P_1.png' className={styles.topbarLogo}></img></a>
-        //                 <h3 className={styles.topbarUser}>AIS</h3>
-        //             </span>
-        //         </div>
-        //         <div className={styles.topbarRight}>
-        //             {metaInstalled ? connectMeta() : <Button onClick={installMeta} variant="primary">Install MetaMask</Button>}
-        //         </div>
-        //     </div>
-        // </div>
-    )
+      );
+    } else {
+      return (
+        <div>
+          <Button color="success" onClick={() => activateBrowserWallet()}>Connect</Button>
+        </div>
+      );
+    }
+  };
+
+  // see if matamask is installed and set variable
+  const checkMetaInstalled = () => {
+    if (typeof window !== "undefined") {
+      if (window.ethereum) {
+        setMetaInstalled(true);
+      } else {
+        setMetaInstalled(false);
+      }
+    }
+  };
+
+  const installMeta = () => {
+    const forwarderOrigin = "http://localhost:9010";
+
+    // create new metamask onboarding object
+    const onboarding = new MetaMaskOnboarding({ forwarderOrigin });
+
+    // onboard the user for metamask installation
+    onboarding.startOnboarding();
+    setMetaInstalled(true);
+    window.location.reload(false);
+  };
+
+  useEffect(() => {
+    checkMetaInstalled();
+  }, []);
+
+  const connectMeta = () => {
+    return (
+      <div style={{ display: "flex", alignItems: "center" }}>
+        {etherBalance && (
+          <div className="balance">
+            <p className="bold" style={{ margin: "0 20px", color: "#fff" }}>
+              Address:{" "}
+              {account.substring(0, 5) +
+                "..." +
+                account.substring(account.length - 4, account.length)} 
+                <span className={styles.tab}></span>
+              Balance: {formatEther(etherBalance).substring(0, 8)}
+            </p>
+          </div>
+        )}
+        <ConnectButton />
+      </div>
+    );
+  };
+
+  const login = async () => {
+    if (!account) {
+      console.error("No account available");
+      return;
+    }
+
+    const provider = new providers.Web3Provider(window.ethereum);
+
+    const isAdmin = await checkAdmin(account, provider);
+    const isHospital = await checkHospital(account, provider);
+    const isPolice = await checkPolice(account, provider);
+    const isAmbulance = await checkAmbulance(account, provider);
+    // set session variables
+    sessionStorage.setItem("isAdmin", isAdmin);
+    sessionStorage.setItem("isHospital", isHospital);
+    sessionStorage.setItem("isPolice", isPolice);
+    sessionStorage.setItem("isAmbulance", isAmbulance);
+    sessionStorage.setItem("accountId", account);
+    getPageRoute(isAdmin, isHospital, isPolice, isAmbulance);
+  };
+
+  return (
+    <div className={styles.topNavbar}>
+      <div className={styles.topbarWrapper}>
+        <div>
+          <span className={styles.topbarLeft}>
+            <Link href="/">
+              <img src="logo_P_1.png" className={styles.topbarLogo}></img>
+            </Link>
+            <h3 className={styles.topbarUser}>{Constants.PROJECT_ABR}</h3>
+          </span>
+        </div>
+        <div className={styles.topbarRight}>
+          {metaInstalled ? (
+            connectMeta()
+          ) : (
+            <Button onClick={installMeta} color="success">
+              Install MetaMask
+            </Button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }

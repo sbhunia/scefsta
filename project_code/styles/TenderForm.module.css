@@ -1,71 +1,168 @@
 .container {
-    width: 100%;
+  width: 100%;
 }
 
 .heading {
-    margin-top: 1%;
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.4rem;
-    color: #3F88C5;
+  margin-top: 1%;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: #3f88c5;
 }
 
 .iconDiv {
-    width: 35%;
-    margin: 1% 0%;
-    text-align: center;
-    transform: scale(1.6);
+  width: 35%;
+  margin: 1% 0%;
+  text-align: center;
+  transform: scale(1.6);
 }
 
 .tenderForm {
-    width: 100%;
-    margin: auto;
+  width: 80%;
+  margin: auto;
 }
 
 .formText {
-    width: 30%;
+  width: 30%;
 }
 
 .addressText {
-    width: 65%;
+  width: 65%;
 }
 
-#injuryType, #severity, #mechanism {
-    width: 20vw;
-    min-width: 400px;
+#injuryType {
+  width: 11rem;
+}
+
+#severity {
+  width: 11rem;
+}
+
+#mechanism {
+  width: 25rem;
 }
 
 .injuryDiv {
-    margin-top: 2%;
-    margin-bottom: 2%;
-    text-align: center;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  text-align: center;
+}
+
+.severityDiv {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  text-align: center;
+  margin-right: 0rem;
+}
+
+.mechanismDiv {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  text-align: center;
+}
+
+.timeDiv {
+  width: 10rem;
+  min-width: 5rem;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  text-align: center;
+}
+
+.dropdownDiv {
+  min-width: 48%;
+}
+
+.dropdownItem {
+  width: 100%;
+  text-align: center;
 }
 
 .expiration {
-    margin-top: 4%;
-    text-align: center;
+  margin-top: 4%;
+  text-align: center;
+  width: 10rem;
 }
 
-.paymentAmt, .penaltyAmt {
-    margin-top: 2%;
-    margin-bottom: 2%;
-    width: 40%;
-    text-align: center;
+.paymentAmt,
+.penaltyAmt {
+  margin-top: 2%;
+  margin-bottom: 2%;
+  width: 500px;
+  text-align: center;
 }
 
 .buttonGroup {
-    text-align: center;
+  text-align: center;
+  margin-top: 1rem;
 }
 
 .divider {
-    margin-top: 2%;
-    margin-bottom: 2%;
+  margin-top: 2%;
+  margin-bottom: 2%;
 }
 
 .winners {
-    width: 75%;
-    margin: auto;
-    margin-top: 2%;
-    margin-bottom: 5%;
+  width: 75%;
+  margin: auto;
+  margin-top: 2%;
+  margin-bottom: 5%;
 }
-  
+
+.headingText {
+  padding-top: 0.5rem;
+  font-size: 1.2rem;
+  width: 50%;
+  color: black;
+  border-bottom: 1px solid black;
+  padding-bottom: 0rem;
+}
+
+.dateTimeDiv {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.dateTime {
+  width: 20rem;
+}
+
+.dateTimeFacility {
+  width: 14rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.auctionFacility {
+  width: 11rem;
+}
+
+.timeDiv {
+  display: flex;
+  justify-content: "space-around";
+  width: 100%;
+}
+
+.incidentDiv {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.incidentTop {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.paddingTop {
+  margin-top: 1rem;
+  margin-bottom: auto;
+  padding: 20rem;
+}
+
+.tabInput {
+  width: 100%;
+}
+

@@ -12,7 +12,7 @@
   },
   "files": {
     "lib/forge-std/lib/ds-test/src/test.sol": {
-      "lastModificationDate": 1659663029745,
+      "lastModificationDate": 1683474241125,
       "contentHash": "962996f0e05d5218857a538a62d7c47e",
       "sourceName": "lib/forge-std/lib/ds-test/src/test.sol",
       "solcConfig": {
@@ -50,7 +50,7 @@
       }
     },
     "lib/forge-std/src/Test.sol": {
-      "lastModificationDate": 1659663029745,
+      "lastModificationDate": 1683474241127,
       "contentHash": "c74d8c43e00c9e8cfa4ba8cccc87143c",
       "sourceName": "lib/forge-std/src/Test.sol",
       "solcConfig": {
@@ -102,7 +102,7 @@
       }
     },
     "lib/forge-std/src/Vm.sol": {
-      "lastModificationDate": 1659663029745,
+      "lastModificationDate": 1683474241127,
       "contentHash": "1af1970835110fd1d828d9570c720bdb",
       "sourceName": "lib/forge-std/src/Vm.sol",
       "solcConfig": {
@@ -140,7 +140,7 @@
       }
     },
     "lib/forge-std/src/console.sol": {
-      "lastModificationDate": 1659663029745,
+      "lastModificationDate": 1683474241128,
       "contentHash": "100b8a33b917da1147740d7ab8b0ded3",
       "sourceName": "lib/forge-std/src/console.sol",
       "solcConfig": {
@@ -178,7 +178,7 @@
       }
     },
     "lib/forge-std/src/console2.sol": {
-      "lastModificationDate": 1659663029746,
+      "lastModificationDate": 1683474241127,
       "contentHash": "5df91f8e93efbfcccf68973dc1b74a70",
       "sourceName": "lib/forge-std/src/console2.sol",
       "solcConfig": {
@@ -215,10 +215,10 @@
         }
       }
     },
-    "src/AmbulanceBounties.sol": {
-      "lastModificationDate": 1681138431659,
-      "contentHash": "c3405fa4fb1cceb4919e660cfce50c95",
-      "sourceName": "src/AmbulanceBounties.sol",
+    "src/Accounts.sol": {
+      "lastModificationDate": 1692552564043,
+      "contentHash": "c544ffb6cab463e84a5232997f027d46",
+      "sourceName": "src/Accounts.sol",
       "solcConfig": {
         "settings": {
           "optimizer": {
@@ -248,13 +248,53 @@
       "imports": [],
       "versionRequirement": "^0.8.0",
       "artifacts": {
-        "AmbulanceBounties": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "AmbulanceBounties.sol/AmbulanceBounties.json"
+        "Accounts": {
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Accounts.sol/Accounts.json"
+        }
+      }
+    },
+    "src/Auctions.sol": {
+      "lastModificationDate": 1693942775559,
+      "contentHash": "8269ed4740889f1a4b1cd23fc4b12e40",
+      "sourceName": "src/Auctions.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs"
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "src/Accounts.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "Auctions": {
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Auctions.sol/Auctions.json"
         }
       }
     },
     "src/Migrations.sol": {
-      "lastModificationDate": 1659663029779,
+      "lastModificationDate": 1683474241129,
       "contentHash": "50b3b1dc92806dc8f604fc8c5c65518f",
       "sourceName": "src/Migrations.sol",
       "solcConfig": {
@@ -291,10 +331,10 @@
         }
       }
     },
-    "test/AmbulanceBounties.t.sol": {
-      "lastModificationDate": 1681139206475,
-      "contentHash": "dfb53d0a08be919140269a1a479792d6",
-      "sourceName": "test/AmbulanceBounties.t.sol",
+    "test/AccountGas.t.sol": {
+      "lastModificationDate": 1696792676079,
+      "contentHash": "36cf939c6b33a32499757e289717e03a",
+      "sourceName": "test/AccountGas.t.sol",
       "solcConfig": {
         "settings": {
           "optimizer": {
@@ -327,12 +367,150 @@
         "lib/forge-std/src/Vm.sol",
         "lib/forge-std/src/console.sol",
         "lib/forge-std/src/console2.sol",
-        "src/AmbulanceBounties.sol"
+        "src/Accounts.sol",
+        "src/Auctions.sol"
       ],
       "versionRequirement": "^0.8.0",
       "artifacts": {
-        "AmbulanceBountiesTest": {
-          "0.8.15+commit.e14f2714.Darwin.appleclang": "AmbulanceBounties.t.sol/AmbulanceBountiesTest.json"
+        "AuctionGasTest": {
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "AccountGas.t.sol/AuctionGasTest.json"
+        }
+      }
+    },
+    "test/Accounts.t.sol": {
+      "lastModificationDate": 1688434883598,
+      "contentHash": "e8e66d1fb071d0aaf8bd629d6624d138",
+      "sourceName": "test/Accounts.t.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs"
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
+        "lib/forge-std/src/console.sol",
+        "lib/forge-std/src/console2.sol",
+        "src/Accounts.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "AccountsTest": {
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Accounts.t.sol/AccountsTest.json"
+        }
+      }
+    },
+    "test/AuctionGas.t.sol": {
+      "lastModificationDate": 1696793219494,
+      "contentHash": "3612c38c054baaeb824b2088f5aa79b8",
+      "sourceName": "test/AuctionGas.t.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs"
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
+        "lib/forge-std/src/console.sol",
+        "lib/forge-std/src/console2.sol",
+        "src/Accounts.sol",
+        "src/Auctions.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "AuctionGasTest": {
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "AuctionGas.t.sol/AuctionGasTest.json"
+        }
+      }
+    },
+    "test/Auctions.t.sol": {
+      "lastModificationDate": 1693943760823,
+      "contentHash": "ff90e37975b29f95704a81b7cf7f33ac",
+      "sourceName": "test/Auctions.t.sol",
+      "solcConfig": {
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "metadata": {
+            "bytecodeHash": "ipfs"
+          },
+          "outputSelection": {
+            "*": {
+              "": [
+                "ast"
+              ],
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ]
+            }
+          },
+          "evmVersion": "london",
+          "libraries": {}
+        }
+      },
+      "imports": [
+        "lib/forge-std/lib/ds-test/src/test.sol",
+        "lib/forge-std/src/Test.sol",
+        "lib/forge-std/src/Vm.sol",
+        "lib/forge-std/src/console.sol",
+        "lib/forge-std/src/console2.sol",
+        "src/Accounts.sol",
+        "src/Auctions.sol"
+      ],
+      "versionRequirement": "^0.8.0",
+      "artifacts": {
+        "AuctionsTest": {
+          "0.8.15+commit.e14f2714.Darwin.appleclang": "Auctions.t.sol/AuctionsTest.json"
         }
       }
     }
