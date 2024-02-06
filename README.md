@@ -11,10 +11,7 @@ This thesis seeks to build an web application in conjunction with our client to 
 
 # User Interface
 ## Video Demo
-The link to a recorded demonstration of the SCeFSTA application and auction system is included below
-[Demo](https://gitlab.csi.miamioh.edu/campbeo2/scefsta/-/blob/main/README_docs/backup-demo.mp4?ref_type=heads))
-
-## UI Screenshots
+The [Demo](https://gitlab.csi.miamioh.edu/campbeo2/scefsta/-/blob/main/README_docs/backup-demo.mp4?ref_type=heads) for the SCeFSTA project linked showcases the user interface and auction system of our application. This demo highlights all the major components of the system.
 
 # Technologies utilized 
 A wide variety of technologies are utilized throughout this project. The user interface of the application is deployed on NEXT.js, the database for storing user information utilizing mySQL, the backend api is deployed through node, truffle is used to deploy the Ethereum network, Python is used to analyze endpoint data, and Foundry blockchain toolchain is used to test the smart contract functions.
