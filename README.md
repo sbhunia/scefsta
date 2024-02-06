@@ -85,4 +85,3 @@ Test network faucets to gain test cryptocurrency
 - Once you have deployed the new contract:
     - Add the new contract address to /project_code/config.js and remove the old one
     - Get the contract ABI from /truffle/build (one for Accounts and one for Auctions)
-        - 
