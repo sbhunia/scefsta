@@ -1,6 +1,26 @@
 # Background
 This thesis project is an extension of a previous capstone project. The goal of this project is to create competition between EMS companies using blockchain technology. This capstone project will add features and optimize the legacy system created by the other capstone team. The thesis project added several new and novel functionalities such as selecting specific a     hospital(s), implementing a penalty function, refined the auction platform, created smart contract testing and diagnostics, and added functional domains to the auction system (Private, Emergency, Inter-facility).
 
+# Project structure
+This project has 6 main directories that encompass the entire codebase.
+
+1. backend-api directory
+    - This directory holds the code that serves as the interface between the mySQL database and the next app, the backend-api is hosted on node through the ubuntu server that also houses the mysql database (ambulance-blockchain.sec.csi.miamioh.edu). The connections for the api are in the file called index.js and the queries themnselves are specified in the api folder within backend-api. 
+    - This API can be ran using the command "node index.js" while inside the ambulance-blockchain remote server inside the backend-api directory.
+1. database-files directory
+    - This directory holds the mySQL database configuration and deployment script. the CreateAIS.sql file holds the table structure and any initial data in SQL format, and the setupDB.sh file compiles the data and deploys the table to the ubuntu server. 
+    - setupDB.sh can be ran using "./setupDB.sh" while in the database-files directory on the ambulance-blockchain remote server.
+1. foundry
+    - the foundry folder is used to test the smart contracts and get gas price estimations for each smart contract API. This directory utilizes a copy of the smart contracts from the /truffle directory and must be updated independently. More information on the Foundry Blockchain Toolchain can be found at https://github.com/foundry-rs/foundry, as well as their book in the GitHub
+1. plots
+    - This directory contains code to create API latency boxplots, as well as the box plots for gas prices derived from the /foundry gas reports.
+    - More detailed instructions for the gas_time_plotter.py file are included in the /plots directory for compiling the code and getting the data to be compiled.
+1. project_code
+    - This directory houses the entirety of the NEXT.js application that serves as the user interface. The config.js file at /project_code/config.js holds the smart contract information needed to interface with the deployed smart contract. The /project_code/constants.js code houses many string constants for the application that allows for changing all instances of API calls and naming conventions throughout the app. The /project_code/styles directory has all the css files used in the project, /pages has all of the routable pages inside the application, and the /components directory has any react component that is utilized within the /pages directory or within another react component.
+1. truffle
+    - The truffle directory houses the smart contracts that are deployed on the blockchain network that is interfaced by the NEXT.js application in /project_code. The /build directory contains the ABI information that must be copied into the /project_code/config.js file after deploying the smart contract. The /contracts directory houses the smart contracts themselves, and the /test directory holds some smart contract tests as well as the test for smart contract API latency.
+    - Instructions on how to deploy the smart contracts with truffle are given below in the "Deploying smart contract" section.
+
 # Installation
 The following instructions show how to set up and deploy this project
 
