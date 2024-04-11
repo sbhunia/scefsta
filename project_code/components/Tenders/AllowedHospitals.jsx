@@ -5,7 +5,7 @@ import HospitalDataGrid from "../Hospitals/HospitalDataGrid";
 import { getDistance } from "geolib";
 import axios from "axios";
 
-const apiKey = "f6O9rKeaLXRPkZhRRw0tjQWUn8Tp7Y6s";
+const apiKey = "YOUR TOMTOM API KEY";
 
 export const AllowedHospitals = ({
   address,
